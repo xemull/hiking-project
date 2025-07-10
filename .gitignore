@@ -4,3 +4,4 @@
 
 # Ignore Next.js build folder
 /frontend/.next
+/node_modules
