@@ -5,3 +5,8 @@
 # Ignore Next.js build folder
 /frontend/.next
 /node_modules
+
+# Terraform files
+.terraform/
+*.tfstate
+*.tfstate.backup
