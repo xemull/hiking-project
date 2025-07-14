@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx
+  version="1.1"
+  creator="Gemini - https://gemini.google.com/"
+  xmlns="http://www.topografix.com/GPX/1/1"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
+  <metadata>
+    <name>Test Hike</name>
+  </metadata>
+  <trk>
+    <name>Test Hike Segment</name>
+    <trkseg>
+      <trkpt lat="51.5074" lon="-0.1278"></trkpt>
+      <trkpt lat="51.5085" lon="-0.1288"></trkpt>
+      <trkpt lat="51.5099" lon="-0.1299"></trkpt>
+    </trkseg>
+  </trk>
+</gpx>

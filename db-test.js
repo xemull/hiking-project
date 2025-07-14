@@ -6,7 +6,7 @@ const client = new Client({
   user: 'postgres',
   host: 'localhost',
   database: 'hiking_db',
-  password: 'eXstas1987X', // <-- IMPORTANT: Replace with your password
+  password: '***REMOVED***', // <-- IMPORTANT: Replace with your password
   port: 5432,
 });
 

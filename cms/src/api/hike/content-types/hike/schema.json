@@ -1,0 +1,30 @@
+{
+  "kind": "collectionType",
+  "collectionName": "hikes",
+  "info": {
+    "singularName": "hike",
+    "pluralName": "hikes",
+    "displayName": "Hike"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "guide": {
+      "type": "blocks"
+    },
+    "Logistics": {
+      "type": "blocks"
+    },
+    "Duration": {
+      "type": "string"
+    },
+    "Resources": {
+      "type": "blocks"
+    },
+    "hike_id": {
+      "type": "integer"
+    }
+  }
+}
