@@ -1,22 +1,24 @@
 const fs = require('fs');
 const { Pool } = require('pg');
-const gpxParse = require('gpx-parse');
+const xml2js = require('xml2js');
 
 const pool = new Pool({
   user: 'hike_admin',
   host: '127.0.0.1',
   database: 'hikes_db',
-  password: '***REMOVED***', // <-- Your correct password
+  password: '***REMOVED***', // Your correct password
   port: 5433,
 });
 
-const parseGpx = (filePath) => {
+const parseGpxManually = (filePath) => {
   return new Promise((resolve, reject) => {
-    gpxParse.parseGpxFromFile(filePath, (error, data) => {
+    const xml = fs.readFileSync(filePath, 'utf8');
+    const parser = new xml2js.Parser();
+    parser.parseString(xml, (error, result) => {
       if (error) {
         reject(error);
       } else {
-        resolve(data);
+        resolve(result);
       }
     });
   });
@@ -24,33 +26,44 @@ const parseGpx = (filePath) => {
 
 const seedDatabase = async () => {
   try {
-    const filename = 'my-hike.gpx'; // Your real GPX filename
+    const filename = '../data/cycling.gpx'; // Change to the GPX file you want to add
     console.log(`Parsing GPX file: ${filename}...`);
-    const gpxData = await parseGpx(filename);
+    const gpxData = await parseGpxManually(filename);
 
     let points = [];
-    let hikeName = 'My Real Hike';
+    let hikeName = 'My Hike';
 
-    // Check for tracks first
-    if (gpxData.tracks && gpxData.tracks.length > 0) {
-      console.log('Track found. Processing track points...');
-      points = gpxData.tracks[0].segments[0].points;
-      hikeName = gpxData.tracks[0].name || hikeName;
-    // If no tracks, check for routes
-    } else if (gpxData.routes && gpxData.routes.length > 0) {
-      console.log('Route found. Processing route points...');
-      points = gpxData.routes[0].points;
-      hikeName = gpxData.routes[0].name || hikeName;
-    } else {
-      throw new Error('No tracks or routes found in the GPX file.');
+    const track = gpxData.gpx.trk[0];
+    hikeName = track.name[0] || hikeName;
+    const segments = track.trkseg;
+
+    if (segments && segments.length > 0) {
+      points = segments.flatMap(seg =>
+        (seg.trkpt || []).map(pt => ({
+          lon: parseFloat(pt.$.lon),
+          lat: parseFloat(pt.$.lat),
+          // Check if elevation exists, otherwise it will be NaN
+          ele: pt.ele ? parseFloat(pt.ele[0]) : NaN,
+        }))
+      );
     }
-
+    
     if (points.length === 0) {
-      throw new Error('No points found within the track or route.');
+      throw new Error('No valid points found in the GPX file.');
     }
 
-    // Convert points to WKT format
-    const wkt = `LINESTRING(${points.map(p => `${p.lon} ${p.lat}`).join(',')})`;
+    // --- THIS IS THE FIX ---
+    // Check if the first valid point has elevation data.
+    const hasElevation = !isNaN(points[0].ele);
+    let wkt;
+
+    if (hasElevation) {
+      console.log('Building 3D trail with elevation...');
+      wkt = `LINESTRING Z (${points.map(p => `${p.lon} ${p.lat} ${p.ele}`).join(',')})`;
+    } else {
+      console.log('Building 2D trail...');
+      wkt = `LINESTRING(${points.map(p => `${p.lon} ${p.lat}`).join(',')})`;
+    }
 
     console.log('Inserting hike data into the database...');
     
