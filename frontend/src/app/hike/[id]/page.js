@@ -1,11 +1,10 @@
 import Map from '../../components/DynamicMap';
+import ElevationProfile from '../../components/ElevationProfile';
 
 async function getHike(id) {
   try {
     const res = await fetch(`http://localhost:4000/api/hikes/${id}`, { cache: 'no-store' });
-    if (!res.ok) {
-      return null;
-    }
+    if (!res.ok) return null;
     return res.json();
   } catch (error) {
     console.error('API Error:', error);
@@ -23,16 +22,17 @@ export default async function HikeDetailPage({ params }) {
       </main>
     );
   }
-  
-  // A helper to safely get text from Strapi's rich text fields
-  const getRichText = (field) => {
-    return field?.[0]?.children?.[0]?.text || '';
-  };
+
+  // --- NEW LOGIC ---
+  // Check for elevation data here, in the parent component.
+  const hasElevationData = hike.track?.coordinates?.[0]?.length > 2;
+
+  const getRichText = (field) => field?.[0]?.children?.[0]?.text || '';
 
   return (
     <main style={{ fontFamily: 'sans-serif', padding: '2rem', maxWidth: '800px', margin: 'auto' }}>
       <h1>{hike.name}</h1>
-      
+
       <div style={{ display: 'flex', gap: '2rem', margin: '1rem 0' }}>
         <div>
           <strong>Distance</strong>
@@ -50,17 +50,20 @@ export default async function HikeDetailPage({ params }) {
         )}
       </div>
 
-      <div style={{ marginTop: '1rem' }}>
-        {hike.track ? (
-          <Map track={hike.track} />
-        ) : (
-          <p>Map data is missing for this hike.</p>
-        )}
+      <div style={{ marginTop: '1rem', marginBottom: '2rem' }}>
+        {hike.track ? <Map track={hike.track} /> : <p>Map data is missing.</p>}
       </div>
 
-      {/* New sections to display the Strapi content */}
+      {/* This entire section will now only appear if there is elevation data */}
+      {hasElevationData && (
+        <div style={{ marginBottom: '2rem' }}>
+          <h2>Elevation Profile</h2>
+          <ElevationProfile track={hike.track} />
+        </div>
+      )}
+
       {hike.content && (
-        <div style={{ marginTop: '2rem' }}>
+        <div>
           <div style={{ marginBottom: '1.5rem' }}>
             <h2>Guide</h2>
             <p>{getRichText(hike.content.guide)}</p>
