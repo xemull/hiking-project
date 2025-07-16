@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_hike_landmarks",
+  "info": {
+    "displayName": "Landmark"
+  },
+  "options": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "distance": {
+      "type": "decimal"
+    }
+  },
+  "config": {}
+}

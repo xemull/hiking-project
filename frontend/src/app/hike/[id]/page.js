@@ -1,5 +1,6 @@
 import Map from '../../components/DynamicMap';
 import ElevationProfile from '../../components/ElevationProfile';
+import Link from 'next/link';
 
 async function getHike(id) {
   try {
@@ -13,52 +14,47 @@ async function getHike(id) {
 }
 
 export default async function HikeDetailPage({ params }) {
-  const hike = await getHike(params.id);
+  // Correctly await the params object to get the id
+  const { id } = await params;
+  const hike = await getHike(id);
 
   if (!hike) {
     return (
       <main style={{ fontFamily: 'sans-serif', padding: '2rem' }}>
         <h1>Hike Not Found</h1>
+        <p><Link href="/">← Back to all hikes</Link></p>
       </main>
     );
   }
-
-  // --- NEW LOGIC ---
-  // Check for elevation data here, in the parent component.
-  const hasElevationData = hike.track?.coordinates?.[0]?.length > 2;
-
+  
+  const hasElevationData = hike.simplified_profile && hike.simplified_profile.length > 0;
   const getRichText = (field) => field?.[0]?.children?.[0]?.text || '';
 
   return (
     <main style={{ fontFamily: 'sans-serif', padding: '2rem', maxWidth: '800px', margin: 'auto' }}>
+      <p style={{ marginBottom: '2rem' }}><Link href="/">← Back to all hikes</Link></p>
       <h1>{hike.name}</h1>
-
-      <div style={{ display: 'flex', gap: '2rem', margin: '1rem 0' }}>
-        <div>
-          <strong>Distance</strong>
-          <p>{hike.distance_km} km</p>
+      
+      {hike.content && (
+        <div style={{ display: 'flex', gap: '2rem', margin: '1rem 0' }}>
+            <div>
+              <strong>Duration</strong>
+              <p>{hike.content.Duration}</p>
+            </div>
         </div>
-        <div>
-          <strong>Ascent</strong>
-          <p>{hike.ascent_m} m (placeholder)</p>
-        </div>
-        {hike.content && (
-          <div>
-            <strong>Duration</strong>
-            <p>{hike.content.Duration}</p>
-          </div>
-        )}
-      </div>
+      )}
 
       <div style={{ marginTop: '1rem', marginBottom: '2rem' }}>
         {hike.track ? <Map track={hike.track} /> : <p>Map data is missing.</p>}
       </div>
 
-      {/* This entire section will now only appear if there is elevation data */}
       {hasElevationData && (
         <div style={{ marginBottom: '2rem' }}>
           <h2>Elevation Profile</h2>
-          <ElevationProfile track={hike.track} />
+          <ElevationProfile 
+            profileData={hike.simplified_profile} 
+            landmarks={hike.content?.landmarks} 
+          />
         </div>
       )}
 

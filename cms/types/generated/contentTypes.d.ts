@@ -390,6 +390,7 @@ export interface ApiHikeHike extends Struct.CollectionTypeSchema {
     Duration: Schema.Attribute.String;
     guide: Schema.Attribute.Blocks;
     hike_id: Schema.Attribute.Integer;
+    landmarks: Schema.Attribute.Component<'hike.landmark', true>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::hike.hike'> &
       Schema.Attribute.Private;

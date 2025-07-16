@@ -11,9 +11,11 @@
   "description": "",
   "dependencies": {
     "cors": "^2.8.5",
-    "express": "^5.1.0",
+    "express": "^4.19.2",
     "gpx-parse": "^0.10.4",
-    "leaflet": "^1.9.4",
-    "react-leaflet": "^5.0.0"
+    "node-fetch": "^2.7.0",
+    "pg": "^8.12.0",
+    "simplify-js": "^1.2.4",
+    "xml2js": "^0.6.2"
   }
 }
