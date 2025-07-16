@@ -25,6 +25,11 @@
     },
     "hike_id": {
       "type": "integer"
+    },
+    "landmarks": {
+      "type": "component",
+      "component": "hike.landmark",
+      "repeatable": true
     }
   }
 }
