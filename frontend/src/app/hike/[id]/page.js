@@ -1,6 +1,7 @@
 import Map from '../../components/DynamicMap';
 import ElevationProfile from '../../components/ElevationProfile';
 import Link from 'next/link';
+import Comments from '../../components/Comments'; // 1. ADD THIS IMPORT
 
 async function getHike(id) {
   try {
@@ -74,6 +75,8 @@ export default async function HikeDetailPage({ params }) {
           </div>
         </div>
       )}
+      
+      <Comments hikeId={hike.id} />
     </main>
   );
 }
