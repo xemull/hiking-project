@@ -30,6 +30,9 @@
       "type": "component",
       "component": "hike.landmark",
       "repeatable": true
+    },
+    "title": {
+      "type": "string"
     }
   }
 }

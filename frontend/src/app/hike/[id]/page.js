@@ -34,7 +34,7 @@ export default async function HikeDetailPage({ params }) {
   return (
     <main style={{ fontFamily: 'sans-serif', padding: '2rem', maxWidth: '800px', margin: 'auto' }}>
       <p style={{ marginBottom: '2rem' }}><Link href="/">← Back to all hikes</Link></p>
-      <h1>{hike.name}</h1>
+      <h1>{hike.content?.title || hike.name}</h1>
       
       {hike.content && (
         <div style={{ display: 'flex', gap: '2rem', margin: '1rem 0' }}>
@@ -75,7 +75,7 @@ export default async function HikeDetailPage({ params }) {
           </div>
         </div>
       )}
-      
+
       <Comments hikeId={hike.id} />
     </main>
   );

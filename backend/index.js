@@ -16,7 +16,25 @@ const pool = new Pool({
 });
 
 // Endpoint to get all hikes
-app.get('/api/hikes', async (req, res) => { /* ... no changes needed here ... */ });
+app.get('/api/hikes', async (req, res) => {
+    try {
+        // This query now includes the track and simplified_profile
+        const query = 'SELECT id, name, simplified_profile, ST_AsGeoJSON(track) as track FROM Hikes';
+        const { rows } = await pool.query(query);
+
+        // We also need to parse the track string for each hike
+        const hikes = rows.map(hike => ({
+            ...hike,
+            track: JSON.parse(hike.track)
+        }));
+
+        res.json(hikes);
+
+    } catch (error) {
+        console.error('Error in /api/hikes:', error);
+        res.status(500).send('Error fetching hikes');
+    }
+});
 
 // Endpoint to get a single hike by its ID
 app.get('/api/hikes/:id', async (req, res) => {
@@ -30,7 +48,7 @@ app.get('/api/hikes/:id', async (req, res) => {
         }
         const hikeData = { ...geoResult.rows[0], track: JSON.parse(geoResult.rows[0].track) };
 
-        const strapiRes = await fetch(`http://localhost:1337/api/hikes?populate=*`);
+        const strapiRes = await fetch(`http://localhost:1337/api/hikes?filters[hike_id][$eq]=${id}&populate=*`);
         const strapiCollection = await strapiRes.json();
 
         // --- THIS IS THE FIX ---

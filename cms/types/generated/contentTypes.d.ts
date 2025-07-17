@@ -397,6 +397,7 @@ export interface ApiHikeHike extends Struct.CollectionTypeSchema {
     Logistics: Schema.Attribute.Blocks;
     publishedAt: Schema.Attribute.DateTime;
     Resources: Schema.Attribute.Blocks;
+    title: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
