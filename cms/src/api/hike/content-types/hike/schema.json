@@ -11,28 +11,60 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "guide": {
+    "title": {
+      "type": "string"
+    },
+    "Description": {
+      "type": "blocks"
+    },
+    "Country": {
+      "type": "string"
+    },
+    "Difficulty": {
+      "type": "enumeration",
+      "enum": [
+        "Easy",
+        "Moderate",
+        "Difficult"
+      ]
+    },
+    "Best_time": {
+      "type": "string"
+    },
+    "Length": {
+      "type": "integer"
+    },
+    "Elevation_gain": {
+      "type": "integer"
+    },
+    "Accommodation": {
       "type": "blocks"
     },
     "Logistics": {
       "type": "blocks"
-    },
-    "Duration": {
-      "type": "string"
-    },
-    "Resources": {
-      "type": "blocks"
-    },
-    "hike_id": {
-      "type": "integer"
     },
     "landmarks": {
       "type": "component",
       "component": "hike.landmark",
       "repeatable": true
     },
-    "title": {
-      "type": "string"
+    "Books": {
+      "type": "component",
+      "component": "hike.books",
+      "repeatable": true
+    },
+    "Videos": {
+      "type": "component",
+      "component": "hike.video",
+      "repeatable": true
+    },
+    "Blogs": {
+      "type": "component",
+      "component": "hike.blog",
+      "repeatable": true
+    },
+    "hike_id": {
+      "type": "integer"
     }
   }
 }

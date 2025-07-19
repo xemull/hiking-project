@@ -45,7 +45,7 @@ const setupAndSeed = async () => {
     await client.query(schemaSQL);
     console.log('✅ Table created successfully from schema.sql.');
 
-    const filename = '../data/cycling.gpx';
+    const filename = '../data/westhighlandway.gpx';
     console.log(`Parsing GPX file: ${filename}...`);
     const gpxData = await parseGpxManually(filename);
     

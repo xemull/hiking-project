@@ -18,16 +18,18 @@ const pool = new Pool({
 // Endpoint to get all hikes
 app.get('/api/hikes', async (req, res) => {
     try {
-        // This query now includes the track and simplified_profile
         const query = 'SELECT id, name, simplified_profile, ST_AsGeoJSON(track) as track FROM Hikes';
         const { rows } = await pool.query(query);
 
-        // We also need to parse the track string for each hike
-        const hikes = rows.map(hike => ({
-            ...hike,
-            track: JSON.parse(hike.track)
-        }));
-
+        const hikes = rows.map(hike => {
+            // FIX: Add a fallback for potentially null track data
+            const cleanTrackString = (hike.track || '{}').replace(/NaN/g, 'null');
+            return {
+                ...hike,
+                track: JSON.parse(cleanTrackString)
+            };
+        });
+        
         res.json(hikes);
 
     } catch (error) {
@@ -40,22 +42,24 @@ app.get('/api/hikes', async (req, res) => {
 app.get('/api/hikes/:id', async (req, res) => {
     const { id } = req.params;
     try {
-        const geoQuery = 'SELECT id, name, simplified_profile, ST_AsGeoJSON(track) as track FROM Hikes WHERE id = $1';
+        const geoQuery = 'SELECT id, name, simplified_profile, ST_AsGeoJSON(track) as track, created_at FROM Hikes WHERE id = $1';
+        // FIX: Use the correct variable name 'geoQuery' here
         const geoResult = await pool.query(geoQuery, [id]);
 
         if (geoResult.rows.length === 0) {
             return res.status(404).send('Hike not found in geodatabase');
         }
-        const hikeData = { ...geoResult.rows[0], track: JSON.parse(geoResult.rows[0].track) };
+        
+        const cleanTrackString = (geoResult.rows[0].track || '{}').replace(/NaN/g, 'null');
+        const hikeData = { ...geoResult.rows[0], track: JSON.parse(cleanTrackString) };
 
-        const strapiRes = await fetch(`http://localhost:1337/api/hikes?filters[hike_id][$eq]=${id}&populate=*`);
+        const strapiRes = await fetch(`http://localhost:1337/api/hikes?populate=*`);
         const strapiCollection = await strapiRes.json();
-
-        // --- THIS IS THE FIX ---
-        // Find the entry without looking inside an 'attributes' object
+        
+        // FIX: Remove '.attributes' to match your Strapi data structure
         const strapiEntry = strapiCollection.data.find(entry => entry?.hike_id == id);
-
-        // Merge the whole entry as the content
+        
+        // FIX: Merge the whole entry, not the non-existent '.attributes'
         const fullHikeData = { ...hikeData, content: strapiEntry || null };
         res.json(fullHikeData);
 

@@ -1,0 +1,17 @@
+{
+  "collectionName": "components_hike_blogs",
+  "info": {
+    "displayName": "Blog",
+    "icon": "pencil"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "url": {
+      "type": "string"
+    }
+  },
+  "config": {}
+}

@@ -384,23 +384,30 @@ export interface ApiHikeHike extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
+    Accommodation: Schema.Attribute.Blocks;
+    Best_time: Schema.Attribute.String;
+    Blogs: Schema.Attribute.Component<'hike.blog', true>;
+    Books: Schema.Attribute.Component<'hike.books', true>;
+    Country: Schema.Attribute.String;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    Duration: Schema.Attribute.String;
-    guide: Schema.Attribute.Blocks;
+    Description: Schema.Attribute.Blocks;
+    Difficulty: Schema.Attribute.Enumeration<['Easy', 'Moderate', 'Difficult']>;
+    Elevation_gain: Schema.Attribute.Integer;
     hike_id: Schema.Attribute.Integer;
     landmarks: Schema.Attribute.Component<'hike.landmark', true>;
+    Length: Schema.Attribute.Integer;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::hike.hike'> &
       Schema.Attribute.Private;
     Logistics: Schema.Attribute.Blocks;
     publishedAt: Schema.Attribute.DateTime;
-    Resources: Schema.Attribute.Blocks;
     title: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    Videos: Schema.Attribute.Component<'hike.video', true>;
   };
 }
 
