@@ -3,6 +3,14 @@ import ElevationProfile from '../../components/ElevationProfile';
 import Link from 'next/link';
 import Comments from '../../components/Comments';
 
+// Helper function to get the YouTube video ID from a URL
+function getYouTubeId(url) {
+  if (!url) return null;
+  const regExp = /^.*(http:\/\/googleusercontent.com\/youtube.com\/0\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+  const match = url.match(regExp);
+  return (match && match[2].length === 11) ? match[2] : null;
+}
+
 async function getHike(id) {
     try {
         const res = await fetch(`http://localhost:4000/api/hikes/${id}`, { cache: 'no-store' });
@@ -54,34 +62,78 @@ export default async function HikeDetailPage({ params }) {
         </div>
       )}
 
-      {/* --- THIS IS THE FIX --- */}
-      {/* The sections below now correctly map over all paragraphs */}
       {hike.content && (
         <div>
-          {hike.content.Description && (
-            <div style={{ marginBottom: '1.5rem' }}>
-              <h2>Description</h2>
-              {hike.content.Description.map((block, index) => (
-                <p key={index}>{block.children.map(child => child.text).join('')}</p>
+          {hike.content.Description?.map((block, index) => (<p key={index}>{block.children.map(child => child.text).join('')}</p>))}
+          
+          <h2 style={{marginTop: '2rem'}}>Logistics</h2>
+          {hike.content.Logistics?.map((block, index) => (<p key={index}>{block.children.map(child => child.text).join('')}</p>))}
+          
+          <h2 style={{marginTop: '2rem'}}>Accommodation</h2>
+          {hike.content.Accommodation?.map((block, index) => (<p key={index}>{block.children.map(child => child.text).join('')}</p>))}
+
+          {hike.content.Videos?.length > 0 && (
+            <div style={{ marginTop: '2rem' }}>
+              <h2>Videos</h2>
+              {hike.content.Videos.map(video => {
+                const videoId = getYouTubeId(video.youtube_url);
+                return videoId ? (
+                  <iframe 
+                    key={video.id} 
+                    width="560" 
+                    height="315" 
+                    src={`https://www.youtube.com/embed/${videoId}`} 
+                    title={video.title} 
+                    frameBorder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowFullScreen 
+                    style={{maxWidth: '100%', marginBottom: '1rem'}}>
+                  </iframe>
+                ) : null;
+              })}
+            </div>
+          )}
+
+          {hike.content.Books?.length > 0 && (
+            <div style={{ marginTop: '2rem' }}>
+              <h2>Guidebooks</h2>
+              {hike.content.Books.map(book => {
+                // FIXED: Correct path for the cover image from your API response
+                const imageUrl = book.cover_image?.url;
+                return (
+                  <div key={book.id} style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem', gap: '1rem' }}>
+                    {/* Only render the image if the URL exists */}
+                    {imageUrl && (
+                      <img 
+                        src={`http://localhost:1337${imageUrl}`} 
+                        alt={`Cover of ${book.title}`} 
+                        style={{ width: '80px', height: 'auto', border: '1px solid #eee', borderRadius: '4px' }} 
+                      />
+                    )}
+                    <div>
+                      <a href={book.url} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: '#0066cc' }}>
+                        {book.title}
+                      </a>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+          
+          {hike.content.Blogs?.length > 0 && (
+            <div style={{ marginTop: '2rem' }}>
+              <h2>Blogs & Stories</h2>
+              {hike.content.Blogs.map(blog => (
+                <div key={blog.id} style={{ marginBottom: '0.5rem' }}>
+                  <a href={blog.url} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: '#0066cc' }}>
+                    {blog.title}
+                  </a>
+                </div>
               ))}
             </div>
           )}
-          {hike.content.Logistics && (
-            <div style={{ marginBottom: '1.5rem' }}>
-              <h2>Logistics</h2>
-              {hike.content.Logistics.map((block, index) => (
-                <p key={index}>{block.children.map(child => child.text).join('')}</p>
-              ))}
-            </div>
-          )}
-          {hike.content.Accommodation && (
-            <div style={{ marginBottom: '1.5rem' }}>
-              <h2>Accommodation</h2>
-              {hike.content.Accommodation.map((block, index) => (
-                <p key={index}>{block.children.map(child => child.text).join('')}</p>
-              ))}
-            </div>
-          )}
+
         </div>
       )}
       
