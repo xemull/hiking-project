@@ -373,6 +373,65 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiAccommodationAccommodation
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'accommodations';
+  info: {
+    displayName: 'Accommodation';
+    pluralName: 'accommodations';
+    singularName: 'accommodation';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    AccommodationType: Schema.Attribute.String;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    hikes: Schema.Attribute.Relation<'manyToMany', 'api::hike.hike'>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::accommodation.accommodation'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiCountryCountry extends Struct.CollectionTypeSchema {
+  collectionName: 'countries';
+  info: {
+    displayName: 'Country';
+    pluralName: 'countries';
+    singularName: 'country';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    hikes: Schema.Attribute.Relation<'manyToMany', 'api::hike.hike'>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::country.country'
+    > &
+      Schema.Attribute.Private;
+    name: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiHikeHike extends Struct.CollectionTypeSchema {
   collectionName: 'hikes';
   info: {
@@ -385,9 +444,17 @@ export interface ApiHikeHike extends Struct.CollectionTypeSchema {
   };
   attributes: {
     Accommodation: Schema.Attribute.Blocks;
+    accommodations: Schema.Attribute.Relation<
+      'manyToMany',
+      'api::accommodation.accommodation'
+    >;
     Best_time: Schema.Attribute.String;
     Blogs: Schema.Attribute.Component<'hike.blog', true>;
     Books: Schema.Attribute.Component<'hike.books', true>;
+    continent: Schema.Attribute.Enumeration<
+      ['Europe', 'North America', 'South America', 'Asia', 'Africa', 'Oceania']
+    >;
+    countries: Schema.Attribute.Relation<'manyToMany', 'api::country.country'>;
     Country: Schema.Attribute.String;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -402,12 +469,76 @@ export interface ApiHikeHike extends Struct.CollectionTypeSchema {
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::hike.hike'> &
       Schema.Attribute.Private;
     Logistics: Schema.Attribute.Blocks;
+    months: Schema.Attribute.Relation<'manyToMany', 'api::month.month'>;
     publishedAt: Schema.Attribute.DateTime;
+    routeType: Schema.Attribute.Enumeration<
+      ['Point-to-Point', 'Loop', 'Out-and-Back']
+    >;
+    sceneries: Schema.Attribute.Relation<'manyToMany', 'api::scenery.scenery'>;
+    terrainProfile: Schema.Attribute.Enumeration<
+      ['Mostly Flat', 'Rolling Hills', 'Mountainous']
+    >;
     title: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     Videos: Schema.Attribute.Component<'hike.video', true>;
+    Waypoints: Schema.Attribute.String;
+  };
+}
+
+export interface ApiMonthMonth extends Struct.CollectionTypeSchema {
+  collectionName: 'months';
+  info: {
+    displayName: 'Month';
+    pluralName: 'months';
+    singularName: 'month';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    hikes: Schema.Attribute.Relation<'manyToMany', 'api::hike.hike'>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::month.month'> &
+      Schema.Attribute.Private;
+    MonthTag: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiSceneryScenery extends Struct.CollectionTypeSchema {
+  collectionName: 'sceneries';
+  info: {
+    displayName: 'Scenery';
+    pluralName: 'sceneries';
+    singularName: 'scenery';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    hikes: Schema.Attribute.Relation<'manyToMany', 'api::hike.hike'>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::scenery.scenery'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    SceneryType: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
   };
 }
 
@@ -920,7 +1051,11 @@ declare module '@strapi/strapi' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
+      'api::accommodation.accommodation': ApiAccommodationAccommodation;
+      'api::country.country': ApiCountryCountry;
       'api::hike.hike': ApiHikeHike;
+      'api::month.month': ApiMonthMonth;
+      'api::scenery.scenery': ApiSceneryScenery;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;
