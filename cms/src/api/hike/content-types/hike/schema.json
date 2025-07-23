@@ -43,6 +43,9 @@
     "Logistics": {
       "type": "blocks"
     },
+    "Waypoints": {
+      "type": "string"
+    },
     "landmarks": {
       "type": "component",
       "component": "hike.landmark",
@@ -65,6 +68,57 @@
     },
     "hike_id": {
       "type": "integer"
+    },
+    "terrainProfile": {
+      "type": "enumeration",
+      "enum": [
+        "Mostly Flat",
+        "Rolling Hills",
+        "Mountainous"
+      ]
+    },
+    "continent": {
+      "type": "enumeration",
+      "enum": [
+        "Europe",
+        "North America",
+        "South America",
+        "Asia",
+        "Africa",
+        "Oceania"
+      ]
+    },
+    "routeType": {
+      "type": "enumeration",
+      "enum": [
+        "Point-to-Point",
+        "Loop",
+        "Out-and-Back"
+      ]
+    },
+    "countries": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::country.country",
+      "mappedBy": "hikes"
+    },
+    "sceneries": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::scenery.scenery",
+      "inversedBy": "hikes"
+    },
+    "accommodations": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::accommodation.accommodation",
+      "mappedBy": "hikes"
+    },
+    "months": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::month.month",
+      "inversedBy": "hikes"
     }
   }
 }

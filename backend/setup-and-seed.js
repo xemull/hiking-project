@@ -3,7 +3,7 @@ const { Pool } = require('pg');
 const xml2js = require('xml2js');
 const simplify = require('simplify-js');
 
-// Helper function to calculate distance between two lat/lon points
+// ... (getDistance, pool, and parseGpxManually functions remain the same) ...
 function getDistance(lat1, lon1, lat2, lon2) {
   const R = 6371; // Radius of the earth in km
   const dLat = (lat2 - lat1) * (Math.PI / 180);
@@ -12,8 +12,6 @@ function getDistance(lat1, lon1, lat2, lon2) {
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   return R * c; // Distance in km
 }
-
-// This is the database connection configuration
 const pool = new Pool({
   user: 'hike_admin',
   host: '127.0.0.1',
@@ -21,8 +19,6 @@ const pool = new Pool({
   password: '***REMOVED***', // Your correct password
   port: 5433,
 });
-
-// This is the GPX parsing function
 const parseGpxManually = (filePath) => {
   return new Promise((resolve, reject) => {
     const xml = fs.readFileSync(filePath, 'utf8');
@@ -34,68 +30,81 @@ const parseGpxManually = (filePath) => {
   });
 };
 
-// This is the main function to set up and seed the database
-const setupAndSeed = async () => {
+
+const addNewHike = async () => {
   const client = await pool.connect();
   try {
     await client.query('BEGIN');
 
-    // Read the final schema from the .sql file to ensure it's always up to date
-    const schemaSQL = fs.readFileSync('schema.sql', 'utf8');
-    await client.query(schemaSQL);
-    console.log('✅ Table created successfully from schema.sql.');
-
-    const filename = '../data/westhighlandway.gpx';
+    const filename = '../data/salkantay.gpx'; // <-- Your new filename
     console.log(`Parsing GPX file: ${filename}...`);
     const gpxData = await parseGpxManually(filename);
     
-    const track = gpxData.gpx.trk[0];
-    const hikeName = track.name[0] || 'My Hike';
-    const segments = track.trkseg;
-    const points = segments.flatMap(seg => (seg.trkpt || []).map(pt => {
-        const elevation = pt.ele ? parseFloat(pt.ele[0]) : NaN;
-        // Filter out points with negative elevation
-        if (elevation < 0) return null;
-        return {
+    let points = [];
+    let hikeName = gpxData.gpx.metadata?.[0]?.name?.[0] || 'My New Hike';
+
+    // --- THIS IS THE FIX ---
+    // Check for a <trk> first, if not found, check for a <rte>
+    // The script now combines points from all <trk> or <rte> tags found in the file.
+    if (gpxData.gpx.trk && gpxData.gpx.trk.length > 0) {
+        console.log(`Found ${gpxData.gpx.trk.length} track(s). Combining segments...`);
+        const allSegments = gpxData.gpx.trk.flatMap(track => track.trkseg || []);
+        points = allSegments.flatMap(seg => (seg.trkpt || []).map(pt => ({
             lon: parseFloat(pt.$.lon),
             lat: parseFloat(pt.$.lat),
-            ele: elevation,
-        };
-    })).filter(Boolean);
+            ele: pt.ele ? parseFloat(pt.ele[0]) : NaN,
+        })));
 
-    if (points.length < 2) throw new Error('Not enough valid points found.');
+    } else if (gpxData.gpx.rte && gpxData.gpx.rte.length > 0) {
+        console.log(`Found ${gpxData.gpx.rte.length} route(s)/stage(s). Combining points...`);
+        points = gpxData.gpx.rte.flatMap(route => (route.rtept || []).map(pt => ({
+            lon: parseFloat(pt.$.lon),
+            lat: parseFloat(pt.$.lat),
+            ele: pt.ele ? parseFloat(pt.ele[0]) : NaN,
+        })));
+    } else {
+        throw new Error('No <trk> (track) or <rte> (route) data found in the GPX file.');
+    }
     
-    // Create points for simplification: {x: distance, y: elevation}
+    const validPoints = points.filter(Boolean);
+    if (validPoints.length < 2) throw new Error('Not enough valid points found.');
+    
+    // ... (rest of the data processing and insert logic remains the same)
     let cumulativeDistance = 0;
-    const pointsForSimplification = points.map((p, i) => {
+    const pointsForSimplification = validPoints.map((p, i) => {
       if (i > 0) {
-        const prev = points[i-1];
+        const prev = validPoints[i-1];
         cumulativeDistance += getDistance(prev.lat, prev.lon, p.lat, p.lon);
       }
       return { x: cumulativeDistance, y: p.ele };
     });
-
-    // Run the RDP simplification algorithm
-    const tolerance = 10; // Higher number = more simplification
+    const tolerance = 2;
     const simplifiedPoints = simplify(pointsForSimplification, tolerance, true);
-    
-    // Format the simplified data to be stored in the database
     const finalProfile = simplifiedPoints.map(p => [parseFloat(p.x.toFixed(2)), parseFloat(p.y.toFixed(1))]);
-    console.log(`Simplified elevation profile from ${points.length} to ${finalProfile.length} points.`);
-
-    // Create the full-resolution 3D track for the map
-    const wkt = `LINESTRING Z (${points.map(p => `${p.lon} ${p.lat} ${p.ele}`).join(',')})`;
+    console.log(`Simplified elevation profile from ${validPoints.length} to ${finalProfile.length} points.`);
+    const hasElevation = !isNaN(validPoints[0].ele);
+    const wkt = `LINESTRING${hasElevation ? ' Z' : ''} (${validPoints.map(p => `${p.lon} ${p.lat}${hasElevation ? ` ${p.ele}` : ''}`).join(',')})`;
     
-    // Prepare the final INSERT query
     const insertQuery = `
       INSERT INTO Hikes (name, track, simplified_profile)
       VALUES ($1, ST_GeogFromText($2), $3)
+      ON CONFLICT (name) DO UPDATE SET
+        track = EXCLUDED.track,
+        simplified_profile = EXCLUDED.simplified_profile,
+        created_at = NOW();
     `;
     const values = [hikeName, wkt, JSON.stringify(finalProfile)];
     await client.query(insertQuery, values);
+    console.log(`✅ Successfully added or updated "${hikeName}" in the database!`);
+    
+    const allHikesResult = await client.query('SELECT id, name FROM Hikes ORDER BY id;');
+    console.log('\n--- Hikes currently in database ---');
+    allHikesResult.rows.forEach(hike => {
+        console.log(`ID: ${hike.id}, Name: ${hike.name}`);
+    });
+    console.log('---------------------------------');
     
     await client.query('COMMIT');
-    console.log(`✅ Successfully set up table and added "${hikeName}"!`);
 
   } catch (error) {
     await client.query('ROLLBACK');
@@ -106,4 +115,4 @@ const setupAndSeed = async () => {
   }
 };
 
-setupAndSeed();
+addNewHike();
