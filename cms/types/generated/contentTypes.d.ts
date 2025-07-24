@@ -469,6 +469,7 @@ export interface ApiHikeHike extends Struct.CollectionTypeSchema {
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::hike.hike'> &
       Schema.Attribute.Private;
     Logistics: Schema.Attribute.Blocks;
+    mainImage: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
     months: Schema.Attribute.Relation<'manyToMany', 'api::month.month'>;
     publishedAt: Schema.Attribute.DateTime;
     routeType: Schema.Attribute.Enumeration<
