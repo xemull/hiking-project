@@ -1,23 +1,30 @@
 // src/types.ts
 
-// A simple interface for your tag-like collections
 interface Tag {
   id: number;
-  name: string;
+  attributes: {
+    name: string;
+  };
 }
 
-// The main interface for a single Hike
+// The main interface for a single Hike from your API response
 export interface Hike {
   id: number;
-  title: string;
-  Length: number;
-  Difficulty: string;
-  Description: any; // Using 'any' for the complex Rich Text is fine for now
-  mainImage: {
-    url: string;
+  documentId: string; // <-- Add this line
+  attributes: {
+    title: string;
+    Length: number;
+    Difficulty: string;
+    Description: any;
+    mainImage: {
+      data: {
+        attributes: {
+          url: string;
+        };
+      };
+    };
+    countries: Tag[];
+    sceneries: Tag[];
+    // ... add any other attributes here
   };
-  countries: Tag[];
-  sceneries: Tag[];
-  accommodations: Tag[];
-  seasons: Tag[];
 }
