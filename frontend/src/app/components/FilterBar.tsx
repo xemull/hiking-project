@@ -11,25 +11,29 @@ export default function FilterBar({ countries, sceneries, onFilterChange }: Filt
   return (
     <div className="p-4 bg-gray-100 rounded-lg mb-8 flex flex-wrap gap-4 items-center">
       <label htmlFor="country-filter" className="font-semibold">Filter by:</label>
-
+      
+      {/* Country Filter */}
       <select 
         id="country-filter"
         className="p-2 border rounded-md"
         onChange={(e) => onFilterChange('country', e.target.value)}
       >
         <option value="">All Countries</option>
-        {countries.map(country => (
-          <option key={country} value={country}>{country}</option>
+        {/* FIX: Add 'index' and use it as the key */}
+        {countries.map((country, index) => (
+          <option key={index} value={country}>{country}</option>
         ))}
       </select>
 
+      {/* Scenery Filter */}
       <select 
         className="p-2 border rounded-md"
         onChange={(e) => onFilterChange('scenery', e.target.value)}
       >
         <option value="">All Sceneries</option>
-        {sceneries.map(scenery => (
-          <option key={scenery} value={scenery}>{scenery}</option>
+        {/* FIX: Add 'index' and use it as the key */}
+        {sceneries.map((scenery, index) => (
+          <option key={index} value={scenery}>{scenery}</option>
         ))}
       </select>
     </div>

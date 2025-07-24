@@ -1,19 +1,20 @@
 // src/app/components/HikeCard.tsx
-import Image from 'next/image';
-import Link from 'next/link'; // 1. Import Link
 import type { Hike } from '../../types';
+import Image from 'next/image';
+import Link from 'next/link';
 
 export default function HikeCard({ hike }: { hike: Hike }) {
-  const { id, title, Length, Difficulty, countries, mainImage } = hike;
+  // FIX: Destructure directly from 'hike', not 'hike.attributes'
+  const { documentId, title, Length, Difficulty, countries, mainImage } = hike;
 
+  // FIX: Access relational data directly
   const countryName = countries?.[0]?.name || 'N/A';
   const imageUrl = mainImage?.url
     ? `http://localhost:1337${mainImage.url}`
     : '/placeholder-image.jpg';
 
   return (
-    // 2. Wrap the entire card in a Link component
-    <Link href={`/hike/${id}`} className="block group">
+    <Link href={`/hike/${documentId}`} className="block group">
       <div className="border rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
         <div className="relative w-full h-48">
           <Image

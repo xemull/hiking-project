@@ -1,14 +1,13 @@
-import type { Hike } from '../../types';
+// src/app/components/FeaturedHike.tsx
 import Image from 'next/image';
 import Link from 'next/link';
+import type { Hike } from '../../types';
 
-interface FeaturedHikeProps {
-  hike: Hike;
-}
+export default function FeaturedHike({ hike }: { hike: Hike }) {
+  // FIX: Destructure directly from 'hike', not 'hike.attributes'
+  const { documentId, title, Description, mainImage } = hike;
 
-export default function FeaturedHike({ hike }: FeaturedHikeProps) {
-  const { id, title, Description, mainImage } = hike;
-
+  // FIX: Access the image URL directly from 'mainImage.url'
   const imageUrl = mainImage?.url
     ? `http://localhost:1337${mainImage.url}`
     : '/placeholder-image.jpg';
@@ -16,7 +15,7 @@ export default function FeaturedHike({ hike }: FeaturedHikeProps) {
   const shortDescription = Description?.[0]?.children?.[0]?.text || 'No description available.';
 
   return (
-    <Link href={`/hike/${id}`} className="block group border rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 mb-12">
+    <Link href={`/hike/${documentId}`} className="block group border rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 mb-12">
       <div className="md:flex">
         <div className="md:w-1/2 relative min-h-64">
           <Image
