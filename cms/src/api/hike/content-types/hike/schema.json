@@ -119,6 +119,16 @@
       "relation": "manyToMany",
       "target": "api::month.month",
       "inversedBy": "hikes"
+    },
+    "mainImage": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
     }
   }
 }
