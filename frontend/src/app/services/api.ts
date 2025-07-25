@@ -6,7 +6,7 @@ const CUSTOM_BACKEND_URL = process.env.NEXT_PUBLIC_CUSTOM_BACKEND_URL || 'http:/
 
 // Fetches a lightweight list of hikes from STRAPI for the homepage
 export async function getHikes(): Promise<HikeSummary[] | null> {
-  // Use the wildcard populate since it works
+  // Go back to the original working approach - populate=* should work
   const fullUrl = `${STRAPI_URL}/api/hikes?populate=*`;
 
   console.log('Fetching hikes from:', fullUrl);
@@ -23,6 +23,14 @@ export async function getHikes(): Promise<HikeSummary[] | null> {
     const result = await response.json();
     console.log('Homepage data received:', result);
     console.log('Number of hikes:', result.data?.length);
+    
+    // Log first hike to check what's populated
+    if (result.data && result.data.length > 0) {
+      console.log('First hike countries:', result.data[0].countries);
+      console.log('First hike mainImage:', result.data[0].mainImage);
+      console.log('First hike Description:', result.data[0].Description);
+      console.log('First hike sceneries:', result.data[0].sceneries);
+    }
     
     if (result.data && Array.isArray(result.data)) {
       return result.data;
