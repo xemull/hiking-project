@@ -46,12 +46,13 @@ interface AccommodationTag {
 
 // --- TYPE FOR THE HOMEPAGE LIST (from Strapi) ---
 export interface HikeSummary {
-  id: number;
+  id: number; // Strapi database ID
   documentId: string;
   title: string;
   Length: number;
   Difficulty: string;
   Description?: any; // Add description for preview
+  hike_id?: number; // GPX ID for linking to detail page
   countries: Tag[];
   sceneries: SceneryTag[]; // Updated to use SceneryTag
   mainImage: Media | null; // Can be null
