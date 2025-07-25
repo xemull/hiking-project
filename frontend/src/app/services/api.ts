@@ -1,52 +1,60 @@
-import type { Hike } from '../../types';
+// src/app/services/api.ts
+import type { Hike, HikeSummary } from '../../types';
 
-const STRAPI_URL = 'http://localhost:1337';
+const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337';
+const CUSTOM_BACKEND_URL = process.env.NEXT_PUBLIC_CUSTOM_BACKEND_URL || 'http://localhost:4000';
 
-/**
- * Fetches all hikes from the Strapi API.
- * @returns {Promise<Hike[] | null>} A promise that resolves to an array of hikes or null if an error occurs.
- */
-export async function getHikes(): Promise<Hike[] | null> {
-  const API_ENDPOINT = '/api/hikes';
-  const POPULATE_QUERY = '?populate=*';
-  const fullUrl = `${STRAPI_URL}${API_ENDPOINT}${POPULATE_QUERY}`;
+// Fetches a lightweight list of hikes from STRAPI for the homepage
+export async function getHikes(): Promise<HikeSummary[] | null> {
+  // Use the wildcard populate since it works
+  const fullUrl = `${STRAPI_URL}/api/hikes?populate=*`;
+
+  console.log('Fetching hikes from:', fullUrl);
 
   try {
-    const res = await fetch(fullUrl, { next: { revalidate: 60 } });
+    const response = await fetch(fullUrl, { next: { revalidate: 60 } });
+    console.log(`Homepage API response status: ${response.status}`);
 
-    if (!res.ok) {
-      console.error("Failed to fetch hikes:", res.statusText);
+    if (!response.ok) {
+      console.error('API response not ok:', response.status, response.statusText);
       return null;
     }
 
-    const data = await res.json();
-    return data.data; // The array of hikes
+    const result = await response.json();
+    console.log('Homepage data received:', result);
+    console.log('Number of hikes:', result.data?.length);
+    
+    if (result.data && Array.isArray(result.data)) {
+      return result.data;
+    }
+
+    console.error('Invalid data structure received:', result);
+    return null;
   } catch (error) {
-    console.error("An error occurred while fetching hikes:", error);
+    console.error('Error fetching hikes from Strapi:', error);
     return null;
   }
 }
 
-/**
- * Fetches a single hike by its ID from the Strapi API.
- * @param {string} id - The ID of the hike to fetch.
- * @returns {Promise<Hike | null>} A promise that resolves to a single hike object or null if not found or an error occurs.
- */
+// Fetches a single, fully combined hike object from the CUSTOM BACKEND for the detail page
 export async function getHikeById(id: string): Promise<Hike | null> {
-  const API_ENDPOINT = `/api/hikes/${id}`;
-  const POPULATE_QUERY = '?populate=*';
-  const fullUrl = `${STRAPI_URL}${API_ENDPOINT}${POPULATE_QUERY}`;
+  const fullUrl = `${CUSTOM_BACKEND_URL}/api/hikes/${id}`;
+
+  console.log('Fetching hike detail from:', fullUrl);
 
   try {
-    const res = await fetch(fullUrl);
-    if (!res.ok) {
-      console.error("Failed to fetch hike:", res.statusText);
+    const response = await fetch(fullUrl, { cache: 'no-store' });
+    
+    if (!response.ok) {
+      console.error('Detail API response not ok:', response.status, response.statusText);
       return null;
     }
-    const data = await res.json();
-    return data.data; // The single hike object
+
+    const hike = await response.json();
+    console.log('Detail data received for hike:', id, hike);
+    return hike;
   } catch (error) {
-    console.error("An error occurred while fetching a hike:", error);
+    console.error('Error fetching hike from custom backend:', error);
     return null;
   }
 }
