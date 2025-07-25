@@ -40,12 +40,9 @@ app.get('/api/hikes/:id', async (req, res) => {
         const cleanTrackString = (geoResult.rows[0].track || '{}').replace(/NaN/g, 'null');
         const hikeData = { ...geoResult.rows[0], track: JSON.parse(cleanTrackString) };
 
-        // FINAL: Deep populate Books with cover_image, populate other components
+        // CONSERVATIVE: Use populate=* to avoid relation validation errors
         const populateParams = [
-            'populate[Books][populate]=cover_image',  // Deep populate Books with cover_image
-            'populate[Blogs]=*',                      // Populate Blogs component
-            'populate[Videos]=*',                     // Populate Videos component
-            'populate[landmarks]=*',                  // Populate landmarks component
+            'populate=*',
             `filters[hike_id][$eq]=${id}`
         ].join('&');
         
@@ -69,6 +66,11 @@ app.get('/api/hikes/:id', async (req, res) => {
             console.log('📏 IMAGE DIMENSIONS:', 
                 strapiEntry.Books[0].cover_image?.width, 'x', 
                 strapiEntry.Books[0].cover_image?.height);
+        }
+        
+        // LOG COUNTRIES DATA FOR DEBUGGING
+        if (strapiEntry && strapiEntry.countries) {
+            console.log('🌍 COUNTRIES FOUND:', strapiEntry.countries.map(c => c.name).join(', '));
         }
         
         const fullHikeData = { ...hikeData, content: strapiEntry || null };

@@ -16,7 +16,8 @@ export default function ClientFilters({ hikes }: ClientFiltersProps) {
   // Filter out undefined values and use the correct field names
   const uniqueCountries = useMemo(() => {
     const countryNames = hikes
-      .flatMap(hike => hike.countries)
+      .flatMap(hike => hike.countries || [])  // Handle undefined countries
+      .filter(c => c && c.name)              // Filter out undefined/null items
       .map(c => c.name)
       .filter((name): name is string => !!name);
     return Array.from(new Set(countryNames)).sort();
@@ -24,7 +25,8 @@ export default function ClientFilters({ hikes }: ClientFiltersProps) {
 
   const uniqueSceneries = useMemo(() => {
     const sceneryTypes = hikes
-      .flatMap(hike => hike.sceneries)
+      .flatMap(hike => hike.sceneries || [])  // Handle undefined sceneries
+      .filter(s => s && s.SceneryType)        // Filter out undefined/null items
       .map(s => s.SceneryType)
       .filter((type): type is string => !!type);
     return Array.from(new Set(sceneryTypes)).sort();
@@ -32,8 +34,12 @@ export default function ClientFilters({ hikes }: ClientFiltersProps) {
 
   const filteredHikes = useMemo(() => {
     return hikes.filter(hike => {
-      const countryMatch = filters.country ? hike.countries.some(c => c.name === filters.country) : true;
-      const sceneryMatch = filters.scenery ? hike.sceneries.some(s => s.SceneryType === filters.scenery) : true;
+      const countryMatch = filters.country 
+        ? (hike.countries || []).some(c => c && c.name === filters.country)
+        : true;
+      const sceneryMatch = filters.scenery 
+        ? (hike.sceneries || []).some(s => s && s.SceneryType === filters.scenery)
+        : true;
       return countryMatch && sceneryMatch;
     });
   }, [hikes, filters]);

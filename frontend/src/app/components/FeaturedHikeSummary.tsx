@@ -1,81 +1,90 @@
 // src/app/components/FeaturedHikeSummary.tsx
 import type { HikeSummary } from '../../types';
-import Link from 'next/link';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export default function FeaturedHikeSummary({ hike }: { hike: HikeSummary }) {
-  const { id, title, Length, Difficulty, countries, mainImage, Description, hike_id } = hike;
+  const { id, title, Length, Difficulty, countries, mainImage, hike_id, Description } = hike;
 
-  const imageUrl = mainImage?.url ? `http://localhost:1337${mainImage.url}` : '';
-  const countryName = countries?.[0]?.name || 'Unknown';
-  
-  // Use hike_id (GPX ID) for linking to custom backend
-  const linkId = hike_id;
-  
-  // Debug logging - remove after testing
-  console.log('FeaturedHike linking:', { strapiId: id, hikeId: hike_id, title });
+  const imageUrl = mainImage?.url
+    ? `http://localhost:1337${mainImage.url}`
+    : '/placeholder-image.jpg';
 
-  // Extract description text from Strapi rich text format
-  const getDescriptionPreview = (description: any) => {
+  // Handle multiple countries like we did in the detail page
+  const countryNames = countries?.map(country => country.name) || [];
+  const countryDisplay = countryNames.length > 0 
+    ? countryNames.length === 1 
+      ? countryNames[0]
+      : countryNames.length === 2
+        ? countryNames.join(' & ')
+        : `${countryNames.slice(0, -1).join(', ')} & ${countryNames[countryNames.length - 1]}`
+    : '';
+
+  // Extract first few sentences from rich text description
+  const getDescriptionPreview = (description: any[]) => {
     if (!description || !Array.isArray(description)) return '';
     
-    let text = '';
-    for (const block of description) {
-      if (block?.children && Array.isArray(block.children)) {
-        for (const child of block.children) {
-          if (child?.text) {
-            text += child.text + ' ';
-          }
-        }
+    // Find the first paragraph with text
+    const firstParagraph = description.find(block => 
+      block.type === 'paragraph' && 
+      block.children && 
+      block.children.some((child: any) => child.type === 'text' && child.text?.trim())
+    );
+    
+    if (!firstParagraph) return '';
+    
+    // Extract all text from the paragraph
+    const fullText = firstParagraph.children
+      .filter((child: any) => child.type === 'text')
+      .map((child: any) => child.text)
+      .join('')
+      .trim();
+    
+    // Get first 2-3 sentences (approximately 150-200 characters)
+    const sentences = fullText.split(/[.!?]+/);
+    let preview = '';
+    let charCount = 0;
+    
+    for (let i = 0; i < sentences.length && charCount < 200; i++) {
+      const sentence = sentences[i].trim();
+      if (sentence) {
+        preview += (preview ? '. ' : '') + sentence;
+        charCount = preview.length;
       }
     }
     
-    // Return first 200 characters with word boundary
-    if (text.length > 200) {
-      return text.substring(0, 200).split(' ').slice(0, -1).join(' ') + '...';
-    }
-    return text.trim();
+    return preview ? preview + (preview.endsWith('.') ? '' : '.') : '';
   };
 
   const descriptionPreview = getDescriptionPreview(Description);
+
+  // Use hike_id (GPX ID) for linking to custom backend, like HikeCard does
+  const linkId = hike_id;
+
+  // Debug logging
+  console.log('FeaturedHike:', { title, countries, countryDisplay, hasDescription: !!Description });
 
   return (
     <Link href={`/hike/${linkId}`} className="block group border rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 mb-12">
       <div className="md:flex">
         {/* Image Section */}
         <div className="md:w-1/2 relative min-h-64">
-          {imageUrl ? (
-            <Image
-              src={imageUrl}
-              alt={`Image of ${title}`}
-              fill
-              sizes="(max-width: 768px) 100vw, 50vw"
-              style={{ objectFit: 'cover' }}
-              priority={true}
-            />
-          ) : (
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center">
-              <div className="text-center text-gray-600">
-                <svg className="w-12 h-12 mx-auto mb-2" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clipRule="evenodd" />
-                </svg>
-                <p className="text-sm">No Image</p>
-              </div>
-            </div>
-          )}
+          <Image
+            src={imageUrl}
+            alt={`Image of ${title}`}
+            fill
+            style={{ objectFit: 'cover' }}
+            priority={true}
+          />
         </div>
         
         {/* Text Content Section */}
         <div className="md:w-1/2 p-6 flex flex-col justify-center">
           <h3 className="text-3xl font-bold mb-3 group-hover:text-blue-600 transition-colors">{title}</h3>
-          <p className="text-gray-700 mb-4">{countryName}</p>
-          
+          {countryDisplay && <p className="text-gray-700 mb-3 font-medium">{countryDisplay}</p>}
           {descriptionPreview && (
-            <p className="text-gray-600 mb-4 leading-relaxed text-sm">
-              {descriptionPreview}
-            </p>
+            <p className="text-gray-600 mb-4 leading-relaxed">{descriptionPreview}</p>
           )}
-          
           <div className="flex gap-4 mb-4">
             {Length && <span className="text-lg font-semibold">{Length} km</span>}
             {Difficulty && <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full">{Difficulty}</span>}
