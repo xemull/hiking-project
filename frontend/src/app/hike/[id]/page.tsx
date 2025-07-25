@@ -11,6 +11,7 @@ import TagBadge from '../../components/TagBadge';
 import StatCard from '../../components/StatCard';
 import BookCard from '../../components/BookCard';
 import VideoEmbed from '../../components/VideoEmbed';
+import CommentsSection from '../../components/CommentsSection';
 
 // Generate dynamic page metadata for SEO
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
@@ -23,9 +24,106 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
     };
   }
 
+  const { content } = hike;
+  const {
+    title,
+    Length,
+    Difficulty,
+    Best_time,
+    countries,
+    sceneries,
+    Description,
+    routeType,
+    Elevation_gain
+  } = content;
+
+  // Get primary country
+  const primaryCountry = countries?.[0]?.name || 'Unknown';
+  
+  // Get primary scenery type
+  const primaryScenery = sceneries?.[0]?.SceneryType || '';
+  
+  // Extract description text for meta description
+  const getDescriptionText = (description: any) => {
+    if (!description || !Array.isArray(description)) return '';
+    
+    let text = '';
+    for (const block of description) {
+      if (block?.children && Array.isArray(block.children)) {
+        for (const child of block.children) {
+          if (child?.text) {
+            text += child.text + ' ';
+          }
+        }
+      }
+    }
+    return text.trim();
+  };
+
+  const descriptionText = getDescriptionText(Description);
+  
+  // Create compelling title
+  const seoTitle = `${title} - ${Length}km ${Difficulty} Hike in ${primaryCountry} | Multi-day Hiking Guide`;
+  
+  // Create compelling meta description (150-160 characters)
+  const baseDescription = `${Length}km ${Difficulty.toLowerCase()} ${routeType?.toLowerCase() || 'trail'} through ${primaryCountry}${primaryScenery ? ` featuring ${primaryScenery.toLowerCase()} scenery` : ''}`;
+  const additionalInfo = Best_time ? ` Best hiked ${Best_time.toLowerCase()}.` : '';
+  const elevationInfo = Elevation_gain ? ` ${Elevation_gain}m elevation gain.` : '';
+  
+  let metaDescription = baseDescription + additionalInfo + elevationInfo;
+  
+  // If we have space, add a snippet from the description
+  if (metaDescription.length < 120 && descriptionText) {
+    const remainingChars = 160 - metaDescription.length - 3; // -3 for "..."
+    const snippet = descriptionText.substring(0, remainingChars);
+    metaDescription += ` ${snippet}...`;
+  }
+  
+  // Ensure description doesn't exceed 160 characters
+  if (metaDescription.length > 160) {
+    metaDescription = metaDescription.substring(0, 157) + '...';
+  }
+
   return {
-    title: `${hike.content.title} - Multi-day Hiking Guide`,
-    description: `Complete guide to ${hike.content.title}: ${hike.content.Length}km, ${hike.content.Difficulty} difficulty. Logistics, itinerary, and everything you need to know.`,
+    title: seoTitle,
+    description: metaDescription,
+    keywords: [
+      title,
+      `${title} hiking`,
+      `${title} trail`,
+      primaryCountry,
+      `hiking in ${primaryCountry}`,
+      `${primaryCountry} trails`,
+      `${Length}km hike`,
+      `${Difficulty.toLowerCase()} hike`,
+      ...(sceneries?.map(s => s.SceneryType.toLowerCase()) || []),
+      'multi-day hiking',
+      'hiking guide',
+      'trail guide',
+      routeType?.toLowerCase()
+    ].filter(Boolean).join(', '),
+    openGraph: {
+      title: seoTitle,
+      description: metaDescription,
+      type: 'article',
+      url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://yoursite.com'}/hike/${id}`,
+      images: content.mainImage?.url ? [{
+        url: `http://localhost:1337${content.mainImage.url}`,
+        width: 1200,
+        height: 630,
+        alt: `${title} hiking trail`
+      }] : [],
+      siteName: 'Multi-day Hiking Guide'
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: seoTitle,
+      description: metaDescription,
+      images: content.mainImage?.url ? [`http://localhost:1337${content.mainImage.url}`] : [],
+    },
+    alternates: {
+      canonical: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://yoursite.com'}/hike/${id}`
+    }
   };
 }
 
@@ -243,13 +341,21 @@ export default async function HikeDetailPage({ params }: { params: Promise<{ id:
                 {simplified_profile && simplified_profile.length > 0 && (
                   <div>
                     <h3 className="text-xl font-semibold text-gray-800 mb-4">Elevation Profile</h3>
-                    <div className="w-full h-64 bg-gray-50 rounded-lg p-4 border">
-                      <ElevationProfile data={simplified_profile} />
-                    </div>
+                    <ElevationProfile 
+                      data={simplified_profile} 
+                      landmarks={content.landmarks}
+                      height="320px"
+                    />
                   </div>
                 )}
               </section>
             )}
+
+            {/* Comments Section - Inside main content column */}
+            <CommentsSection 
+              hikeId={id} 
+              hikeTitle={content.title}
+            />
 
           </div>
 
