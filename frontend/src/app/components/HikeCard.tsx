@@ -1,7 +1,8 @@
-// Alternative: src/app/components/HikeCard.tsx (if the ImageWithFallback doesn't work)
+// src/app/components/HikeCard.tsx
 import type { HikeSummary } from '../../types';
 import Image from 'next/image';
 import Link from 'next/link';
+import { createSlug } from '../services/api';
 
 export default function HikeCard({ hike }: { hike: HikeSummary }) {
   const { id, documentId, title, Length, Difficulty, countries, mainImage, hike_id } = hike;
@@ -18,14 +19,14 @@ export default function HikeCard({ hike }: { hike: HikeSummary }) {
     
   const imageUrl = mainImage?.url ? `http://localhost:1337${mainImage.url}` : null;
   
-  // Use hike_id (GPX ID) for linking to custom backend
-  const linkId = hike_id;
+  // Create slug from title for URL
+  const slug = createSlug(title);
   
-  // Debug logging - remove after testing
-  console.log('HikeCard linking:', { strapiId: id, hikeId: hike_id, title });
+  // Debug logging
+  console.log('HikeCard linking:', { title, slug, hikeId: hike_id });
 
   return (
-    <Link href={`/hike/${linkId}`} className="block group h-full">
+    <Link href={`/hike/${slug}`} className="block group h-full">
       <div className="border rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 h-full flex flex-col">
         
         {/* Image or Placeholder */}
@@ -42,7 +43,7 @@ export default function HikeCard({ hike }: { hike: HikeSummary }) {
             <div className="w-full h-full bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center">
               <div className="text-center text-gray-600">
                 <svg className="w-12 h-12 mx-auto mb-2" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002 2H4zm12 12H4l4-8 3 6 2-4 3 6z" clipRule="evenodd" />
+                  <path fillRule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clipRule="evenodd" />
                 </svg>
                 <p className="text-sm">No Image</p>
               </div>

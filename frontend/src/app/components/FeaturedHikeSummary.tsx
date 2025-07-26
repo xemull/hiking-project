@@ -2,6 +2,7 @@
 import type { HikeSummary } from '../../types';
 import Image from 'next/image';
 import Link from 'next/link';
+import { createSlug } from '../services/api';
 
 export default function FeaturedHikeSummary({ hike }: { hike: HikeSummary }) {
   const { id, title, Length, Difficulty, countries, mainImage, hike_id, Description } = hike;
@@ -58,14 +59,14 @@ export default function FeaturedHikeSummary({ hike }: { hike: HikeSummary }) {
 
   const descriptionPreview = getDescriptionPreview(Description);
 
-  // Use hike_id (GPX ID) for linking to custom backend, like HikeCard does
-  const linkId = hike_id;
+  // Create slug from title for URL
+  const slug = createSlug(title);
 
   // Debug logging
-  console.log('FeaturedHike:', { title, countries, countryDisplay, hasDescription: !!Description });
+  console.log('FeaturedHike:', { title, slug, countries, countryDisplay, hasDescription: !!Description });
 
   return (
-    <Link href={`/hike/${linkId}`} className="block group border rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 mb-12">
+    <Link href={`/hike/${slug}`} className="block group border rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 mb-12">
       <div className="md:flex">
         {/* Image Section */}
         <div className="md:w-1/2 relative min-h-64">
