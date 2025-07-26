@@ -4,6 +4,16 @@ import type { Hike, HikeSummary } from '../../types';
 const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337';
 const CUSTOM_BACKEND_URL = process.env.NEXT_PUBLIC_CUSTOM_BACKEND_URL || 'http://localhost:4000';
 
+// Create slug from hike title
+export function createSlug(title: string): string {
+  return title
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '') // Remove special characters
+    .replace(/\s+/g, '-')         // Replace spaces with hyphens
+    .replace(/-+/g, '-')          // Replace multiple hyphens with single
+    .trim('-');                   // Remove leading/trailing hyphens
+}
+
 // Fetches a lightweight list of hikes from STRAPI for the homepage
 export async function getHikes(): Promise<HikeSummary[] | null> {
   // Go back to the original working approach - populate=* should work
@@ -44,7 +54,30 @@ export async function getHikes(): Promise<HikeSummary[] | null> {
   }
 }
 
-// Fetches a single, fully combined hike object from the CUSTOM BACKEND for the detail page
+// New function to get hike by slug
+export async function getHikeBySlug(slug: string): Promise<Hike | null> {
+  const fullUrl = `${CUSTOM_BACKEND_URL}/api/hikes/slug/${slug}`;
+
+  console.log('Fetching hike detail by slug from:', fullUrl);
+
+  try {
+    const response = await fetch(fullUrl, { cache: 'no-store' });
+    
+    if (!response.ok) {
+      console.error('Detail API response not ok:', response.status, response.statusText);
+      return null;
+    }
+
+    const hike = await response.json();
+    console.log('Detail data received for slug:', slug, hike);
+    return hike;
+  } catch (error) {
+    console.error('Error fetching hike from custom backend:', error);
+    return null;
+  }
+}
+
+// Keep original function for backwards compatibility
 export async function getHikeById(id: string): Promise<Hike | null> {
   const fullUrl = `${CUSTOM_BACKEND_URL}/api/hikes/${id}`;
 

@@ -1,8 +1,8 @@
-// src/app/hike/[id]/page.tsx
+// src/app/hike/[slug]/page.tsx (rename your [id] folder to [slug])
 import Link from 'next/link';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
-import { getHikeById } from '../../services/api'; 
+import { getHikeBySlug } from '../../services/api'; 
 import type { Hike } from '../../../types';
 import StrapiRichText from '../../components/StrapiRichText';
 import Map from '../../components/Map';
@@ -14,9 +14,9 @@ import VideoEmbed from '../../components/VideoEmbed';
 import CommentsSection from '../../components/CommentsSection';
 
 // Generate dynamic page metadata for SEO
-export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params;
-  const hike = await getHikeById(id);
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const hike = await getHikeBySlug(slug);
   
   if (!hike) {
     return {
@@ -30,9 +30,9 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   };
 }
 
-export default async function HikeDetailPage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params;
-  const hike = await getHikeById(id);
+export default async function HikeDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const hike = await getHikeBySlug(slug);
 
   if (!hike || !hike.content) {
     notFound();
@@ -50,7 +50,7 @@ export default async function HikeDetailPage({ params }: { params: Promise<{ id:
     Logistics,
     Accommodation,
     mainImage,
-    countries, // Back to using countries relation
+    countries,
     sceneries,
     months,
     accommodations,
@@ -63,10 +63,6 @@ export default async function HikeDetailPage({ params }: { params: Promise<{ id:
     ? `http://localhost:1337${mainImage.url}` 
     : null;
 
-  // Debug the entire content object first
-  console.log('Full content object:', content);
-  console.log('Countries specifically:', content.countries);
-  
   // Get countries from relation - handle multiple countries
   const countryNames = countries?.map(country => country.name) || [];
   const primaryCountry = countryNames.length > 0 
@@ -76,11 +72,6 @@ export default async function HikeDetailPage({ params }: { params: Promise<{ id:
         ? countryNames.join(' & ')
         : `${countryNames.slice(0, -1).join(', ')} & ${countryNames[countryNames.length - 1]}`
     : '';
-  
-  // Debug logging (remove this after testing)
-  console.log('Countries array:', countries);
-  console.log('Country names:', countryNames);
-  console.log('Primary country result:', primaryCountry);
 
   return (
     <div className="min-h-screen bg-white">
@@ -114,7 +105,7 @@ export default async function HikeDetailPage({ params }: { params: Promise<{ id:
           <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-8">
             <div className="container mx-auto">
               <h1 className="text-4xl md:text-6xl font-bold text-white mb-2">{title}</h1>
-              <p className="text-xl md:text-2xl text-white/90">{primaryCountry}</p>
+              {primaryCountry && <p className="text-xl md:text-2xl text-white/90">{primaryCountry}</p>}
             </div>
           </div>
         </div>
@@ -136,7 +127,7 @@ export default async function HikeDetailPage({ params }: { params: Promise<{ id:
               Back to all hikes
             </Link>
             <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-2">{title}</h1>
-            <p className="text-xl md:text-2xl text-gray-600">{primaryCountry}</p>
+            {primaryCountry && <p className="text-xl md:text-2xl text-gray-600">{primaryCountry}</p>}
           </div>
         )}
 
@@ -270,9 +261,9 @@ export default async function HikeDetailPage({ params }: { params: Promise<{ id:
               </section>
             )}
 
-            {/* Comments Section - Inside main content column */}
+            {/* Comments Section */}
             <CommentsSection 
-              hikeId={id} 
+              hikeId={slug} 
               hikeTitle={content.title}
             />
 
