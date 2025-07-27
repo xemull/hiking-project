@@ -4,6 +4,7 @@ import type { HikeSummary } from '../types';
 import HikeCard from './components/HikeCard';
 import FeaturedHikeSummary from './components/FeaturedHikeSummary';
 import ClientFilters from './components/ClientFilters';
+import HeroSection from './components/HeroSection';
 import { getHikes } from './services/api';
 
 export default async function HomePage() {
@@ -11,9 +12,12 @@ export default async function HomePage() {
 
   if (!hikes || hikes.length === 0) {
     return (
-      <main className="container mx-auto p-4">
-        <h1>No hikes found</h1>
-        <p>Could not load hikes from the API.</p>
+      <main>
+        <HeroSection />
+        <div className="container mx-auto p-4">
+          <h1>No hikes found</h1>
+          <p>Could not load hikes from the API.</p>
+        </div>
       </main>
     );
   }
@@ -21,15 +25,19 @@ export default async function HomePage() {
   const featuredHike = hikes[0];
 
   return (
-    <main className="container mx-auto p-4">
-      <h1 className="text-4xl font-bold mb-4 text-center">Featured Hike</h1>
-      <FeaturedHikeSummary hike={featuredHike} />
-
-      <h2 className="text-3xl font-bold mt-12 mb-4">Explore All Hikes</h2>
+    <main>
+      <HeroSection />
       
-      <Suspense fallback={<div>Loading filters...</div>}>
-        <ClientFilters hikes={hikes} />
-      </Suspense>
+      <section id="featured-hikes" className="container mx-auto p-4">
+        <h1 className="text-4xl font-bold mb-4 text-center">Featured Hike</h1>
+        <FeaturedHikeSummary hike={featuredHike} />
+
+        <h2 className="text-3xl font-bold mt-12 mb-4">Explore All Hikes</h2>
+        
+        <Suspense fallback={<div>Loading filters...</div>}>
+          <ClientFilters hikes={hikes} />
+        </Suspense>
+      </section>
     </main>
   );
 }
