@@ -462,6 +462,7 @@ export interface ApiHikeHike extends Struct.CollectionTypeSchema {
     Description: Schema.Attribute.Blocks;
     Difficulty: Schema.Attribute.Enumeration<['Easy', 'Moderate', 'Difficult']>;
     Elevation_gain: Schema.Attribute.Integer;
+    featured: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     hike_id: Schema.Attribute.Integer;
     landmarks: Schema.Attribute.Component<'hike.landmark', true>;
     Length: Schema.Attribute.Integer;

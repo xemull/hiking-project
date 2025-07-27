@@ -20,7 +20,7 @@ export default function ClientFilters({ hikes }: ClientFiltersProps) {
     month: '' 
   });
 
-  // Filter out undefined values and use the correct field names
+  // Extract unique countries from the data
   const uniqueCountries = useMemo(() => {
     const countryNames = hikes
       .flatMap(hike => hike.countries || [])  // Handle undefined countries
@@ -30,6 +30,7 @@ export default function ClientFilters({ hikes }: ClientFiltersProps) {
     return Array.from(new Set(countryNames)).sort();
   }, [hikes]);
 
+  // Extract unique sceneries from the data
   const uniqueSceneries = useMemo(() => {
     const sceneryTypes = hikes
       .flatMap(hike => hike.sceneries || [])  // Handle undefined sceneries
@@ -39,6 +40,7 @@ export default function ClientFilters({ hikes }: ClientFiltersProps) {
     return Array.from(new Set(sceneryTypes)).sort();
   }, [hikes]);
 
+  // Extract unique difficulties from the data
   const uniqueDifficulties = useMemo(() => {
     const difficulties = hikes
       .map(hike => hike.Difficulty)
@@ -46,6 +48,7 @@ export default function ClientFilters({ hikes }: ClientFiltersProps) {
     return Array.from(new Set(difficulties)).sort();
   }, [hikes]);
 
+  // Define length ranges
   const lengthRanges = [
     { label: 'Under 100km', value: 'under-100' },
     { label: '100-200km', value: '100-200' },
@@ -53,6 +56,7 @@ export default function ClientFilters({ hikes }: ClientFiltersProps) {
     { label: '400km+', value: '400-plus' }
   ];
 
+  // Extract unique continents from the data
   const uniqueContinents = useMemo(() => {
     const continents = hikes
       .map(hike => hike.continent)
@@ -60,6 +64,7 @@ export default function ClientFilters({ hikes }: ClientFiltersProps) {
     return Array.from(new Set(continents)).sort();
   }, [hikes]);
 
+  // Extract unique months from the data and sort chronologically
   const uniqueMonths = useMemo(() => {
     const monthNames = hikes
       .flatMap(hike => hike.months || [])     // Handle undefined months
