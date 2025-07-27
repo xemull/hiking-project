@@ -90,7 +90,7 @@ export default function FeaturedHikeSummary({ hike }: { hike: HikeSummary }) {
             {Length && <span className="text-lg font-semibold">{Length} km</span>}
             {Difficulty && <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full">{Difficulty}</span>}
           </div>
-          <span className="text-blue-500 font-semibold self-start">Read More →</span>
+          <span className="text-blue-500 font-semibold self-start">View trail details →</span>
         </div>
       </div>
     </Link>
