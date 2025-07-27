@@ -16,7 +16,6 @@ export function createSlug(title: string): string {
 
 // Fetches a lightweight list of hikes from STRAPI for the homepage
 export async function getHikes(): Promise<HikeSummary[] | null> {
-  // Go back to the original working approach - populate=* should work
   const fullUrl = `${STRAPI_URL}/api/hikes?populate=*`;
 
   console.log('Fetching hikes from:', fullUrl);
@@ -50,6 +49,43 @@ export async function getHikes(): Promise<HikeSummary[] | null> {
     return null;
   } catch (error) {
     console.error('Error fetching hikes from Strapi:', error);
+    return null;
+  }
+}
+
+// NEW: Fetch the featured hike specifically
+export async function getFeaturedHike(): Promise<HikeSummary | null> {
+  const fullUrl = `${STRAPI_URL}/api/hikes?populate=*&filters[featured][$eq]=true`;
+
+  console.log('Fetching featured hike from:', fullUrl);
+
+  try {
+    const response = await fetch(fullUrl, { 
+      next: { revalidate: 60 },
+      cache: 'no-store' // Force fresh data for debugging
+    });
+    console.log(`Featured hike API response status: ${response.status}`);
+
+    if (!response.ok) {
+      console.error('Featured hike API response not ok:', response.status, response.statusText);
+      return null;
+    }
+
+    const result = await response.json();
+    console.log('Featured hike raw result:', result);
+    console.log('Featured hike data array:', result.data);
+    console.log('Number of featured hikes found:', result.data?.length || 0);
+    
+    if (result.data && Array.isArray(result.data) && result.data.length > 0) {
+      console.log('✅ Featured hike found:', result.data[0].title);
+      console.log('✅ Featured value:', result.data[0].featured);
+      return result.data[0];
+    }
+
+    console.log('❌ No featured hike found in results');
+    return null;
+  } catch (error) {
+    console.error('Error fetching featured hike from Strapi:', error);
     return null;
   }
 }

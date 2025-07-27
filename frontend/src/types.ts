@@ -51,10 +51,13 @@ export interface HikeSummary {
   title: string;
   Length: number;
   Difficulty: string;
+  Best_time: string;
+  continent: string;
   Description?: any; // Add description for preview
   hike_id?: number; // GPX ID for linking to detail page
   countries: Tag[];
   sceneries: SceneryTag[]; // Updated to use SceneryTag
+  months: MonthTag[]; // Added months field
   mainImage: Media | null; // Can be null
 }
 

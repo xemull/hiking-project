@@ -128,37 +128,6 @@ export default function HeroSection() {
           transform: translateY(0);
         }
 
-        .scroll-hint {
-          position: absolute;
-          bottom: 2rem;
-          left: 50%;
-          transform: translateX(-50%);
-          z-index: 2;
-          color: rgba(255, 255, 255, 0.8);
-          font-size: 0.9rem;
-          text-align: center;
-          animation: bounce 2s infinite;
-        }
-
-        .scroll-hint::after {
-          content: '↓';
-          display: block;
-          font-size: 1.5rem;
-          margin-top: 0.5rem;
-        }
-
-        @keyframes bounce {
-          0%, 20%, 50%, 80%, 100% {
-            transform: translateX(-50%) translateY(0);
-          }
-          40% {
-            transform: translateX(-50%) translateY(-10px);
-          }
-          60% {
-            transform: translateX(-50%) translateY(-5px);
-          }
-        }
-
         @media (max-width: 768px) {
           .hero-section {
             height: 70vh;
@@ -212,8 +181,6 @@ export default function HeroSection() {
             Explore the Trails
           </button>
         </div>
-        
-        <div className="scroll-hint">Featured Hikes</div>
       </section>
     </>
   );
