@@ -55,9 +55,11 @@ export interface HikeSummary {
   continent: string;
   Description?: any; // Add description for preview
   hike_id?: number; // GPX ID for linking to detail page
+  routeType?: string; // ADDED: Route type field
   countries: Tag[];
   sceneries: SceneryTag[]; // Updated to use SceneryTag
   months: MonthTag[]; // Added months field
+  accommodations: AccommodationTag[]; // ADDED: Missing accommodations field
   mainImage: Media | null; // Can be null
 }
 

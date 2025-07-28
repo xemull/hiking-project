@@ -5,7 +5,7 @@ import HikeCard from './components/HikeCard';
 import FeaturedHikeSummary from './components/FeaturedHikeSummary';
 import ClientFilters from './components/ClientFilters';
 import HeroSection from './components/HeroSection';
-import Navigation from './components/Navigation'; // ADD THIS LINE
+import Navigation from './components/Navigation';
 import { getHikes, getFeaturedHike } from './services/api';
 
 export default async function HomePage() {
@@ -23,12 +23,21 @@ export default async function HomePage() {
   if (!hikes || hikes.length === 0) {
     return (
       <>
-        <Navigation /> {/* ADD THIS LINE */}
-        <main>
+        <Navigation />
+        <main style={{ background: 'var(--ds-background)', minHeight: '100vh' }}>
           <HeroSection />
           <div className="container mx-auto p-4">
-            <h1>No hikes found</h1>
-            <p>Could not load hikes from the API.</p>
+            <div style={{ textAlign: 'center', padding: '4rem 0' }}>
+              <h1 className="section-title">
+                No hikes found
+              </h1>
+              <p style={{ 
+                color: 'var(--ds-muted-foreground)', 
+                fontSize: '1.125rem' 
+              }}>
+                Could not load hikes from the API.
+              </p>
+            </div>
           </div>
         </main>
       </>
@@ -41,27 +50,57 @@ export default async function HomePage() {
   console.log('🎯 Homepage - Will display:', displayFeaturedHike.title);
   console.log('🎯 Homepage - Is actually featured?', !!featuredHike);
 
+  // Simplified styles using CSS classes
+  const sectionStyles = {
+    main: {
+      background: 'var(--ds-background)',
+      minHeight: '100vh'
+    },
+    allHikesContainer: {
+      marginTop: '3rem'
+    },
+    loadingContainer: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: '3rem 0'
+    },
+    loadingText: {
+      marginLeft: '0.75rem',
+      color: 'var(--ds-muted-foreground)'
+    }
+  };
+
   return (
     <>
-      <Navigation /> {/* ADD THIS LINE */}
-      <main>
+      <Navigation />
+      <main style={sectionStyles.main}>
         <HeroSection />
         
-        <section id="featured-hikes" className="container mx-auto p-4">
-          <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold mb-2">Featured Hike</h1>
-            {!featuredHike && (
-              <p className="text-gray-600 text-sm">No featured hike selected - showing latest hike</p>
-            )}
-          </div>
-          
+        {/* Featured section - now uses consistent styling */}
+        <section id="featured-hikes">
           <FeaturedHikeSummary hike={displayFeaturedHike} />
 
-          <h2 className="text-3xl font-bold mt-12 mb-4">Explore All Hikes</h2>
-          
-          <Suspense fallback={<div>Loading filters...</div>}>
-            <ClientFilters hikes={hikes} />
-          </Suspense>
+          {/* All Hikes Section - now uses consistent CSS classes with closer spacing */}
+          <div className="container mx-auto px-4" style={sectionStyles.allHikesContainer}>
+            <div className="explore-all-hikes-header">
+              <h2 className="section-title">
+                Explore All Hikes 
+              </h2>
+              <p className="section-subtitle">
+                Discover our complete collection of carefully researched multi-day treks from around the world
+              </p>
+            </div>
+            
+            <Suspense fallback={
+              <div style={sectionStyles.loadingContainer}>
+                <div className="loading-spinner"></div>
+                <span style={sectionStyles.loadingText}>Loading filters...</span>
+              </div>
+            }>
+              <ClientFilters hikes={hikes} />
+            </Suspense>
+          </div>
         </section>
       </main>
     </>

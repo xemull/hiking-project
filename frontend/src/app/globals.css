@@ -2,8 +2,32 @@
 @import 'leaflet/dist/leaflet.css';
 
 :root {
+  /* Keep original for compatibility */
   --background: #ffffff;
   --foreground: #171717;
+  
+  /* Design system variables */
+  --ds-primary: hsl(140, 35%, 25%);
+  --ds-primary-foreground: hsl(0, 0%, 98%);
+  --ds-accent: hsl(45, 100%, 50%);
+  --ds-accent-foreground: hsl(0, 0%, 0%);
+  --ds-muted: hsl(210, 15%, 92%);
+  --ds-muted-foreground: hsl(210, 10%, 65%);
+  --ds-border: hsl(140, 10%, 88%);
+  --ds-background: #ffffff;
+  --ds-foreground: #2d3748;
+  
+  /* Off-white background for featured section */
+  --ds-off-white: hsl(0, 0%, 98%);
+
+  /* Gradients */
+  --gradient-hero: linear-gradient(135deg, hsl(140, 35%, 25%), hsl(210, 25%, 35%));
+  --gradient-card: linear-gradient(180deg, hsl(0, 0%, 100%), hsl(140, 10%, 98%));
+  
+  /* Shadows */
+  --shadow-soft: 0 4px 20px hsl(140, 35%, 25%, 0.1);
+  --shadow-card: 0 8px 30px hsl(140, 35%, 25%, 0.12);
+  --shadow-float: 0 12px 40px hsl(140, 35%, 25%, 0.15);
 }
 
 @theme inline {
@@ -17,6 +41,9 @@
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+    --ds-background: #0a0a0a;
+    --ds-foreground: #ededed;
+    --ds-muted-foreground: hsl(210, 10%, 70%);
   }
 }
 
@@ -33,4 +60,86 @@ body {
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
+}
+
+/* Consistent Section Header Styles */
+.section-header {
+  text-align: center;
+}
+
+.section-title {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 2.5rem;
+  font-weight: 600;
+  color: var(--ds-foreground);
+  margin-bottom: 0.5rem;
+  line-height: 1.2;
+}
+
+.section-subtitle {
+  color: var(--ds-muted-foreground);
+  font-size: 1.125rem;
+  text-align: center;
+  margin-bottom: 3rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.75;
+}
+
+/* Specific spacing for "Explore All Hikes" section */
+.explore-all-hikes-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.explore-all-hikes-header .section-subtitle {
+  margin-bottom: 2rem;
+}
+
+/* Featured Badge Style */
+.featured-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  background: var(--ds-accent);
+  color: var(--ds-accent-foreground);
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 1.5rem;
+  gap: 0.25rem;
+}
+
+/* Loading spinner animation */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-spinner {
+  border-radius: 50%;
+  height: 2rem;
+  width: 2rem;
+  border: 2px solid #e5e7eb;
+  border-top: 2px solid var(--ds-primary);
+  animation: spin 1s linear infinite;
+}
+
+/* Test classes using direct CSS (not Tailwind) */
+.test-red {
+  background-color: red !important;
+  color: white !important;
+  padding: 16px !important;
+  display: block !important;
+}
+
+.test-forest-green {
+  background-color: var(--ds-primary) !important;
+  color: var(--ds-primary-foreground) !important;
+  padding: 16px !important;
+  margin: 10px 0 !important;
+  display: block !important;
 }

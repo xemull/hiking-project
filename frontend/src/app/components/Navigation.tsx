@@ -3,16 +3,16 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, X, Mountain, Mail, User, Home } from 'lucide-react';
+import { Menu, X, Mountain } from 'lucide-react';
 
 const Navigation = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
 
   const navItems = [
-    { href: '/', label: 'Hikes', icon: Home },
-    { href: '/about', label: 'About', icon: User },
-    { href: '/contact', label: 'Contact', icon: Mail }
+    { href: '/', label: 'Hikes' },
+    { href: '/about', label: 'About' },
+    { href: '/contact', label: 'Contact' }
   ];
 
   const isActive = (href: string) => {
@@ -22,32 +22,108 @@ const Navigation = () => {
     return pathname.startsWith(href);
   };
 
+  // Updated styles - bolder text, no active underline
+  const navStyles = {
+    nav: {
+      backgroundColor: 'rgba(255, 255, 255, 0.85)',
+      backdropFilter: 'blur(10px)',
+      boxShadow: 'var(--shadow-soft)',
+      borderBottom: '1px solid var(--ds-border)',
+      position: 'sticky' as const,
+      top: 0,
+      zIndex: 50,
+      transition: 'all 0.3s ease'
+    },
+    logo: {
+      color: 'var(--ds-primary)',
+      transition: 'all 0.3s ease'
+    },
+    logoText: {
+      fontSize: '1.25rem',
+      fontWeight: 600,
+      transition: 'all 0.3s ease',
+      fontFamily: 'Inter, system-ui, sans-serif'
+    },
+    navLink: {
+      padding: '0.5rem 0.75rem',
+      fontSize: '0.875rem',
+      fontWeight: 600, // CHANGED: Increased from 500 to 600 (bolder)
+      textDecoration: 'none',
+      transition: 'all 0.3s ease',
+      borderRadius: '0.375rem',
+      fontFamily: 'Inter, system-ui, sans-serif'
+    },
+    navLinkActive: {
+      color: 'var(--ds-primary)',
+      // REMOVED: borderBottom (no more underline for active page)
+    },
+    navLinkInactive: {
+      color: '#6b7280',
+    },
+    navLinkHover: {
+      color: 'var(--ds-primary)',
+      backgroundColor: 'var(--ds-muted)'
+    },
+    mobileButton: {
+      padding: '0.5rem',
+      color: '#6b7280',
+      transition: 'all 0.3s ease',
+      borderRadius: '0.375rem'
+    },
+    mobileButtonHover: {
+      color: 'var(--ds-primary)',
+      backgroundColor: 'var(--ds-muted)'
+    },
+    mobileLinkActive: {
+      color: 'var(--ds-primary)',
+      backgroundColor: 'rgba(var(--ds-primary), 0.1)',
+      borderRight: '2px solid var(--ds-primary)'
+    },
+    mobileLinkInactive: {
+      color: '#6b7280'
+    }
+  };
+
   return (
-    <nav className="bg-white shadow-sm border-b border-gray-100 sticky top-0 z-50">
+    <nav style={navStyles.nav}>
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
-            <Mountain className="h-6 w-6 text-green-600" />
-            <span className="text-xl font-semibold text-gray-900">TrailGuide</span>
+          <Link 
+            href="/" 
+            className="flex items-center space-x-2 hover:opacity-80 transition-opacity"
+            style={navStyles.logo}
+          >
+            <Mountain className="h-6 w-6" />
+            <span style={navStyles.logoText}>
+              Trailhead
+            </span>
           </Link>
 
-          {/* Desktop Navigation */}
+          {/* Desktop Navigation - Bolder text, no active underline */}
           <div className="hidden md:flex space-x-8">
             {navItems.map((item) => {
-              const Icon = item.icon;
               const active = isActive(item.href);
               return (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`flex items-center space-x-1 px-3 py-2 text-sm font-medium transition-colors duration-200 ${
-                    active
-                      ? 'text-green-600 border-b-2 border-green-600'
-                      : 'text-gray-600 hover:text-green-600'
-                  }`}
+                  style={{
+                    ...navStyles.navLink,
+                    ...(active ? navStyles.navLinkActive : navStyles.navLinkInactive)
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!active) {
+                      Object.assign(e.currentTarget.style, navStyles.navLinkHover);
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!active) {
+                      Object.assign(e.currentTarget.style, navStyles.navLinkInactive);
+                      e.currentTarget.style.backgroundColor = 'transparent';
+                    }
+                  }}
                 >
-                  <Icon className="h-4 w-4" />
                   <span>{item.label}</span>
                 </Link>
               );
@@ -58,7 +134,14 @@ const Navigation = () => {
           <div className="md:hidden">
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="p-2 text-gray-600 hover:text-green-600 transition-colors"
+              style={navStyles.mobileButton}
+              onMouseEnter={(e) => {
+                Object.assign(e.currentTarget.style, navStyles.mobileButtonHover);
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.color = '#6b7280';
+                e.currentTarget.style.backgroundColor = 'transparent';
+              }}
             >
               {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </button>
@@ -67,24 +150,30 @@ const Navigation = () => {
 
         {/* Mobile Navigation */}
         {isMobileMenuOpen && (
-          <div className="md:hidden border-t border-gray-100">
+          <div className="md:hidden border-t" style={{ borderColor: 'var(--ds-border)' }}>
             <div className="py-2 space-y-1">
               {navItems.map((item) => {
-                const Icon = item.icon;
                 const active = isActive(item.href);
                 return (
                   <Link
                     key={item.href}
                     href={item.href}
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className={`flex items-center space-x-2 w-full px-4 py-3 transition-colors ${
-                      active
-                        ? 'text-green-600 bg-green-50'
-                        : 'text-gray-600 hover:text-green-600 hover:bg-gray-50'
-                    }`}
+                    className="flex items-center w-full px-4 py-3 transition-colors"
+                    style={active ? navStyles.mobileLinkActive : navStyles.mobileLinkInactive}
+                    onMouseEnter={(e) => {
+                      if (!active) {
+                        Object.assign(e.currentTarget.style, navStyles.navLinkHover);
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (!active) {
+                        Object.assign(e.currentTarget.style, navStyles.mobileLinkInactive);
+                        e.currentTarget.style.backgroundColor = 'transparent';
+                      }
+                    }}
                   >
-                    <Icon className="h-4 w-4" />
-                    <span>{item.label}</span>
+                    <span className="font-medium">{item.label}</span>
                   </Link>
                 );
               })}
