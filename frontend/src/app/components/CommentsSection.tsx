@@ -40,13 +40,30 @@ export default function CommentsSection({ hikeId, hikeTitle }: CommentsSectionPr
     };
   }, [hikeId, hikeTitle]);
 
+  const styles = {
+    sectionTitle: {
+      fontFamily: 'Inter, system-ui, sans-serif',
+      fontSize: '1.75rem',
+      fontWeight: 600,
+      color: 'var(--ds-foreground)',
+      marginBottom: '1.5rem',
+      paddingBottom: '0.75rem',
+      borderBottom: '2px solid var(--ds-border)'
+    }
+  };
+
   return (
     <section>
-      <h2 className="text-3xl font-bold text-gray-900 border-b border-gray-200 pb-4 mb-6">
+      <h2 style={styles.sectionTitle}>
         Comments & Discussion
       </h2>
       
-      <div className="prose prose-lg max-w-none">
+      <div style={{ 
+        fontFamily: 'Inter, system-ui, sans-serif',
+        fontSize: '1rem',
+        lineHeight: 1.7,
+        color: '#4a5568'
+      }}>
         {/* Hyvor Talk will inject comments here */}
         <div id="hyvor-talk-view"></div>
       </div>

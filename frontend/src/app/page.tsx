@@ -7,6 +7,7 @@ import ClientFilters from './components/ClientFilters';
 import HeroSection from './components/HeroSection';
 import Navigation from './components/Navigation';
 import { getHikes, getFeaturedHike } from './services/api';
+import Footer from './components/Footer';
 
 export default async function HomePage() {
   // Fetch both regular hikes and featured hike
@@ -103,6 +104,7 @@ export default async function HomePage() {
           </div>
         </section>
       </main>
+      <Footer />  {/* Add this line */}
     </>
   );
 }

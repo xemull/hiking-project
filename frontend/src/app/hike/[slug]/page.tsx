@@ -12,8 +12,11 @@ import StatCard from '../../components/StatCard';
 import BookCard from '../../components/BookCard';
 import VideoEmbed from '../../components/VideoEmbed';
 import CommentsSection from '../../components/CommentsSection';
-import { MapPin, Route, TrendingUp, Calendar, Mountain } from 'lucide-react';
-import InteractiveBackButton from '../../components/InteractiveBackButton';
+import Navigation from '../../components/Navigation';
+import BlogList from '../../components/BlogList';
+import { MapPin, Route, TrendingUp, Mountain, AlertTriangle } from 'lucide-react';
+import InlineBackButton from '../../components/InlineBackButton';
+import Footer from '../../components/Footer';
 
 // Generate dynamic page metadata for SEO
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
@@ -57,7 +60,8 @@ export default async function HikeDetailPage({ params }: { params: Promise<{ slu
     months,
     accommodations,
     Videos,
-    Books
+    Books,
+    Blogs
   } = content;
 
   // Get hero image URL
@@ -83,13 +87,8 @@ export default async function HikeDetailPage({ params }: { params: Promise<{ slu
       minHeight: '500px',
       background: heroImageUrl ? 'transparent' : 'var(--gradient-hero)',
       display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center'
-    },
-    backButtonHover: {
-      background: 'white',
-      transform: 'translateY(-2px)',
-      boxShadow: 'var(--shadow-float)'
+      alignItems: 'flex-end',
+      justifyContent: 'flex-start'
     },
     heroOverlay: {
       position: 'absolute' as const,
@@ -103,27 +102,15 @@ export default async function HikeDetailPage({ params }: { params: Promise<{ slu
     heroContent: {
       position: 'relative' as const,
       zIndex: 2,
-      textAlign: 'center' as const,
       color: 'white',
-      maxWidth: '800px',
-      padding: '0 2rem'
+      padding: '0 2rem 3rem 2rem'
     },
     heroTitle: {
       fontFamily: 'Inter, system-ui, sans-serif',
       fontSize: 'clamp(2.5rem, 5vw, 4rem)',
       fontWeight: 700,
-      marginBottom: '1rem',
       lineHeight: 1.1,
       textShadow: '0 4px 20px rgba(0,0,0,0.3)'
-    },
-    heroLocation: {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      gap: '0.5rem',
-      fontSize: '1.25rem',
-      opacity: 0.95,
-      marginBottom: '2rem'
     },
     mainContainer: {
       background: 'var(--ds-background)',
@@ -132,7 +119,7 @@ export default async function HikeDetailPage({ params }: { params: Promise<{ slu
     contentWrapper: {
       maxWidth: '1200px',
       margin: '0 auto',
-      padding: '3rem 2rem'
+      padding: '0 2rem'
     },
     statsGrid: {
       display: 'grid',
@@ -143,8 +130,7 @@ export default async function HikeDetailPage({ params }: { params: Promise<{ slu
     statCard: {
       background: 'white',
       padding: '1.5rem',
-      borderRadius: '12px',
-      boxShadow: 'var(--shadow-card)',
+      borderRadius: '6px',
       textAlign: 'center' as const,
       border: '1px solid var(--ds-border)'
     },
@@ -166,30 +152,36 @@ export default async function HikeDetailPage({ params }: { params: Promise<{ slu
       color: 'var(--ds-foreground)'
     },
     tagsSection: {
+      display: 'grid',
+      gridTemplateColumns: '1fr 1fr 1fr',
+      gap: '2rem',
       marginBottom: '3rem'
     },
-    tagGroup: {
-      marginBottom: '1rem'
+    tagColumn: {
+      textAlign: 'center' as const
     },
-    tagLabel: {
-      fontSize: '0.875rem',
-      color: 'var(--ds-muted-foreground)',
-      marginBottom: '0.5rem',
-      fontWeight: 500
+    tagColumnTitle: {
+      fontSize: '1rem',
+      fontWeight: 600,
+      color: 'var(--ds-foreground)',
+      marginBottom: '1rem'
     },
     tagList: {
       display: 'flex',
       gap: '0.5rem',
-      flexWrap: 'wrap' as const
+      flexWrap: 'wrap' as const,
+      justifyContent: 'center'
     },
     tag: {
-      background: 'var(--ds-muted)',
-      color: 'var(--ds-foreground)',
-      padding: '0.375rem 0.875rem',
-      borderRadius: '20px',
-      fontSize: '0.8rem',
-      fontWeight: 500,
-      border: '1px solid var(--ds-border)'
+      color: 'var(--ds-muted-foreground)',
+      fontSize: '0.875rem',
+      fontWeight: 400,
+      fontFamily: 'Inter, system-ui, sans-serif'
+    },
+    tagSeparator: {
+      margin: '0 0.5rem',
+      color: 'var(--ds-muted-foreground)',
+      opacity: 0.6
     },
     contentGrid: {
       display: 'grid',
@@ -203,20 +195,23 @@ export default async function HikeDetailPage({ params }: { params: Promise<{ slu
       gap: '3rem'
     },
     section: {
-      background: 'white',
-      padding: '2rem',
-      borderRadius: '12px',
-      boxShadow: 'var(--shadow-card)',
-      border: '1px solid var(--ds-border)'
+      background: 'transparent',
+      padding: '0'
     },
     sectionTitle: {
       fontFamily: 'Inter, system-ui, sans-serif',
-      fontSize: '1.5rem',
+      fontSize: '1.75rem',
       fontWeight: 600,
       color: 'var(--ds-foreground)',
       marginBottom: '1.5rem',
       paddingBottom: '0.75rem',
       borderBottom: '2px solid var(--ds-border)'
+    },
+    proseContent: {
+      fontFamily: 'Inter, system-ui, sans-serif',
+      fontSize: '1rem',
+      lineHeight: 1.7,
+      color: '#4a5568'
     },
     sidebar: {
       display: 'flex',
@@ -226,27 +221,18 @@ export default async function HikeDetailPage({ params }: { params: Promise<{ slu
       top: '2rem'
     },
     sidebarCard: {
-      background: 'white',
-      padding: '1.5rem',
-      borderRadius: '12px',
-      boxShadow: 'var(--shadow-card)',
-      border: '1px solid var(--ds-border)'
+      background: 'transparent',
+      padding: '0',
+      borderRadius: '0',
+      boxShadow: 'none',
+      border: 'none',
+      marginBottom: '2rem'
     },
-    quickFactRow: {
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      padding: '0.75rem 0',
-      borderBottom: '1px solid #f1f5f9',
-      fontSize: '0.875rem'
-    },
-    quickFactLabel: {
-      color: 'var(--ds-muted-foreground)',
-      fontWeight: 500
-    },
-    quickFactValue: {
-      color: 'var(--ds-foreground)',
-      fontWeight: 600
+    sidebarTitle: {
+      fontSize: '1.125rem',
+      fontWeight: 600,
+      marginBottom: '1rem',
+      color: 'var(--ds-foreground)'
     }
   };
 
@@ -258,16 +244,21 @@ export default async function HikeDetailPage({ params }: { params: Promise<{ slu
       case 'elevation':
         return <TrendingUp style={styles.statIcon} />;
       case 'difficulty':
-        return <Mountain style={styles.statIcon} />;
+        return <AlertTriangle style={styles.statIcon} />;
       case 'route':
         return <Mountain style={styles.statIcon} />;
+      case 'country':
+        return <MapPin style={styles.statIcon} />;
       default:
         return <Route style={styles.statIcon} />;
     }
   };
 
   return (
-    <div style={{ background: 'var(--ds-background)', minHeight: '100vh' }}>
+    <div style={{ background: 'var(--ds-background)', minHeight: '100vh', fontFamily: 'Inter, system-ui, sans-serif' }}>
+      {/* Navigation */}
+      <Navigation />
+      
       {/* Hero Section */}
       <div style={styles.heroSection}>
         {heroImageUrl && (
@@ -283,32 +274,34 @@ export default async function HikeDetailPage({ params }: { params: Promise<{ slu
         
         {/* Overlay */}
         <div style={styles.heroOverlay}></div>
-        
-        {/* Back Button */}
-        <InteractiveBackButton />
 
-        {/* Hero Content */}
+        {/* Hero Content - Bottom Left */}
         <div style={styles.heroContent}>
           <h1 style={styles.heroTitle}>{title}</h1>
-          {primaryCountry && (
-            <div style={styles.heroLocation}>
-              <MapPin size={20} />
-              <span>{primaryCountry}</span>
-            </div>
-          )}
         </div>
       </div>
 
       {/* Main Content */}
       <div style={styles.mainContainer}>
         <div style={styles.contentWrapper}>
+          <div style={{ padding: '3rem 0' }}>
           
-          {/* Stats Grid - Consolidated */}
+          {/* Inline Back Button */}
+          <InlineBackButton />
+          
+          {/* Stats Grid - Including Country */}
           <div style={styles.statsGrid}>
+            {primaryCountry && (
+              <div style={styles.statCard}>
+                {getStatIcon('country')}
+                <div style={styles.statLabel}>Country</div>
+                <div style={styles.statValue}>{primaryCountry}</div>
+              </div>
+            )}
             {Length && (
               <div style={styles.statCard}>
                 {getStatIcon('distance')}
-                <div style={styles.statLabel}>Total Distance</div>
+                <div style={styles.statLabel}>Distance</div>
                 <div style={styles.statValue}>{Length} km</div>
               </div>
             )}
@@ -335,52 +328,53 @@ export default async function HikeDetailPage({ params }: { params: Promise<{ slu
             )}
           </div>
 
-          {/* Tags Section - Consolidated and organized */}
+          {/* Tags Section - Three Columns */}
           <div style={styles.tagsSection}>
-            {/* Scenery Tags */}
-            {sceneries && sceneries.length > 0 && (
-              <div style={styles.tagGroup}>
-                <div style={styles.tagLabel}>Scenery & Landscapes:</div>
-                <div style={styles.tagList}>
-                  {sceneries.map((scenery) => (
-                    <span key={`scenery-${scenery.id}`} style={styles.tag}>
-                      {scenery.SceneryType}
+            {/* Scenery Column */}
+            <div style={styles.tagColumn}>
+              <h3 style={styles.tagColumnTitle}>Scenery</h3>
+              <div style={styles.tagList}>
+                {sceneries && sceneries.length > 0 ? (
+                  sceneries.map((scenery, index) => (
+                    <span key={`scenery-${scenery.id}`}>
+                      <span style={styles.tag}>{scenery.SceneryType}</span>
+                      {index < sceneries.length - 1 && <span style={styles.tagSeparator}>•</span>}
                     </span>
-                  ))}
-                </div>
+                  ))
+                ) : (
+                  <span style={{ ...styles.tag, opacity: 0.5 }}>Not specified</span>
+                )}
               </div>
-            )}
+            </div>
             
-            {/* Best Time / Seasons - consolidated */}
-            {(Best_time || (months && months.length > 0)) && (
-              <div style={styles.tagGroup}>
-                <div style={styles.tagLabel}>Best Time to Visit:</div>
-                <div style={styles.tagList}>
-                  {Best_time && (
-                    <span style={styles.tag}>{Best_time}</span>
-                  )}
-                  {months?.map((month) => (
-                    <span key={`month-${month.id}`} style={styles.tag}>
-                      {month.MonthTag}
-                    </span>
-                  ))}
-                </div>
+            {/* Best Time Column */}
+            <div style={styles.tagColumn}>
+              <h3 style={styles.tagColumnTitle}>Best Time to Visit</h3>
+              <div style={styles.tagList}>
+                {Best_time ? (
+                  <span style={styles.tag}>{Best_time}</span>
+                ) : (
+                  <span style={{ ...styles.tag, opacity: 0.5 }}>Not specified</span>
+                )}
               </div>
-            )}
+            </div>
             
-            {/* Accommodation Tags */}
-            {accommodations && accommodations.length > 0 && (
-              <div style={styles.tagGroup}>
-                <div style={styles.tagLabel}>Accommodation Types:</div>
-                <div style={styles.tagList}>
-                  {accommodations.map((accommodation) => (
-                    <span key={`accommodation-${accommodation.id}`} style={styles.tag}>
-                      {accommodation.AccommodationType}
+            {/* Accommodation Column */}
+            <div style={styles.tagColumn}>
+              <h3 style={styles.tagColumnTitle}>Accommodation</h3>
+              <div style={styles.tagList}>
+                {accommodations && accommodations.length > 0 ? (
+                  accommodations.map((accommodation, index) => (
+                    <span key={`accommodation-${accommodation.id}`}>
+                      <span style={styles.tag}>{accommodation.AccommodationType}</span>
+                      {index < accommodations.length - 1 && <span style={styles.tagSeparator}>•</span>}
                     </span>
-                  ))}
-                </div>
+                  ))
+                ) : (
+                  <span style={{ ...styles.tag, opacity: 0.5 }}>Not specified</span>
+                )}
               </div>
-            )}
+            </div>
           </div>
 
           {/* Content Grid */}
@@ -392,51 +386,40 @@ export default async function HikeDetailPage({ params }: { params: Promise<{ slu
               {/* Description Section */}
               {Description && (
                 <div style={styles.section}>
-                  <h2 style={styles.sectionTitle}>About This Hike</h2>
-                  <div className="prose prose-lg max-w-none">
+                  <h2 style={styles.sectionTitle}>Description</h2>
+                  <div style={styles.proseContent} className="prose-custom">
                     <StrapiRichText content={Description} />
                   </div>
                 </div>
               )}
 
-              {/* Map & Elevation Section */}
-              {(track || simplified_profile) && (
+              {/* Route Section */}
+              {track && (
                 <div style={styles.section}>
-                  <h2 style={styles.sectionTitle}>Route & Elevation</h2>
-                  
-                  {/* Map */}
-                  {track && (
-                    <div style={{ marginBottom: '2rem' }}>
-                      <h3 style={{ fontSize: '1.125rem', fontWeight: 600, marginBottom: '1rem', color: 'var(--ds-foreground)' }}>
-                        Trail Map
-                      </h3>
-                      <div style={{ width: '100%', height: '400px', borderRadius: '8px', overflow: 'hidden', border: '1px solid var(--ds-border)' }}>
-                        <Map track={track} />
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Elevation Profile */}
-                  {simplified_profile && simplified_profile.length > 0 && (
-                    <div>
-                      <h3 style={{ fontSize: '1.125rem', fontWeight: 600, marginBottom: '1rem', color: 'var(--ds-foreground)' }}>
-                        Elevation Profile
-                      </h3>
-                      <ElevationProfile 
-                        data={simplified_profile} 
-                        landmarks={content.landmarks}
-                        height="320px"
-                      />
-                    </div>
-                  )}
+                  <h2 style={styles.sectionTitle}>Route</h2>
+                  <div style={{ width: '100%', height: '400px', borderRadius: '8px', overflow: 'hidden' }}>
+                    <Map track={track} />
+                  </div>
                 </div>
               )}
 
-              {/* Logistics Section */}
+              {/* Elevation Section */}
+              {simplified_profile && simplified_profile.length > 0 && (
+                <div style={styles.section}>
+                  <h2 style={styles.sectionTitle}>Elevation</h2>
+                  <ElevationProfile 
+                    data={simplified_profile} 
+                    landmarks={content.landmarks}
+                    height="320px"
+                  />
+                </div>
+              )}
+
+              {/* Getting There Section */}
               {Logistics && (
                 <div style={styles.section}>
                   <h2 style={styles.sectionTitle}>Getting There & Back</h2>
-                  <div className="prose prose-lg max-w-none">
+                  <div style={styles.proseContent} className="prose-custom">
                     <StrapiRichText content={Logistics} />
                   </div>
                 </div>
@@ -445,8 +428,8 @@ export default async function HikeDetailPage({ params }: { params: Promise<{ slu
               {/* Accommodation Section */}
               {Accommodation && (
                 <div style={styles.section}>
-                  <h2 style={styles.sectionTitle}>Where to Stay</h2>
-                  <div className="prose prose-lg max-w-none">
+                  <h2 style={styles.sectionTitle}>Accommodation</h2>
+                  <div style={styles.proseContent} className="prose-custom">
                     <StrapiRichText content={Accommodation} />
                   </div>
                 </div>
@@ -462,42 +445,13 @@ export default async function HikeDetailPage({ params }: { params: Promise<{ slu
 
             </div>
 
-            {/* Sidebar */}
+            {/* Right Sidebar */}
             <div style={styles.sidebar}>
               
-              {/* Quick Facts */}
-              <div style={styles.sidebarCard}>
-                <h3 style={{ fontSize: '1.125rem', fontWeight: 600, marginBottom: '1rem', color: 'var(--ds-foreground)' }}>
-                  Planning Details
-                </h3>
-                <div>
-                  {Best_time && (
-                    <div style={styles.quickFactRow}>
-                      <span style={styles.quickFactLabel}>Best Time:</span>
-                      <span style={styles.quickFactValue}>{Best_time}</span>
-                    </div>
-                  )}
-                  {primaryCountry && (
-                    <div style={styles.quickFactRow}>
-                      <span style={styles.quickFactLabel}>Location:</span>
-                      <span style={styles.quickFactValue}>{primaryCountry}</span>
-                    </div>
-                  )}
-                  {Length && Elevation_gain && (
-                    <div style={styles.quickFactRow}>
-                      <span style={styles.quickFactLabel}>Avg. Daily Distance:</span>
-                      <span style={styles.quickFactValue}>~{Math.round(Length / 7)} km</span>
-                    </div>
-                  )}
-                </div>
-              </div>
-
               {/* Guidebooks */}
               {Books && Books.length > 0 && (
                 <div style={styles.sidebarCard}>
-                  <h3 style={{ fontSize: '1.125rem', fontWeight: 600, marginBottom: '1rem', color: 'var(--ds-foreground)' }}>
-                    Recommended Guidebooks
-                  </h3>
+                  <h3 style={styles.sidebarTitle}>Guidebooks</h3>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                     {Books.map((book) => (
                       <BookCard key={book.id} book={book} />
@@ -509,9 +463,7 @@ export default async function HikeDetailPage({ params }: { params: Promise<{ slu
               {/* Videos */}
               {Videos && Videos.length > 0 && (
                 <div style={styles.sidebarCard}>
-                  <h3 style={{ fontSize: '1.125rem', fontWeight: 600, marginBottom: '1rem', color: 'var(--ds-foreground)' }}>
-                    Watch Videos
-                  </h3>
+                  <h3 style={styles.sidebarTitle}>Videos</h3>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                     {Videos.map((video) => (
                       <VideoEmbed key={video.id} video={video} />
@@ -520,10 +472,59 @@ export default async function HikeDetailPage({ params }: { params: Promise<{ slu
                 </div>
               )}
 
+              {/* Blogs */}
+              {Blogs && Blogs.length > 0 && (
+                <div style={styles.sidebarCard}>
+                  <h3 style={styles.sidebarTitle}>Related Articles</h3>
+                  <BlogList blogs={Blogs} />
+                </div>
+              )}
+
             </div>
+          </div>
           </div>
         </div>
       </div>
+
+      {/* Custom CSS for prose styling */}
+      <style dangerouslySetInnerHTML={{
+        __html: `
+          .prose-custom p {
+            margin-bottom: 1.25rem;
+            padding: 1rem 0;
+            border-left: 3px solid #e2e8f0;
+            padding-left: 1.5rem;
+          }
+          .prose-custom p:not(:last-child) {
+            border-bottom: 1px solid #f1f5f9;
+            padding-bottom: 1.5rem;
+            margin-bottom: 1.5rem;
+          }
+          .prose-custom ul {
+            margin: 0;
+            padding: 1rem 0;
+            border-left: 3px solid #e2e8f0;
+            padding-left: 1.5rem;
+            margin-bottom: 1.25rem;
+          }
+          .prose-custom li {
+            margin-bottom: 0.5rem;
+            color: #4a5568;
+            font-family: 'Inter', system-ui, sans-serif;
+            line-height: 1.7;
+          }
+          .prose-custom ul li {
+            list-style-type: disc;
+            margin-left: 1rem;
+          }
+          .prose-custom p + ul {
+            margin-top: -1rem;
+            border-top: none;
+            padding-top: 0;
+          }
+        `
+      }} />
+      <Footer />  {/* Add this line */}
     </div>
   );
 }

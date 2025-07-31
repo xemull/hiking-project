@@ -45,7 +45,15 @@ app.get('/api/hikes/slug/:slug', async (req, res) => {
     try {
         // First, get all hikes from Strapi to find the one with matching slug
         const populateParams = [
-            'populate=*',
+            'populate[mainImage]=true',
+            'populate[countries]=true',
+            'populate[sceneries]=true',
+            'populate[months]=true',
+            'populate[accommodations]=true',
+            'populate[Videos]=true',
+            'populate[Blogs]=true',
+            'populate[landmarks]=true',
+            'populate[Books][populate][0]=cover_image'
         ].join('&');
         
         const strapiRes = await fetch(`http://localhost:1337/api/hikes?${populateParams}`);
@@ -122,7 +130,15 @@ app.get('/api/hikes/:id', async (req, res) => {
 
         // CONSERVATIVE: Use populate=* to avoid relation validation errors
         const populateParams = [
-            'populate=*',
+            'populate[mainImage]=true',
+            'populate[countries]=true',
+            'populate[sceneries]=true',
+            'populate[months]=true',
+            'populate[accommodations]=true',
+            'populate[Videos]=true',
+            'populate[Blogs]=true',
+            'populate[landmarks]=true',
+            'populate[Books][populate][0]=cover_image',
             `filters[hike_id][$eq]=${id}`
         ].join('&');
         

@@ -36,7 +36,13 @@ interface Book {
   id: number;
   title: string;
   url: string;
-  cover_image?: Media;
+  cover_image?: Media; // Optional since it might not always be present
+}
+
+interface Blog {
+  id: number;
+  title: string;
+  url: string;
 }
 
 interface AccommodationTag {
@@ -88,6 +94,7 @@ export interface Hike {
     accommodations: AccommodationTag[];
     Videos: Video[];
     Books: Book[];
+    Blogs: Blog[]; // ADDED: Missing Blogs field
     landmarks: any[];
   };
 }
