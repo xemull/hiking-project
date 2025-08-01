@@ -1,10 +1,14 @@
 // src/app/components/Footer.tsx
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import { Mountain, Heart, Mail } from 'lucide-react';
+import NewsletterModal from './NewsletterModal';
 
 export default function Footer() {
+  const [isNewsletterOpen, setIsNewsletterOpen] = useState(false);
+
   const styles = {
     footerContainer: {
       background: 'var(--ds-off-white)',
@@ -85,6 +89,18 @@ export default function Footer() {
       transition: 'color 0.2s ease',
       fontFamily: 'Inter, system-ui, sans-serif'
     },
+    footerButton: {
+      color: 'var(--ds-muted-foreground)',
+      textDecoration: 'none',
+      fontSize: '0.9rem',
+      transition: 'color 0.2s ease',
+      fontFamily: 'Inter, system-ui, sans-serif',
+      background: 'none',
+      border: 'none',
+      cursor: 'pointer',
+      padding: 0,
+      textAlign: 'left' as const
+    },
     contactSection: {
       display: 'flex',
       flexDirection: 'column' as const
@@ -112,139 +128,141 @@ export default function Footer() {
       color: 'var(--ds-muted-foreground)',
       fontSize: '0.8rem',
       fontFamily: 'Inter, system-ui, sans-serif'
-    },
-    responsiveGrid: {
-      '@media (max-width: 768px)': {
-        gridTemplateColumns: '1fr',
-        gap: '2rem'
-      }
     }
   };
 
   return (
-    <footer style={styles.footerContainer}>
-      <div style={styles.contentWrapper}>
-        <div style={styles.footerGrid}>
-          
-          {/* Brand Section */}
-          <div style={styles.brandSection}>
-            <Link href="/" style={styles.logo}>
-              <Mountain style={styles.logoIcon} size={24} />
-              <span style={styles.logoText}>Trailhead</span>
-            </Link>
+    <>
+      <footer style={styles.footerContainer}>
+        <div style={styles.contentWrapper}>
+          <div style={styles.footerGrid}>
             
-            <p style={styles.description}>
-              Your trusted digital guide for multi-day hiking adventures. We research, vet, and document the world's most spectacular long-distance trails to make them accessible to everyone.
+            {/* Brand Section */}
+            <div style={styles.brandSection}>
+              <Link href="/" style={styles.logo}>
+                <Mountain style={styles.logoIcon} size={24} />
+                <span style={styles.logoText}>Trailhead</span>
+              </Link>
+              
+              <p style={styles.description}>
+                Your trusted digital guide for multi-day hiking adventures. We research, vet, and document the world's most spectacular long-distance trails to make them accessible to everyone.
+              </p>
+              
+              <div style={styles.madeWithLove}>
+                <span>Made with</span>
+                <Heart style={styles.heart} fill="currentColor" />
+                <span>by outdoor enthusiasts</span>
+              </div>
+            </div>
+
+            {/* Quick Links */}
+            <div style={styles.linkSection}>
+              <h3 style={styles.sectionTitle}>Quick Links</h3>
+              <div style={styles.linkList}>
+                <Link 
+                  href="/" 
+                  style={styles.footerLink}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.color = 'var(--ds-foreground)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.color = 'var(--ds-muted-foreground)';
+                  }}
+                >
+                  All Hikes
+                </Link>
+                <Link 
+                  href="/about" 
+                  style={styles.footerLink}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.color = 'var(--ds-foreground)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.color = 'var(--ds-muted-foreground)';
+                  }}
+                >
+                  About
+                </Link>
+                <Link 
+                  href="/contact" 
+                  style={styles.footerLink}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.color = 'var(--ds-foreground)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.color = 'var(--ds-muted-foreground)';
+                  }}
+                >
+                  Contact
+                </Link>
+                <button 
+                  onClick={() => setIsNewsletterOpen(true)}
+                  style={styles.footerButton}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.color = 'var(--ds-foreground)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.color = 'var(--ds-muted-foreground)';
+                  }}
+                >
+                  Newsletter
+                </button>
+              </div>
+            </div>
+
+            {/* Get in Touch */}
+            <div style={styles.contactSection}>
+              <h3 style={styles.sectionTitle}>Get in Touch</h3>
+              
+              <div style={styles.contactItem}>
+                <Mail size={16} />
+                <a 
+                  href="mailto:hello@trailhead.com" 
+                  style={styles.footerLink}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.color = 'var(--ds-foreground)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.color = 'var(--ds-muted-foreground)';
+                  }}
+                >
+                  hello@trailhead.com
+                </a>
+              </div>
+              
+              <p style={styles.contactText}>
+                Questions about a trail? Found an error? We'd love to hear from you.
+              </p>
+            </div>
+
+          </div>
+
+          {/* Bottom Border */}
+          <div style={styles.bottomBorder}>
+            <p style={styles.copyright}>
+              © {new Date().getFullYear()} Trailhead. All rights reserved.
             </p>
-            
-            <div style={styles.madeWithLove}>
-              <span>Made with</span>
-              <Heart style={styles.heart} fill="currentColor" />
-              <span>by outdoor enthusiasts</span>
-            </div>
           </div>
-
-          {/* Quick Links */}
-          <div style={styles.linkSection}>
-            <h3 style={styles.sectionTitle}>Quick Links</h3>
-            <div style={styles.linkList}>
-              <Link 
-                href="/" 
-                style={styles.footerLink}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.color = 'var(--ds-foreground)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.color = 'var(--ds-muted-foreground)';
-                }}
-              >
-                All Hikes
-              </Link>
-              <Link 
-                href="/about" 
-                style={styles.footerLink}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.color = 'var(--ds-foreground)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.color = 'var(--ds-muted-foreground)';
-                }}
-              >
-                About
-              </Link>
-              <Link 
-                href="/contact" 
-                style={styles.footerLink}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.color = 'var(--ds-foreground)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.color = 'var(--ds-muted-foreground)';
-                }}
-              >
-                Contact
-              </Link>
-              <a 
-                href="#newsletter" 
-                style={styles.footerLink}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.color = 'var(--ds-foreground)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.color = 'var(--ds-muted-foreground)';
-                }}
-              >
-                Newsletter
-              </a>
-            </div>
-          </div>
-
-          {/* Get in Touch */}
-          <div style={styles.contactSection}>
-            <h3 style={styles.sectionTitle}>Get in Touch</h3>
-            
-            <div style={styles.contactItem}>
-              <Mail size={16} />
-              <a 
-                href="mailto:hello@trailhead.com" 
-                style={styles.footerLink}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.color = 'var(--ds-foreground)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.color = 'var(--ds-muted-foreground)';
-                }}
-              >
-                hello@trailhead.com
-              </a>
-            </div>
-            
-            <p style={styles.contactText}>
-              Questions about a trail? Found an error? We'd love to hear from you.
-            </p>
-          </div>
-
         </div>
 
-        {/* Bottom Border */}
-        <div style={styles.bottomBorder}>
-          <p style={styles.copyright}>
-            © {new Date().getFullYear()} Trailhead. All rights reserved.
-          </p>
-        </div>
-      </div>
-
-      {/* Responsive CSS */}
-      <style dangerouslySetInnerHTML={{
-        __html: `
-          @media (max-width: 768px) {
-            .footer-grid {
-              grid-template-columns: 1fr !important;
-              gap: 2rem !important;
+        {/* Responsive CSS */}
+        <style dangerouslySetInnerHTML={{
+          __html: `
+            @media (max-width: 768px) {
+              .footer-grid {
+                grid-template-columns: 1fr !important;
+                gap: 2rem !important;
+              }
             }
-          }
-        `
-      }} />
-    </footer>
+          `
+        }} />
+      </footer>
+
+      {/* Newsletter Modal */}
+      <NewsletterModal 
+        isOpen={isNewsletterOpen} 
+        onClose={() => setIsNewsletterOpen(false)} 
+      />
+    </>
   );
 }

@@ -200,30 +200,32 @@ export default function FeaturedHikeSummary({ hike }: { hike: HikeSummary }) {
 
         {/* Main Hike Content */}
         <div style={styles.hikeContainer}>
-          {/* Left: Image */}
-          <div 
-            style={styles.imageContainer}
-            onMouseEnter={(e) => {
-              const img = e.currentTarget.querySelector('img');
-              if (img) {
-                Object.assign(img.style, styles.imageHover);
-              }
-            }}
-            onMouseLeave={(e) => {
-              const img = e.currentTarget.querySelector('img');
-              if (img) {
-                img.style.transform = 'scale(1)';
-              }
-            }}
-          >
-            <Image
-              src={imageUrl}
-              alt={`Image of ${title}`}
-              fill
-              style={{ ...styles.image, objectFit: 'cover' }}
-              priority={true}
-            />
-          </div>
+          {/* Left: Image - Now clickable */}
+          <Link href={`/hike/${slug}`} style={{ textDecoration: 'none' }}>
+            <div 
+              style={styles.imageContainer}
+              onMouseEnter={(e) => {
+                const img = e.currentTarget.querySelector('img');
+                if (img) {
+                  Object.assign(img.style, styles.imageHover);
+                }
+              }}
+              onMouseLeave={(e) => {
+                const img = e.currentTarget.querySelector('img');
+                if (img) {
+                  img.style.transform = 'scale(1)';
+                }
+              }}
+            >
+              <Image
+                src={imageUrl}
+                alt={`Image of ${title}`}
+                fill
+                style={{ ...styles.image, objectFit: 'cover' }}
+                priority={true}
+              />
+            </div>
+          </Link>
 
           {/* Right: Details */}
           <div style={styles.hikeDetails}>
@@ -233,8 +235,24 @@ export default function FeaturedHikeSummary({ hike }: { hike: HikeSummary }) {
               <span>{countryDisplay}</span>
             </div>
 
-            {/* Hike name */}
-            <h3 style={styles.hikeTitle}>{title}</h3>
+            {/* Hike name - Now clickable */}
+            <Link href={`/hike/${slug}`} style={{ textDecoration: 'none' }}>
+              <h3 
+                style={{
+                  ...styles.hikeTitle,
+                  cursor: 'pointer',
+                  transition: 'color 0.2s ease'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = 'var(--ds-primary)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.color = 'var(--ds-foreground)';
+                }}
+              >
+                {title}
+              </h3>
+            </Link>
 
             {/* Description from API */}
             <p style={styles.description}>

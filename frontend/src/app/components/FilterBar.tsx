@@ -30,6 +30,29 @@ export default function FilterBar({
   onClearFilters
 }: FilterBarProps) {
   
+  // Sort months in chronological order
+  const sortedMonths = [...months].sort((a, b) => {
+    const monthOrder = [
+      'January', 'February', 'March', 'April', 'May', 'June',
+      'July', 'August', 'September', 'October', 'November', 'December'
+    ];
+    
+    const aIndex = monthOrder.findIndex(month => month.toLowerCase().includes(a.toLowerCase()) || a.toLowerCase().includes(month.toLowerCase()));
+    const bIndex = monthOrder.findIndex(month => month.toLowerCase().includes(b.toLowerCase()) || b.toLowerCase().includes(month.toLowerCase()));
+    
+    // If both months are found in the order array, sort by their position
+    if (aIndex !== -1 && bIndex !== -1) {
+      return aIndex - bIndex;
+    }
+    
+    // If only one is found, prioritize it
+    if (aIndex !== -1) return -1;
+    if (bIndex !== -1) return 1;
+    
+    // If neither is found, fall back to alphabetical
+    return a.localeCompare(b);
+  });
+  
   // Refined filter bar styles with lines and proper sizing
   const filterStyles = {
     outerContainer: {
@@ -241,7 +264,7 @@ export default function FilterBar({
               ))}
             </select>
 
-            {/* Season Filter - Custom width */}
+            {/* Season Filter - Custom width with sorted months */}
             <select 
               style={filterStyles.selectSeason}
               onChange={(e) => onFilterChange('month', e.target.value)}
@@ -253,7 +276,7 @@ export default function FilterBar({
               }}
             >
               <option value="">Season</option>
-              {months.map((month, index) => (
+              {sortedMonths.map((month, index) => (
                 <option key={index} value={month}>{month}</option>
               ))}
             </select>

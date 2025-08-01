@@ -6,6 +6,7 @@ const fetch = require('node-fetch');
 const app = express();
 const port = 4000;
 app.use(cors());
+app.use(express.json()); // Add this line to parse JSON bodies
 
 const pool = new Pool({
   user: 'hike_admin',
@@ -175,6 +176,56 @@ app.get('/api/hikes/:id', async (req, res) => {
     } catch (error) {
         console.error(`Error in /api/hikes/${id}:`, error);
         res.status(500).send('Error fetching hike data');
+    }
+});
+
+// Newsletter subscription endpoint
+app.post('/api/newsletter/subscribe', async (req, res) => {
+    const { email } = req.body;
+    
+    // Basic email validation
+    if (!email || !email.includes('@')) {
+        return res.status(400).json({ 
+            success: false, 
+            message: 'Please provide a valid email address' 
+        });
+    }
+    
+    try {
+        // Create table if it doesn't exist
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS newsletter_subscribers (
+                id SERIAL PRIMARY KEY,
+                email VARCHAR(255) UNIQUE NOT NULL,
+                subscribed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                is_active BOOLEAN DEFAULT true
+            )
+        `);
+        
+        // Insert email (ignore if already exists)
+        const query = `
+            INSERT INTO newsletter_subscribers (email) 
+            VALUES ($1) 
+            ON CONFLICT (email) DO UPDATE SET 
+                subscribed_at = CURRENT_TIMESTAMP,
+                is_active = true
+            RETURNING *
+        `;
+        
+        const result = await pool.query(query, [email.toLowerCase().trim()]);
+        
+        console.log('Newsletter subscription:', email);
+        res.json({ 
+            success: true, 
+            message: 'Successfully subscribed to newsletter!' 
+        });
+        
+    } catch (error) {
+        console.error('Newsletter subscription error:', error);
+        res.status(500).json({ 
+            success: false, 
+            message: 'Subscription failed. Please try again.' 
+        });
     }
 });
 
