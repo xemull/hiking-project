@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express');
 const cors = require('cors');
 const { Pool } = require('pg');
@@ -9,11 +11,11 @@ app.use(cors());
 app.use(express.json()); // Add this line to parse JSON bodies
 
 const pool = new Pool({
-  user: 'hike_admin',
-  host: '127.0.0.1',
-  database: 'hikes_db',
-  password: 'eXstas1987X!',
-  port: 5433,
+  user: process.env.DB_USER,
+  host: process.env.DB_HOST,
+  database: process.env.DB_NAME,
+  password: process.env.DB_PASSWORD,
+  port: process.env.DB_PORT,
 });
 
 // Utility function to create URL-friendly slugs

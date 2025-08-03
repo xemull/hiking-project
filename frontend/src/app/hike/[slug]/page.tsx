@@ -16,7 +16,6 @@ import Navigation from '../../components/Navigation';
 import BlogList from '../../components/BlogList';
 import { MapPin, Route, TrendingUp, Mountain, AlertTriangle } from 'lucide-react';
 import InlineBackButton from '../../components/InlineBackButton';
-import Footer from '../../components/Footer';
 
 // Generate dynamic page metadata for SEO
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
@@ -29,9 +28,19 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     };
   }
 
+  // Get countries from relation - handle multiple countries (same logic as in component)
+  const countryNames = hike.content.countries?.map(country => country.name) || [];
+  const countryDisplay = countryNames.length > 0 
+    ? countryNames.length === 1 
+      ? countryNames[0]
+      : countryNames.length === 2
+        ? countryNames.join(' & ')
+        : `${countryNames.slice(0, -1).join(', ')} & ${countryNames[countryNames.length - 1]}`
+    : 'Unknown';
+
   return {
-    title: `${hike.content.title} - Multi-day Hiking Guide`,
-    description: `Complete guide to ${hike.content.title}: ${hike.content.Length}km, ${hike.content.Difficulty} difficulty. Logistics, itinerary, and everything you need to know.`,
+    title: `${hike.content.title}: A Complete Guide | ${countryDisplay} | Trailhead`,
+    description: `Plan the ${hike.content.title} hike with confidence. Our beginner-friendly guide covers logistics, itinerary, and maps.`,
   };
 }
 
@@ -524,7 +533,6 @@ export default async function HikeDetailPage({ params }: { params: Promise<{ slu
           }
         `
       }} />
-      <Footer />  {/* Add this line */}
     </div>
   );
 }
