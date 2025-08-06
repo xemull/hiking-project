@@ -94,6 +94,10 @@ export async function getFeaturedHike(): Promise<HikeSummary | null> {
 export async function getHikeBySlug(slug: string): Promise<Hike | null> {
   const fullUrl = `${CUSTOM_BACKEND_URL}/api/hikes/slug/${slug}`;
 
+  console.log('🐛 Frontend requesting slug:', slug);
+  console.log('🐛 Full URL:', fullUrl);
+
+
   console.log('Fetching hike detail by slug from:', fullUrl);
 
   try {

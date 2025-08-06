@@ -16,6 +16,7 @@ import Navigation from '../../components/Navigation';
 import BlogList from '../../components/BlogList';
 import { MapPin, Route, TrendingUp, Mountain, AlertTriangle } from 'lucide-react';
 import InlineBackButton from '../../components/InlineBackButton';
+import Footer from '../../components/Footer';
 
 // Generate dynamic page metadata for SEO
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
@@ -75,7 +76,7 @@ export default async function HikeDetailPage({ params }: { params: Promise<{ slu
 
   // Get hero image URL
   const heroImageUrl = mainImage?.url 
-    ? `http://localhost:1337${mainImage.url}` 
+    ? `${process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337'}${mainImage.url}` 
     : null;
 
   // Get countries from relation - handle multiple countries
@@ -494,6 +495,7 @@ export default async function HikeDetailPage({ params }: { params: Promise<{ slu
           </div>
         </div>
       </div>
+      <Footer />  {/* Add this line */}
 
       {/* Custom CSS for prose styling */}
       <style dangerouslySetInnerHTML={{

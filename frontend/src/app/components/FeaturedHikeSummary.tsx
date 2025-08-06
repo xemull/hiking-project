@@ -14,10 +14,10 @@ export default function FeaturedHikeSummary({ hike }: { hike: HikeSummary }) {
   // For full hike data, we'd need to fetch it separately or modify the type
   // For now, we'll work with what's available in HikeSummary
 
-  const imageUrl = mainImage?.url
-    ? `http://localhost:1337${mainImage.url}`
-    : '/placeholder-image.jpg';
-
+const imageUrl = mainImage?.url
+  ? `${process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337'}${mainImage.url}`
+  : '/placeholder-image.jpg';
+  
   const countryNames = countries?.map(country => country.name) || [];
   const countryDisplay = countryNames.length > 0 
     ? countryNames.length === 1 
@@ -76,7 +76,7 @@ export default function FeaturedHikeSummary({ hike }: { hike: HikeSummary }) {
     },
     imageContainer: {
       position: 'relative' as const,
-      width: '100%',
+      width: '100%',  
       height: '500px',
       borderRadius: '12px',
       overflow: 'hidden',
@@ -199,36 +199,10 @@ export default function FeaturedHikeSummary({ hike }: { hike: HikeSummary }) {
         </div>
 
         {/* Main Hike Content */}
-        <div style={styles.hikeContainer}>
-          {/* Left: Image - Now clickable */}
-          <Link href={`/hike/${slug}`} style={{ textDecoration: 'none' }}>
-            <div 
-              style={styles.imageContainer}
-              onMouseEnter={(e) => {
-                const img = e.currentTarget.querySelector('img');
-                if (img) {
-                  Object.assign(img.style, styles.imageHover);
-                }
-              }}
-              onMouseLeave={(e) => {
-                const img = e.currentTarget.querySelector('img');
-                if (img) {
-                  img.style.transform = 'scale(1)';
-                }
-              }}
-            >
-              <Image
-                src={imageUrl}
-                alt={`Image of ${title}`}
-                fill
-                style={{ ...styles.image, objectFit: 'cover' }}
-                priority={true}
-              />
-            </div>
-          </Link>
-
-          {/* Right: Details */}
-          <div style={styles.hikeDetails}>
+        <div style={styles.hikeContainer} className="featured-hike-container">
+          
+          {/* Mobile: Title First (will be reordered with CSS) */}
+          <div style={styles.hikeDetails} className="hike-details">
             {/* Location with pin icon */}
             <div style={styles.locationRow}>
               <MapPin size={16} />
@@ -359,8 +333,107 @@ export default function FeaturedHikeSummary({ hike }: { hike: HikeSummary }) {
               </button>
             </Link>
           </div>
+
+          {/* Image - Now clickable */}
+          <Link href={`/hike/${slug}`} style={{ textDecoration: 'none' }} className="hike-image">
+            <div 
+              style={styles.imageContainer}
+              onMouseEnter={(e) => {
+                const img = e.currentTarget.querySelector('img');
+                if (img) {
+                  Object.assign(img.style, styles.imageHover);
+                }
+              }}
+              onMouseLeave={(e) => {
+                const img = e.currentTarget.querySelector('img');
+                if (img) {
+                  img.style.transform = 'scale(1)';
+                }
+              }}
+            >
+              <Image
+                src={imageUrl}
+                alt={`Image of ${title}`}
+                fill
+                sizes="(max-width: 768px) 100vw, 50vw"
+                style={{ ...styles.image, objectFit: 'cover' }}
+                priority={true}
+              />
+            </div>
+          </Link>
+
         </div>
       </div>
+
+      {/* Mobile-Responsive CSS */}
+      <style dangerouslySetInnerHTML={{
+        __html: `
+          @media (max-width: 768px) {
+            .featured-hike-container {
+              grid-template-columns: 1fr !important;
+              gap: 2rem !important;
+            }
+            
+            /* Reorder: Title first, then image */
+            .hike-details {
+              order: 1;
+              text-align: center;
+              padding: 0 !important;
+            }
+            
+            .hike-image {
+              order: 2;
+            }
+            
+            /* Adjust mobile image height */
+            .hike-image > div {
+              height: 300px !important;
+            }
+            
+            /* Center mobile content */
+            .hike-details > div:first-child {
+              justify-content: center !important;
+            }
+            
+            /* Make button full width on small screens */
+            .hike-details button {
+              width: fit-content;
+              margin: 0 auto;
+            }
+            
+            /* Adjust title size for mobile */
+            .hike-details h3 {
+              font-size: 1.75rem !important;
+            }
+            
+            /* Stack info grid on mobile */
+            .hike-details > div:nth-child(4) {
+              grid-template-columns: 1fr !important;
+              gap: 0.5rem !important;
+              justify-items: center;
+            }
+            
+            /* Center tags on mobile */
+            .hike-details > div:nth-child(5) > div > div:last-child {
+              justify-content: center !important;
+            }
+          }
+          
+          @media (max-width: 480px) {
+            .featured-hike-container {
+              gap: 1.5rem !important;
+            }
+            
+            .hike-image > div {
+              height: 250px !important;
+            }
+            
+            .hike-details h3 {
+              font-size: 1.5rem !important;
+            }
+          }
+        `
+      }} />
     </div>
   );
 }

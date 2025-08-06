@@ -1,0 +1,10 @@
+# .dockerignore
+
+# Ignore local dependencies, as they will be installed inside the container
+node_modules
+
+# Ignore local environment variables, as they will be set in the cloud
+.env
+
+# Ignore npm debug logs
+npm-debug.log

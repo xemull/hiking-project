@@ -4,10 +4,17 @@ const express = require('express');
 const cors = require('cors');
 const { Pool } = require('pg');
 const fetch = require('node-fetch');
+const STRAPI_URL = process.env.STRAPI_URL || 'http://localhost:1337';
 
 const app = express();
-const port = 4000;
-app.use(cors());
+const port = process.env.PORT || 4000;
+app.use(cors({
+  origin: [
+    'http://localhost:3000',  // Local development
+    'https://frontend-service-623946599151.europe-west2.run.app'  // Production frontend
+  ],
+  credentials: true
+}));
 app.use(express.json()); // Add this line to parse JSON bodies
 
 const pool = new Pool({
@@ -59,7 +66,7 @@ app.get('/api/hikes/slug/:slug', async (req, res) => {
             'populate[Books][populate][0]=cover_image'
         ].join('&');
         
-        const strapiRes = await fetch(`http://localhost:1337/api/hikes?${populateParams}`);
+        const strapiRes = await fetch(`${STRAPI_URL}/api/hikes?${populateParams}`);
         const strapiCollection = await strapiRes.json();
         
         if (!strapiCollection.data || strapiCollection.data.length === 0) {
@@ -145,7 +152,7 @@ app.get('/api/hikes/:id', async (req, res) => {
             `filters[hike_id][$eq]=${id}`
         ].join('&');
         
-        const strapiRes = await fetch(`http://localhost:1337/api/hikes?${populateParams}`);
+        const strapiRes = await fetch(`${STRAPI_URL}/api/hikes?${populateParams}`);
         
         const strapiCollection = await strapiRes.json();
         

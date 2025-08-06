@@ -18,7 +18,10 @@ export default function HikeCard({ hike }: { hike: HikeSummary }) {
         : `${countryNames.slice(0, -1).join(', ')} & ${countryNames[countryNames.length - 1]}`
     : '';
     
-  const imageUrl = mainImage?.url ? `http://localhost:1337${mainImage.url}` : null;
+  const imageUrl = mainImage?.url 
+  ? `${process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337'}${mainImage.url}` 
+  : null;
+  
   const slug = createSlug(title);
 
   // Get difficulty badge color based on difficulty level with transparency

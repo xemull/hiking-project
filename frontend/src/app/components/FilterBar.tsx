@@ -53,7 +53,7 @@ export default function FilterBar({
     return a.localeCompare(b);
   });
   
-  // Refined filter bar styles with lines and proper sizing
+  // Mobile-responsive filter bar styles
   const filterStyles = {
     outerContainer: {
       width: '100vw',
@@ -65,24 +65,23 @@ export default function FilterBar({
       width: '100%',
       height: '1px',
       background: '#e5e7eb',
-      marginBottom: '1.5rem'
+      marginBottom: '1rem'
     },
     container: {
       maxWidth: '1200px',
       margin: '0 auto',
-      padding: '0 2rem'
+      padding: '0 1rem'
     },
     filterRow: {
       display: 'flex',
-      alignItems: 'center',
-      gap: '1.5rem',
-      justifyContent: 'space-between' // CHANGED: Space between for Clear All placement
+      flexDirection: 'column' as const,
+      gap: '1rem'
     },
-    leftFilters: {
+    filterHeader: {
       display: 'flex',
       alignItems: 'center',
-      gap: '1.5rem',
-      flexWrap: 'wrap' as const
+      justifyContent: 'space-between',
+      gap: '1rem'
     },
     filterLabel: {
       display: 'flex',
@@ -91,73 +90,40 @@ export default function FilterBar({
       color: '#374151',
       fontWeight: 600,
       fontSize: '0.875rem',
-      fontFamily: 'Inter, system-ui, sans-serif', // FIXED: Explicit Inter font
+      fontFamily: 'Inter, system-ui, sans-serif',
       minWidth: 'fit-content'
     },
-    // DIFFERENT SIZES: Each select has its own width based on content
-    selectCountry: {
-      padding: '0.5rem 0.75rem',
-      border: '1px solid #d1d5db',
-      borderRadius: '6px',
-      fontSize: '0.875rem',
-      background: 'white',
-      color: '#374151',
-      cursor: 'pointer',
-      fontFamily: 'Inter, system-ui, sans-serif', // FIXED: Explicit Inter font
-      width: '140px', // Country names can be long
-      transition: 'all 0.2s ease'
+    filtersGrid: {
+      display: 'grid',
+      gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))',
+      gap: '0.75rem',
+      width: '100%'
     },
-    selectContinent: {
-      padding: '0.5rem 0.75rem',
+    select: {
+      padding: '0.75rem',
       border: '1px solid #d1d5db',
-      borderRadius: '6px',
+      borderRadius: '8px',
       fontSize: '0.875rem',
       background: 'white',
       color: '#374151',
       cursor: 'pointer',
       fontFamily: 'Inter, system-ui, sans-serif',
-      width: '120px', // Continents are shorter
-      transition: 'all 0.2s ease'
-    },
-    selectDifficulty: {
-      padding: '0.5rem 0.75rem',
-      border: '1px solid #d1d5db',
-      borderRadius: '6px',
-      fontSize: '0.875rem',
-      background: 'white',
-      color: '#374151',
-      cursor: 'pointer',
-      fontFamily: 'Inter, system-ui, sans-serif',
-      width: '110px', // Difficulty levels are short
-      transition: 'all 0.2s ease'
-    },
-    selectDuration: {
-      padding: '0.5rem 0.75rem',
-      border: '1px solid #d1d5db',
-      borderRadius: '6px',
-      fontSize: '0.875rem',
-      background: 'white',
-      color: '#374151',
-      cursor: 'pointer',
-      fontFamily: 'Inter, system-ui, sans-serif',
-      width: '100px', // Duration is short
-      transition: 'all 0.2s ease'
-    },
-    selectSeason: {
-      padding: '0.5rem 0.75rem',
-      border: '1px solid #d1d5db',
-      borderRadius: '6px',
-      fontSize: '0.875rem',
-      background: 'white',
-      color: '#374151',
-      cursor: 'pointer',
-      fontFamily: 'Inter, system-ui, sans-serif',
-      width: '100px', // Seasons are short
-      transition: 'all 0.2s ease'
-    },
+      width: '100%',
+      minWidth: '0',
+      transition: 'all 0.2s ease',
+      WebkitAppearance: 'none' as const,
+      MozAppearance: 'none' as const,
+      appearance: 'none' as const,
+      backgroundImage: `url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e")`,
+      backgroundRepeat: 'no-repeat' as const,
+      backgroundPosition: 'right 0.75rem center',
+      backgroundSize: '16px',
+      paddingRight: '2.5rem'
+    } as React.CSSProperties,
     selectHover: {
-      borderColor: 'var(--ds-primary)',
-      outline: 'none'
+      borderColor: 'var(--ds-primary, #3b82f6)',
+      outline: 'none',
+      boxShadow: '0 0 0 3px rgba(59, 130, 246, 0.1)'
     },
     clearText: {
       color: '#6b7280',
@@ -165,9 +131,9 @@ export default function FilterBar({
       fontWeight: 500,
       cursor: 'pointer',
       transition: 'color 0.2s ease',
-      fontFamily: 'Inter, system-ui, sans-serif', // FIXED: Explicit Inter font
+      fontFamily: 'Inter, system-ui, sans-serif',
       textDecoration: 'underline',
-      marginLeft: 'auto' // PUSH to the right
+      whiteSpace: 'nowrap' as const
     },
     clearTextHover: {
       color: '#374151'
@@ -176,7 +142,40 @@ export default function FilterBar({
       width: '100%',
       height: '1px',
       background: '#e5e7eb',
-      marginTop: '1.5rem'
+      marginTop: '1rem'
+    },
+    // Mobile-specific styles
+    '@media (max-width: 640px)': {
+      container: {
+        padding: '0 1rem'
+      },
+      filterHeader: {
+        flexDirection: 'column' as const,
+        alignItems: 'flex-start',
+        gap: '0.75rem'
+      },
+      filtersGrid: {
+        gridTemplateColumns: 'repeat(2, 1fr)',
+        gap: '0.5rem'
+      },
+      select: {
+        fontSize: '0.8125rem',
+        padding: '0.625rem'
+      },
+      filterLabel: {
+        fontSize: '0.8125rem'
+      },
+      clearText: {
+        fontSize: '0.8125rem',
+        alignSelf: 'flex-end'
+      }
+    },
+    // Extra small mobile
+    '@media (max-width: 480px)': {
+      filtersGrid: {
+        gridTemplateColumns: '1fr',
+        gap: '0.5rem'
+      }
     }
   };
 
@@ -188,23 +187,39 @@ export default function FilterBar({
       {/* Filter Content */}
       <div style={filterStyles.container}>
         <div style={filterStyles.filterRow}>
-          {/* Left Side: Filter Label + Dropdowns */}
-          <div style={filterStyles.leftFilters}>
-            {/* Filter Label with Icon */}
+          {/* Header with label and clear button */}
+          <div style={filterStyles.filterHeader}>
             <div style={filterStyles.filterLabel}>
               <Filter size={16} />
               <span>Filter Hikes</span>
             </div>
             
-            {/* Country Filter - Custom width */}
+            <span
+              onClick={onClearFilters}
+              style={filterStyles.clearText}
+              onMouseEnter={(e) => {
+                Object.assign(e.currentTarget.style, filterStyles.clearTextHover);
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.color = '#6b7280';
+              }}
+            >
+              Clear All
+            </span>
+          </div>
+
+          {/* Filters Grid */}
+          <div style={filterStyles.filtersGrid}>
+            {/* Country Filter */}
             <select 
-              style={filterStyles.selectCountry}
+              style={filterStyles.select}
               onChange={(e) => onFilterChange('country', e.target.value)}
               onFocus={(e) => {
                 Object.assign(e.currentTarget.style, filterStyles.selectHover);
               }}
               onBlur={(e) => {
                 e.currentTarget.style.borderColor = '#d1d5db';
+                e.currentTarget.style.boxShadow = 'none';
               }}
             >
               <option value="">Country</option>
@@ -213,15 +228,16 @@ export default function FilterBar({
               ))}
             </select>
 
-            {/* Continent Filter - Custom width */}
+            {/* Continent Filter */}
             <select 
-              style={filterStyles.selectContinent}
+              style={filterStyles.select}
               onChange={(e) => onFilterChange('continent', e.target.value)}
               onFocus={(e) => {
                 Object.assign(e.currentTarget.style, filterStyles.selectHover);
               }}
               onBlur={(e) => {
                 e.currentTarget.style.borderColor = '#d1d5db';
+                e.currentTarget.style.boxShadow = 'none';
               }}
             >
               <option value="">Continent</option>
@@ -230,15 +246,16 @@ export default function FilterBar({
               ))}
             </select>
 
-            {/* Difficulty Filter - Custom width */}
+            {/* Difficulty Filter */}
             <select 
-              style={filterStyles.selectDifficulty}
+              style={filterStyles.select}
               onChange={(e) => onFilterChange('difficulty', e.target.value)}
               onFocus={(e) => {
                 Object.assign(e.currentTarget.style, filterStyles.selectHover);
               }}
               onBlur={(e) => {
                 e.currentTarget.style.borderColor = '#d1d5db';
+                e.currentTarget.style.boxShadow = 'none';
               }}
             >
               <option value="">Difficulty</option>
@@ -247,15 +264,16 @@ export default function FilterBar({
               ))}
             </select>
 
-            {/* Duration Filter - Custom width */}
+            {/* Duration Filter */}
             <select 
-              style={filterStyles.selectDuration}
+              style={filterStyles.select}
               onChange={(e) => onFilterChange('length', e.target.value)}
               onFocus={(e) => {
                 Object.assign(e.currentTarget.style, filterStyles.selectHover);
               }}
               onBlur={(e) => {
                 e.currentTarget.style.borderColor = '#d1d5db';
+                e.currentTarget.style.boxShadow = 'none';
               }}
             >
               <option value="">Duration</option>
@@ -264,15 +282,16 @@ export default function FilterBar({
               ))}
             </select>
 
-            {/* Season Filter - Custom width with sorted months */}
+            {/* Season Filter */}
             <select 
-              style={filterStyles.selectSeason}
+              style={filterStyles.select}
               onChange={(e) => onFilterChange('month', e.target.value)}
               onFocus={(e) => {
                 Object.assign(e.currentTarget.style, filterStyles.selectHover);
               }}
               onBlur={(e) => {
                 e.currentTarget.style.borderColor = '#d1d5db';
+                e.currentTarget.style.boxShadow = 'none';
               }}
             >
               <option value="">Season</option>
@@ -281,25 +300,46 @@ export default function FilterBar({
               ))}
             </select>
           </div>
-
-          {/* Right Side: Clear All Text */}
-          <span
-            onClick={onClearFilters}
-            style={filterStyles.clearText}
-            onMouseEnter={(e) => {
-              Object.assign(e.currentTarget.style, filterStyles.clearTextHover);
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.color = '#6b7280';
-            }}
-          >
-            Clear All
-          </span>
         </div>
       </div>
       
       {/* Bottom Line - Full Width */}
       <div style={filterStyles.bottomLine}></div>
+      
+      <style jsx>{`
+        @media (max-width: 640px) {
+          .filter-container {
+            padding: 0 1rem;
+          }
+          .filter-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.75rem;
+          }
+          .filters-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.5rem;
+          }
+          .filter-select {
+            font-size: 0.8125rem;
+            padding: 0.625rem;
+          }
+          .filter-label {
+            font-size: 0.8125rem;
+          }
+          .clear-text {
+            font-size: 0.8125rem;
+            align-self: flex-end;
+          }
+        }
+        
+        @media (max-width: 480px) {
+          .filters-grid {
+            grid-template-columns: 1fr;
+            gap: 0.5rem;
+          }
+        }
+      `}</style>
     </div>
   );
 }

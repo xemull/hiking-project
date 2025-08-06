@@ -14,12 +14,13 @@ export default function Footer() {
       background: 'var(--ds-off-white)',
       borderTop: '1px solid var(--ds-border)',
       padding: '3rem 0 2rem 0',
-      marginTop: '4rem'
+      marginTop: '4rem',
+      overflow: 'hidden' // Prevent horizontal scroll
     },
     contentWrapper: {
       maxWidth: '1200px',
       margin: '0 auto',
-      padding: '0 2rem'
+      padding: '0 1rem' // Reduced padding for mobile
     },
     footerGrid: {
       display: 'grid',
@@ -135,7 +136,7 @@ export default function Footer() {
     <>
       <footer style={styles.footerContainer}>
         <div style={styles.contentWrapper}>
-          <div style={styles.footerGrid}>
+          <div style={styles.footerGrid} className="footer-grid">
             
             {/* Brand Section */}
             <div style={styles.brandSection}>
@@ -217,7 +218,7 @@ export default function Footer() {
               <div style={styles.contactItem}>
                 <Mail size={16} />
                 <a 
-                  href="mailto:hello@trailhead.com" 
+                  href="mailto:hello@trailhead.at" 
                   style={styles.footerLink}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.color = 'var(--ds-foreground)';
@@ -226,7 +227,7 @@ export default function Footer() {
                     e.currentTarget.style.color = 'var(--ds-muted-foreground)';
                   }}
                 >
-                  hello@trailhead.com
+                  hello@trailhead.at
                 </a>
               </div>
               
@@ -245,13 +246,57 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Responsive CSS */}
+        {/* Improved Mobile CSS */}
         <style dangerouslySetInnerHTML={{
           __html: `
             @media (max-width: 768px) {
               .footer-grid {
                 grid-template-columns: 1fr !important;
                 gap: 2rem !important;
+                text-align: center;
+              }
+              
+              .footer-grid > div:first-child {
+                text-align: center;
+                align-items: center;
+              }
+              
+              .footer-grid > div:first-child p {
+                max-width: none !important;
+                margin-left: auto !important;
+                margin-right: auto !important;
+              }
+              
+              .footer-grid > div:first-child > div:last-child {
+                justify-content: center !important;
+              }
+              
+              .footer-grid > div:nth-child(2),
+              .footer-grid > div:nth-child(3) {
+                text-align: center;
+                align-items: center;
+              }
+              
+              .footer-grid > div:nth-child(2) > div:last-child {
+                align-items: center !important;
+              }
+              
+              .footer-grid > div:nth-child(2) button {
+                text-align: center !important;
+              }
+              
+              .footer-grid > div:nth-child(3) > div:first-child {
+                justify-content: center !important;
+              }
+              
+              .footer-grid > div:nth-child(3) > div:first-child a {
+                text-align: center !important;
+              }
+            }
+            
+            @media (max-width: 480px) {
+              .footer-grid {
+                gap: 1.5rem !important;
               }
             }
           `
