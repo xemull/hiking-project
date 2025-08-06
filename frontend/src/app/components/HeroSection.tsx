@@ -10,7 +10,7 @@ export default function HeroSection() {
     });
   };
 
-  // Updated styles with lighter overlay
+  // Updated styles with consistent typography
   const heroStyles = {
     section: {
       position: 'relative' as const,
@@ -41,7 +41,7 @@ export default function HeroSection() {
       width: '100%',
       height: '100%',
       background: 'var(--gradient-hero)',
-      opacity: 0.6, // CHANGED: Reduced from 0.8 to 0.6 for lighter overlay
+      opacity: 0.6,
       zIndex: 1
     },
     darkOverlay: {
@@ -50,7 +50,7 @@ export default function HeroSection() {
       left: 0,
       width: '100%',
       height: '100%',
-      background: 'rgba(0, 0, 0, 0.1)', // CHANGED: Reduced from 0.2 to 0.1
+      background: 'rgba(0, 0, 0, 0.1)',
       zIndex: 2
     },
     content: {
@@ -59,40 +59,19 @@ export default function HeroSection() {
       textAlign: 'center' as const,
       color: 'var(--ds-primary-foreground)',
       maxWidth: '800px',
-      padding: '0 2rem',
+      padding: '0 var(--space-xl)',
       marginTop: '-10vh'
-    },
-    title: {
-      fontFamily: 'Inter, system-ui, sans-serif', // CONFIRMED: Inter font
-      fontSize: 'clamp(3rem, 8vw, 6rem)',
-      fontWeight: 300,
-      marginBottom: '1.5rem',
-      letterSpacing: '2px',
-      textShadow: '0 4px 8px rgba(0, 0, 0, 0.3)',
-      lineHeight: 1.1
-    },
-    subtitle: {
-      fontFamily: 'Inter, system-ui, sans-serif', // CONFIRMED: Inter font
-      fontSize: 'clamp(1.1rem, 2.5vw, 1.4rem)',
-      fontWeight: 300,
-      marginBottom: '3rem',
-      lineHeight: 1.6,
-      textShadow: '0 2px 4px rgba(0, 0, 0, 0.5)',
-      maxWidth: '600px',
-      marginLeft: 'auto',
-      marginRight: 'auto',
-      opacity: 0.95
     },
     button: {
       display: 'inline-flex',
       alignItems: 'center',
-      padding: '1rem 2.5rem',
-      background: 'var(--ds-accent)', // Now ochre yellow
+      padding: 'var(--space-md) var(--space-2xl)',
+      background: 'var(--ds-accent)',
       border: '2px solid transparent',
-      color: 'var(--ds-accent-foreground)', // Now black text
+      color: 'var(--ds-accent-foreground)',
       textDecoration: 'none',
-      fontFamily: 'Inter, system-ui, sans-serif', // CONFIRMED: Inter font
-      fontSize: '1.1rem',
+      fontFamily: 'Inter, system-ui, sans-serif',
+      fontSize: 'var(--text-base)',
       fontWeight: 600,
       letterSpacing: '1px',
       borderRadius: '50px',
@@ -105,7 +84,7 @@ export default function HeroSection() {
       boxShadow: '0 15px 50px rgba(0, 0, 0, 0.3)'
     },
     arrow: {
-      marginLeft: '0.5rem',
+      marginLeft: 'var(--space-xs)',
       width: '1.25rem',
       height: '1.25rem',
       transition: 'transform 0.3s ease'
@@ -122,15 +101,15 @@ export default function HeroSection() {
       <div style={heroStyles.darkOverlay}></div>
       
       <div style={heroStyles.content}>
-        {/* CONFIRMED: Inter font, light weight */}
-        <h1 style={heroStyles.title}>Path Unfolding.</h1>
+        {/* Use consistent CSS class for hero title */}
+        <h1 className="hero-title">Path Unfolding.</h1>
         
-        {/* CONFIRMED: Inter font, light weight */}
-        <p style={heroStyles.subtitle}>
+        {/* Use consistent CSS class for hero subtitle */}
+        <p className="hero-subtitle">
           Discover unforgettable multi-day journeys, with all the essential information at your fingertips.
         </p>
         
-        {/* CONFIRMED: Inter font, semi-bold weight */}
+        {/* Updated button with consistent spacing */}
         <button 
           onClick={scrollToFeatured} 
           style={heroStyles.button}
@@ -162,7 +141,7 @@ export default function HeroSection() {
         </button>
       </div>
       
-      {/* Responsive Styles */}
+      {/* Responsive Styles with consistent breakpoints */}
       <style jsx>{`
         @media (max-width: 768px) {
           section {
