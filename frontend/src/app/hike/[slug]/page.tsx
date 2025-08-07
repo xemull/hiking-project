@@ -89,178 +89,29 @@ export default async function HikeDetailPage({ params }: { params: Promise<{ slu
         : `${countryNames.slice(0, -1).join(', ')} & ${countryNames[countryNames.length - 1]}`
     : '';
 
-  const styles = {
-    heroSection: {
-      position: 'relative' as const,
-      width: '100%',
-      height: '70vh',
-      minHeight: '500px',
-      background: heroImageUrl ? 'transparent' : 'var(--gradient-hero)',
-      display: 'flex',
-      alignItems: 'flex-end',
-      justifyContent: 'flex-start'
-    },
-    heroOverlay: {
-      position: 'absolute' as const,
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      background: 'linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.7) 100%)',
-      zIndex: 1
-    },
-    heroContent: {
-      position: 'relative' as const,
-      zIndex: 2,
-      color: 'white',
-      padding: '0 2rem 3rem 2rem'
-    },
-    heroTitle: {
-      fontFamily: 'Inter, system-ui, sans-serif',
-      fontSize: 'clamp(2.5rem, 5vw, 4rem)',
-      fontWeight: 700,
-      lineHeight: 1.1,
-      textShadow: '0 4px 20px rgba(0,0,0,0.3)'
-    },
-    mainContainer: {
-      background: 'var(--ds-background)',
-      minHeight: '50vh'
-    },
-    contentWrapper: {
-      maxWidth: '1200px',
-      margin: '0 auto',
-      padding: '0 2rem'
-    },
-    statsGrid: {
-      display: 'grid',
-      gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-      gap: '1rem',
-      marginBottom: '3rem'
-    },
-    statCard: {
-      background: 'white',
-      padding: '1.5rem',
-      borderRadius: '6px',
-      textAlign: 'center' as const,
-      border: '1px solid var(--ds-border)'
-    },
-    statIcon: {
-      width: '24px',
-      height: '24px',
-      color: 'var(--ds-primary)',
-      margin: '0 auto 0.75rem auto'
-    },
-    statLabel: {
-      fontSize: '0.875rem',
-      color: 'var(--ds-muted-foreground)',
-      marginBottom: '0.25rem',
-      fontWeight: 500
-    },
-    statValue: {
-      fontSize: '1.125rem',
-      fontWeight: 600,
-      color: 'var(--ds-foreground)'
-    },
-    tagsSection: {
-      display: 'grid',
-      gridTemplateColumns: '1fr 1fr 1fr',
-      gap: '2rem',
-      marginBottom: '3rem'
-    },
-    tagColumn: {
-      textAlign: 'center' as const
-    },
-    tagColumnTitle: {
-      fontSize: '1rem',
-      fontWeight: 600,
-      color: 'var(--ds-foreground)',
-      marginBottom: '1rem'
-    },
-    tagList: {
-      display: 'flex',
-      gap: '0.5rem',
-      flexWrap: 'wrap' as const,
-      justifyContent: 'center'
-    },
-    tag: {
-      color: 'var(--ds-muted-foreground)',
-      fontSize: '0.875rem',
-      fontWeight: 400,
-      fontFamily: 'Inter, system-ui, sans-serif'
-    },
-    tagSeparator: {
-      margin: '0 0.5rem',
-      color: 'var(--ds-muted-foreground)',
-      opacity: 0.6
-    },
-    contentGrid: {
-      display: 'grid',
-      gridTemplateColumns: '2fr 1fr',
-      gap: '3rem',
-      alignItems: 'flex-start'
-    },
-    mainContent: {
-      display: 'flex',
-      flexDirection: 'column' as const,
-      gap: '3rem'
-    },
-    section: {
-      background: 'transparent',
-      padding: '0'
-    },
-    sectionTitle: {
-      fontFamily: 'Inter, system-ui, sans-serif',
-      fontSize: '1.75rem',
-      fontWeight: 600,
-      color: 'var(--ds-foreground)',
-      marginBottom: '1.5rem',
-      paddingBottom: '0.75rem',
-      borderBottom: '2px solid var(--ds-border)'
-    },
-    proseContent: {
-      fontFamily: 'Inter, system-ui, sans-serif',
-      fontSize: '1rem',
-      lineHeight: 1.7,
-      color: '#4a5568'
-    },
-    sidebar: {
-      display: 'flex',
-      flexDirection: 'column' as const,
-      gap: '2rem',
-      position: 'sticky' as const,
-      top: '2rem'
-    },
-    sidebarCard: {
-      background: 'transparent',
-      padding: '0',
-      borderRadius: '0',
-      boxShadow: 'none',
-      border: 'none',
-      marginBottom: '2rem'
-    },
-    sidebarTitle: {
-      fontSize: '1.125rem',
-      fontWeight: 600,
-      marginBottom: '1rem',
-      color: 'var(--ds-foreground)'
-    }
-  };
-
   // Helper function to get icon for stats
   const getStatIcon = (type: string) => {
+    const iconStyle = {
+      width: '20px',
+      height: '20px',
+      color: 'var(--ds-primary)',
+      margin: '0 auto 0.5rem auto',
+      display: 'block'
+    };
+    
     switch (type) {
       case 'distance':
-        return <Route style={styles.statIcon} />;
+        return <Route style={iconStyle} />;
       case 'elevation':
-        return <TrendingUp style={styles.statIcon} />;
+        return <TrendingUp style={iconStyle} />;
       case 'difficulty':
-        return <AlertTriangle style={styles.statIcon} />;
+        return <AlertTriangle style={iconStyle} />;
       case 'route':
-        return <Mountain style={styles.statIcon} />;
+        return <Mountain style={iconStyle} />;
       case 'country':
-        return <MapPin style={styles.statIcon} />;
+        return <MapPin style={iconStyle} />;
       default:
-        return <Route style={styles.statIcon} />;
+        return <Route style={iconStyle} />;
     }
   };
 
@@ -269,8 +120,8 @@ export default async function HikeDetailPage({ params }: { params: Promise<{ slu
       {/* Navigation */}
       <Navigation />
       
-      {/* Hero Section */}
-      <div style={styles.heroSection}>
+      {/* Hero Section - Responsive Height */}
+      <div className="hike-hero">
         {heroImageUrl && (
           <Image
             src={heroImageUrl}
@@ -283,255 +134,523 @@ export default async function HikeDetailPage({ params }: { params: Promise<{ slu
         )}
         
         {/* Overlay */}
-        <div style={styles.heroOverlay}></div>
+        <div className="hero-overlay"></div>
 
-        {/* Hero Content - Bottom Left */}
-        <div style={styles.heroContent}>
-          <h1 style={styles.heroTitle}>{title}</h1>
+        {/* Hero Content */}
+        <div className="hero-content">
+          <h1 className="hero-title">{title}</h1>
         </div>
       </div>
 
       {/* Main Content */}
-      <div style={styles.mainContainer}>
-        <div style={styles.contentWrapper}>
-          <div style={{ padding: '3rem 0' }}>
+      <div style={{ background: 'var(--ds-background)', minHeight: '50vh' }}>
+        <div className="content-wrapper">
+          <div style={{ padding: '2rem 0' }}>
           
-          {/* Inline Back Button */}
-          <InlineBackButton />
-          
-          {/* Stats Grid - Including Country */}
-          <div style={styles.statsGrid}>
-            {primaryCountry && (
-              <div style={styles.statCard}>
-                {getStatIcon('country')}
-                <div style={styles.statLabel}>Country</div>
-                <div style={styles.statValue}>{primaryCountry}</div>
-              </div>
-            )}
-            {Length && (
-              <div style={styles.statCard}>
-                {getStatIcon('distance')}
-                <div style={styles.statLabel}>Distance</div>
-                <div style={styles.statValue}>{Length} km</div>
-              </div>
-            )}
-            {Elevation_gain && (
-              <div style={styles.statCard}>
-                {getStatIcon('elevation')}
-                <div style={styles.statLabel}>Elevation Gain</div>
-                <div style={styles.statValue}>{Elevation_gain.toLocaleString()} m</div>
-              </div>
-            )}
-            {Difficulty && (
-              <div style={styles.statCard}>
-                {getStatIcon('difficulty')}
-                <div style={styles.statLabel}>Difficulty</div>
-                <div style={styles.statValue}>{Difficulty}</div>
-              </div>
-            )}
-            {routeType && (
-              <div style={styles.statCard}>
-                {getStatIcon('route')}
-                <div style={styles.statLabel}>Route Type</div>
-                <div style={styles.statValue}>{routeType}</div>
-              </div>
-            )}
-          </div>
+            {/* Inline Back Button */}
+            <InlineBackButton />
+            
+            {/* Stats Grid - Mobile Responsive */}
+            <div className="stats-grid">
+              {primaryCountry && (
+                <div className="stat-card">
+                  {getStatIcon('country')}
+                  <div className="stat-label">Country</div>
+                  <div className="stat-value">{primaryCountry}</div>
+                </div>
+              )}
+              {Length && (
+                <div className="stat-card">
+                  {getStatIcon('distance')}
+                  <div className="stat-label">Distance</div>
+                  <div className="stat-value">{Length} km</div>
+                </div>
+              )}
+              {Elevation_gain && (
+                <div className="stat-card">
+                  {getStatIcon('elevation')}
+                  <div className="stat-label">Elevation</div>
+                  <div className="stat-value">{Elevation_gain.toLocaleString()} m</div>
+                </div>
+              )}
+              {Difficulty && (
+                <div className="stat-card">
+                  {getStatIcon('difficulty')}
+                  <div className="stat-label">Difficulty</div>
+                  <div className="stat-value">{Difficulty}</div>
+                </div>
+              )}
+              {routeType && (
+                <div className="stat-card">
+                  {getStatIcon('route')}
+                  <div className="stat-label">Type</div>
+                  <div className="stat-value">{routeType}</div>
+                </div>
+              )}
+            </div>
 
-          {/* Tags Section - Three Columns */}
-          <div style={styles.tagsSection}>
-            {/* Scenery Column */}
-            <div style={styles.tagColumn}>
-              <h3 style={styles.tagColumnTitle}>Scenery</h3>
-              <div style={styles.tagList}>
-                {sceneries && sceneries.length > 0 ? (
-                  sceneries.map((scenery, index) => (
-                    <span key={`scenery-${scenery.id}`}>
-                      <span style={styles.tag}>{scenery.SceneryType}</span>
-                      {index < sceneries.length - 1 && <span style={styles.tagSeparator}>•</span>}
-                    </span>
-                  ))
-                ) : (
-                  <span style={{ ...styles.tag, opacity: 0.5 }}>Not specified</span>
-                )}
+            {/* Tags Section - Mobile Responsive */}
+            <div className="tags-section">
+              {/* Scenery */}
+              <div className="tag-group">
+                <h3 className="tag-group-title">Scenery</h3>
+                <div className="tag-list">
+                  {sceneries && sceneries.length > 0 ? (
+                    sceneries.map((scenery, index) => (
+                      <span key={`scenery-${scenery.id}`} className="tag">
+                        {scenery.SceneryType}
+                      </span>
+                    ))
+                  ) : (
+                    <span className="tag tag-empty">Not specified</span>
+                  )}
+                </div>
               </div>
-            </div>
-            
-            {/* Best Time Column */}
-            <div style={styles.tagColumn}>
-              <h3 style={styles.tagColumnTitle}>Best Time to Visit</h3>
-              <div style={styles.tagList}>
-                {Best_time ? (
-                  <span style={styles.tag}>{Best_time}</span>
-                ) : (
-                  <span style={{ ...styles.tag, opacity: 0.5 }}>Not specified</span>
-                )}
-              </div>
-            </div>
-            
-            {/* Accommodation Column */}
-            <div style={styles.tagColumn}>
-              <h3 style={styles.tagColumnTitle}>Accommodation</h3>
-              <div style={styles.tagList}>
-                {accommodations && accommodations.length > 0 ? (
-                  accommodations.map((accommodation, index) => (
-                    <span key={`accommodation-${accommodation.id}`}>
-                      <span style={styles.tag}>{accommodation.AccommodationType}</span>
-                      {index < accommodations.length - 1 && <span style={styles.tagSeparator}>•</span>}
-                    </span>
-                  ))
-                ) : (
-                  <span style={{ ...styles.tag, opacity: 0.5 }}>Not specified</span>
-                )}
-              </div>
-            </div>
-          </div>
-
-          {/* Content Grid */}
-          <div style={styles.contentGrid}>
-            
-            {/* Main Content */}
-            <div style={styles.mainContent}>
               
-              {/* Description Section */}
-              {Description && (
-                <div style={styles.section}>
-                  <h2 style={styles.sectionTitle}>Description</h2>
-                  <div style={styles.proseContent} className="prose-custom">
-                    <StrapiRichText content={Description} />
+              {/* Best Time */}
+              <div className="tag-group">
+                <h3 className="tag-group-title">Best Time</h3>
+                <div className="tag-list">
+                  {Best_time ? (
+                    <span className="tag">{Best_time}</span>
+                  ) : (
+                    <span className="tag tag-empty">Not specified</span>
+                  )}
+                </div>
+              </div>
+              
+              {/* Accommodation */}
+              <div className="tag-group">
+                <h3 className="tag-group-title">Stay</h3>
+                <div className="tag-list">
+                  {accommodations && accommodations.length > 0 ? (
+                    accommodations.map((accommodation, index) => (
+                      <span key={`accommodation-${accommodation.id}`} className="tag">
+                        {accommodation.AccommodationType}
+                      </span>
+                    ))
+                  ) : (
+                    <span className="tag tag-empty">Not specified</span>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Content Layout - Desktop: Grid, Mobile: Stack */}
+            <div className="content-layout">
+              
+              {/* Main Content */}
+              <div className="main-content">
+                
+                {/* Description Section */}
+                {Description && (
+                  <div className="content-section">
+                    <h2 className="section-title">Description</h2>
+                    <div className="prose-content">
+                      <StrapiRichText content={Description} />
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
 
-              {/* Route Section */}
-              {track && (
-                <div style={styles.section}>
-                  <h2 style={styles.sectionTitle}>Route</h2>
-                  <div style={{ width: '100%', height: '400px', borderRadius: '8px', overflow: 'hidden' }}>
-                    <Map track={track} />
+                {/* Route Section */}
+                {track && (
+                  <div className="content-section">
+                    <h2 className="section-title">Route</h2>
+                    <div className="map-container">
+                      <Map track={track} />
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
 
-              {/* Elevation Section */}
-              {simplified_profile && simplified_profile.length > 0 && (
-                <div style={styles.section}>
-                  <h2 style={styles.sectionTitle}>Elevation</h2>
-                  <ElevationProfile 
-                    data={simplified_profile} 
-                    landmarks={content.landmarks}
-                    height="320px"
-                  />
-                </div>
-              )}
-
-              {/* Getting There Section */}
-              {Logistics && (
-                <div style={styles.section}>
-                  <h2 style={styles.sectionTitle}>Getting There & Back</h2>
-                  <div style={styles.proseContent} className="prose-custom">
-                    <StrapiRichText content={Logistics} />
+                {/* Elevation Section */}
+                {simplified_profile && simplified_profile.length > 0 && (
+                  <div className="content-section">
+                    <h2 className="section-title">Elevation</h2>
+                    <ElevationProfile 
+                      data={simplified_profile} 
+                      landmarks={content.landmarks}
+                      height="320px"
+                    />
                   </div>
-                </div>
-              )}
+                )}
 
-              {/* Accommodation Section */}
-              {Accommodation && (
-                <div style={styles.section}>
-                  <h2 style={styles.sectionTitle}>Accommodation</h2>
-                  <div style={styles.proseContent} className="prose-custom">
-                    <StrapiRichText content={Accommodation} />
+                {/* Getting There Section */}
+                {Logistics && (
+                  <div className="content-section">
+                    <h2 className="section-title">Getting There & Back</h2>
+                    <div className="prose-content">
+                      <StrapiRichText content={Logistics} />
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
 
-              {/* Comments Section */}
-              <div style={styles.section}>
-                <CommentsSection 
-                  hikeId={slug} 
-                  hikeTitle={content.title}
-                />
+                {/* Accommodation Section */}
+                {Accommodation && (
+                  <div className="content-section">
+                    <h2 className="section-title">Accommodation</h2>
+                    <div className="prose-content">
+                      <StrapiRichText content={Accommodation} />
+                    </div>
+                  </div>
+                )}
               </div>
 
+              {/* Sidebar - Desktop Only, Mobile: Below Main Content */}
+              <div className="sidebar">
+                
+                {/* Guidebooks */}
+                {Books && Books.length > 0 && (
+                  <div className="sidebar-section">
+                    <h3 className="sidebar-title">Guidebooks</h3>
+                    <div className="sidebar-content">
+                      {Books.map((book) => (
+                        <BookCard key={book.id} book={book} />
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Videos */}
+                {Videos && Videos.length > 0 && (
+                  <div className="sidebar-section">
+                    <h3 className="sidebar-title">Videos</h3>
+                    <div className="sidebar-content">
+                      {Videos.map((video) => (
+                        <VideoEmbed key={video.id} video={video} />
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Blogs */}
+                {Blogs && Blogs.length > 0 && (
+                  <div className="sidebar-section">
+                    <h3 className="sidebar-title">Related Articles</h3>
+                    <BlogList blogs={Blogs} />
+                  </div>
+                )}
+
+              </div>
             </div>
 
-            {/* Right Sidebar */}
-            <div style={styles.sidebar}>
-              
-              {/* Guidebooks */}
-              {Books && Books.length > 0 && (
-                <div style={styles.sidebarCard}>
-                  <h3 style={styles.sidebarTitle}>Guidebooks</h3>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                    {Books.map((book) => (
-                      <BookCard key={book.id} book={book} />
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Videos */}
-              {Videos && Videos.length > 0 && (
-                <div style={styles.sidebarCard}>
-                  <h3 style={styles.sidebarTitle}>Videos</h3>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                    {Videos.map((video) => (
-                      <VideoEmbed key={video.id} video={video} />
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Blogs */}
-              {Blogs && Blogs.length > 0 && (
-                <div style={styles.sidebarCard}>
-                  <h3 style={styles.sidebarTitle}>Related Articles</h3>
-                  <BlogList blogs={Blogs} />
-                </div>
-              )}
-
+            {/* Comments Section - Full Width */}
+            <div className="content-section">
+              <CommentsSection 
+                hikeId={slug} 
+                hikeTitle={content.title}
+              />
             </div>
-          </div>
+
           </div>
         </div>
       </div>
-      <Footer />  {/* Add this line */}
+      <Footer />
 
-      {/* Custom CSS for prose styling */}
+      {/* Responsive CSS */}
       <style dangerouslySetInnerHTML={{
         __html: `
-          .prose-custom p {
-            margin-bottom: 1.25rem;
-            padding: 1rem 0;
-            border-left: 3px solid #e2e8f0;
-            padding-left: 1.5rem;
+          /* Hero Section - Responsive */
+          .hike-hero {
+            position: relative;
+            width: 100%;
+            height: 50vh; /* Reduced from 70vh */
+            min-height: 300px; /* Reduced from 500px */
+            background: var(--gradient-hero);
+            display: flex;
+            align-items: flex-end;
+            justify-content: flex-start;
           }
-          .prose-custom p:not(:last-child) {
-            border-bottom: 1px solid #f1f5f9;
-            padding-bottom: 1.5rem;
+          
+          .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.7) 100%);
+            z-index: 1;
+          }
+          
+          .hero-content {
+            position: relative;
+            z-index: 2;
+            color: white;
+            padding: 0 1rem 2rem 1rem; /* Reduced padding */
+            width: 100%;
+          }
+          
+          .hero-title {
+            font-family: 'Inter', system-ui, sans-serif;
+            font-size: var(--text-3xl); /* Mobile: 30px */
+            font-weight: 700;
+            line-height: 1.1;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            margin: 0;
+          }
+          
+          /* Content Wrapper */
+          .content-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+          }
+          
+          /* Stats Grid - Mobile Responsive */
+          .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* 2 columns on mobile */
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+          }
+          
+          .stat-card {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid var(--ds-border);
+            box-shadow: var(--shadow-soft);
+          }
+          
+          .stat-label {
+            font-size: var(--text-xs);
+            color: var(--ds-muted-foreground);
+            margin-bottom: 0.25rem;
+            font-weight: 500;
+          }
+          
+          .stat-value {
+            font-size: var(--text-sm);
+            font-weight: 600;
+            color: var(--ds-foreground);
+          }
+          
+          /* Tags Section - Mobile Stack */
+          .tags-section {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+            text-align: center;
+          }
+          
+          .tag-group {
+            text-align: center;
+          }
+          
+          .tag-group-title {
+            font-size: var(--text-base);
+            font-weight: 600;
+            color: var(--ds-foreground);
+            margin-bottom: 0.75rem;
+          }
+          
+          .tag-list {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            justify-content: center;
+          }
+          
+          .tag {
+            background: var(--ds-muted);
+            color: var(--ds-foreground);
+            padding: 0.25rem 0.75rem;
+            border-radius: 16px;
+            font-size: var(--text-xs);
+            font-weight: 500;
+          }
+          
+          .tag-empty {
+            opacity: 0.6;
+          }
+          
+          /* Content Layout - Mobile Stack */
+          .content-layout {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+          }
+          
+          .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 2.5rem;
+          }
+          
+          .content-section {
+            background: transparent;
+            padding: 0;
+          }
+          
+          .section-title {
+            font-family: 'Inter', system-ui, sans-serif;
+            font-size: var(--text-xl);
+            font-weight: 600;
+            color: var(--ds-foreground);
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--ds-border);
+          }
+          
+          /* Prose Content - Mobile Optimized */
+          .prose-content {
+            font-family: 'Inter', system-ui, sans-serif;
+            font-size: var(--text-base);
+            line-height: 1.7;
+            color: var(--ds-foreground);
+          }
+          
+          /* Remove left border on mobile */
+          .prose-content p {
+            margin-bottom: 1.25rem;
+            padding: 0; /* Remove padding */
+            border-left: none; /* Remove left border */
+            padding-left: 0; /* Remove left padding */
+          }
+          
+          .prose-content p:not(:last-child) {
+            border-bottom: 1px solid var(--ds-border);
+            padding-bottom: 1rem;
             margin-bottom: 1.5rem;
           }
-          .prose-custom ul {
+          
+          .prose-content ul {
             margin: 0;
-            padding: 1rem 0;
-            border-left: 3px solid #e2e8f0;
-            padding-left: 1.5rem;
+            padding: 0; /* Remove padding */
+            border-left: none; /* Remove left border */
+            padding-left: 1rem; /* Just basic list padding */
             margin-bottom: 1.25rem;
           }
-          .prose-custom li {
+          
+          .prose-content li {
             margin-bottom: 0.5rem;
-            color: #4a5568;
+            color: var(--ds-foreground);
             font-family: 'Inter', system-ui, sans-serif;
             line-height: 1.7;
           }
-          .prose-custom ul li {
+          
+          .prose-content ul li {
             list-style-type: disc;
-            margin-left: 1rem;
           }
-          .prose-custom p + ul {
-            margin-top: -1rem;
-            border-top: none;
-            padding-top: 0;
+          
+          /* Map Container */
+          .map-container {
+            width: 100%;
+            height: 300px; /* Smaller on mobile */
+            border-radius: 8px;
+            overflow: hidden;
+          }
+          
+          /* Sidebar - Mobile Below Content */
+          .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+          }
+          
+          .sidebar-section {
+            background: transparent;
+            padding: 0;
+            margin-bottom: 1.5rem;
+          }
+          
+          .sidebar-title {
+            font-size: var(--text-lg);
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--ds-foreground);
+          }
+          
+          .sidebar-content {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+          }
+          
+          /* Tablet Adjustments */
+          @media (min-width: 768px) {
+            .hike-hero {
+              height: 60vh;
+              min-height: 400px;
+            }
+            
+            .hero-content {
+              padding: 0 2rem 3rem 2rem;
+            }
+            
+            .hero-title {
+              font-size: var(--text-4xl); /* Desktop: 48px */
+            }
+            
+            .content-wrapper {
+              padding: 0 2rem;
+            }
+            
+            .stats-grid {
+              grid-template-columns: repeat(3, 1fr); /* 3 columns on tablet */
+              gap: 1rem;
+            }
+            
+            .stat-card {
+              padding: 1.25rem;
+            }
+            
+            .stat-label {
+              font-size: var(--text-sm);
+            }
+            
+            .stat-value {
+              font-size: var(--text-base);
+            }
+            
+            .tags-section {
+              flex-direction: row;
+              justify-content: space-between;
+              text-align: center;
+            }
+            
+            .tag-group {
+              flex: 1;
+            }
+            
+            .section-title {
+              font-size: var(--text-2xl);
+            }
+            
+            .map-container {
+              height: 400px;
+            }
+            
+            /* Restore left borders on desktop for prose */
+            .prose-content p {
+              border-left: 3px solid var(--ds-border);
+              padding-left: 1.5rem;
+            }
+            
+            .prose-content ul {
+              border-left: 3px solid var(--ds-border);
+              padding-left: 1.5rem;
+            }
+          }
+          
+          /* Desktop Layout */
+          @media (min-width: 1024px) {
+            .stats-grid {
+              grid-template-columns: repeat(5, 1fr); /* 5 columns on desktop */
+            }
+            
+            .content-layout {
+              display: grid;
+              grid-template-columns: 2fr 1fr;
+              gap: 3rem;
+              align-items: flex-start;
+            }
+            
+            .sidebar {
+              position: sticky;
+              top: 2rem;
+            }
           }
         `
       }} />

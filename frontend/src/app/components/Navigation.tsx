@@ -2,8 +2,9 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { Menu, X, Mountain } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 
 const Navigation = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -35,14 +36,7 @@ const Navigation = () => {
       transition: 'all 0.3s ease'
     },
     logo: {
-      color: 'var(--ds-primary)',
       transition: 'all 0.3s ease'
-    },
-    logoText: {
-      fontSize: '1.25rem',
-      fontWeight: 600,
-      transition: 'all 0.3s ease',
-      fontFamily: 'Inter, system-ui, sans-serif'
     },
     navLink: {
       padding: '0.5rem 0.75rem',
@@ -91,13 +85,21 @@ const Navigation = () => {
           {/* Logo */}
           <Link 
             href="/" 
-            className="flex items-center space-x-2 hover:opacity-80 transition-opacity"
+            className="hover:opacity-80 transition-opacity"
             style={navStyles.logo}
           >
-            <Mountain className="h-6 w-6" />
-            <span style={navStyles.logoText}>
-              Trailhead
-            </span>
+            <Image
+              src="/trailhead-logo.png"
+              alt="Trailhead"
+              width={1080}
+              height={405}
+              priority
+              style={{
+                height: 'auto',
+                maxHeight: '28px',
+                width: 'auto'
+              }}
+            />
           </Link>
 
           {/* Desktop Navigation - Bolder text, no active underline */}

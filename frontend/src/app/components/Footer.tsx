@@ -3,7 +3,8 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { Mountain, Heart, Mail } from 'lucide-react';
+import Image from 'next/image';
+import { Heart, Mail } from 'lucide-react';
 import NewsletterModal from './NewsletterModal';
 
 export default function Footer() {
@@ -35,18 +36,8 @@ export default function Footer() {
     logo: {
       display: 'flex',
       alignItems: 'center',
-      gap: '0.5rem',
       marginBottom: '1rem',
-      color: 'var(--ds-foreground)',
       textDecoration: 'none'
-    },
-    logoIcon: {
-      color: 'var(--ds-primary)'
-    },
-    logoText: {
-      fontFamily: 'Inter, system-ui, sans-serif',
-      fontSize: '1.5rem',
-      fontWeight: 700
     },
     description: {
       color: 'var(--ds-muted-foreground)',
@@ -141,8 +132,17 @@ export default function Footer() {
             {/* Brand Section */}
             <div style={styles.brandSection}>
               <Link href="/" style={styles.logo}>
-                <Mountain style={styles.logoIcon} size={24} />
-                <span style={styles.logoText}>Trailhead</span>
+                <Image
+                  src="/trailhead-logo.png"
+                  alt="Trailhead"
+                  width={1080}
+                  height={405}
+                  style={{
+                    height: 'auto',
+                    maxHeight: '40px',
+                    width: 'auto'
+                  }}
+                />
               </Link>
               
               <p style={styles.description}>
