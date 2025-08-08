@@ -24,7 +24,7 @@ export default async function HomePage() {
   if (!hikes || hikes.length === 0) {
     return (
       <>
-        <Navigation />
+        <Navigation hikes={[]} />
         <main style={{ background: 'var(--ds-background)', minHeight: '100vh' }}>
           <HeroSection />
           <div className="container mx-auto p-4">
@@ -74,7 +74,7 @@ export default async function HomePage() {
 
   return (
     <>
-      <Navigation />
+      <Navigation hikes={hikes} />
       <main style={sectionStyles.main}>
         <HeroSection />
         
@@ -104,7 +104,7 @@ export default async function HomePage() {
           </div>
         </section>
       </main>
-      <Footer />  {/* Add this line */}
+      <Footer />
     </>
   );
 }

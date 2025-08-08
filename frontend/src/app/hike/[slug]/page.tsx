@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
-import { getHikeBySlug } from '../../services/api'; 
+import { getHikeBySlug, getHikes } from '../../services/api'; 
 import type { Hike } from '../../../types';
 import StrapiRichText from '../../components/StrapiRichText';
 import Map from '../../components/Map';
@@ -47,7 +47,12 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function HikeDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const hike = await getHikeBySlug(slug);
+  
+  // Fetch both the specific hike and all hikes (for search functionality)
+  const [hike, allHikes] = await Promise.all([
+    getHikeBySlug(slug),
+    getHikes()
+  ]);
 
   if (!hike || !hike.content) {
     notFound();
@@ -117,8 +122,8 @@ export default async function HikeDetailPage({ params }: { params: Promise<{ slu
 
   return (
     <div style={{ background: 'var(--ds-background)', minHeight: '100vh', fontFamily: 'Inter, system-ui, sans-serif' }}>
-      {/* Navigation */}
-      <Navigation />
+      {/* Navigation with search support */}
+      <Navigation hikes={allHikes || []} />
       
       {/* Hero Section - Responsive Height */}
       <div className="hike-hero">
