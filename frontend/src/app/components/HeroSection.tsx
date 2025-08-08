@@ -4,10 +4,15 @@
 import Link from 'next/link';
 
 export default function HeroSection() {
-  const scrollToFeatured = () => {
-    document.getElementById('featured-hikes')?.scrollIntoView({
-      behavior: 'smooth'
-    });
+  const scrollToExploreAll = () => {
+    const target = document.querySelector('.explore-all-hikes-header');
+    if (target) {
+      const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - 80;
+      window.scrollTo({
+        top: targetPosition,
+        behavior: 'smooth'
+      });
+    }
   };
 
   // Updated styles with consistent typography
@@ -106,12 +111,12 @@ export default function HeroSection() {
         
         {/* Use consistent CSS class for hero subtitle */}
         <p className="hero-subtitle">
-          Discover unforgettable multi-day journeys, with all the essential information at your fingertips.
-        </p>
+          The world's most rewarding trails. 
+          Memories that last a lifetime.        </p>
         
         {/* Updated button with consistent spacing */}
         <button 
-          onClick={scrollToFeatured} 
+          onClick={scrollToExploreAll} 
           style={heroStyles.button}
           onMouseEnter={(e) => {
             Object.assign(e.currentTarget.style, heroStyles.buttonHover);
@@ -129,7 +134,7 @@ export default function HeroSection() {
             }
           }}
         >
-          <span>Explore the Trails</span>
+          <span>Explore the trails</span>
           <svg 
             style={heroStyles.arrow}
             fill="none" 

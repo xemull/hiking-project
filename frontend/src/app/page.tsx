@@ -86,7 +86,7 @@ export default async function HomePage() {
           <div className="container mx-auto px-4" style={sectionStyles.allHikesContainer}>
             <div className="explore-all-hikes-header">
               <h2 className="section-title">
-                Explore All Hikes 
+                Explore all trails 
               </h2>
               <p className="section-subtitle">
                 Discover our complete collection of carefully researched multi-day treks from around the world

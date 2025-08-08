@@ -365,11 +365,6 @@ export default function FeaturedHikeSummary({ hike }: { hike: HikeSummary }) {
             </svg>
             Featured Trek
           </span>
-          
-          <h2 className="section-title">This Month's Spotlight</h2>
-          <p className="section-subtitle">
-            Our most recommended hike this season, personally tested and thoroughly documented.
-          </p>
         </div>
 
         <div style={styles.hikeContainer}>

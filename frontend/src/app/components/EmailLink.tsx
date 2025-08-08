@@ -23,7 +23,7 @@ export default function EmailLink() {
         e.currentTarget.style.color = 'var(--ds-primary)';
       }}
     >
-      stan@yourwebsite.com
+      hello@trailhead.at
     </a>
   );
 }

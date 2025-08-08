@@ -13,9 +13,21 @@ interface BookCardProps {
 }
 
 export default function BookCard({ book }: BookCardProps) {
+  // Use the same environment variable as hike images
+  const strapiUrl = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337';
+  
   const coverImageUrl = book.cover_image?.url 
-    ? `http://localhost:1337${book.cover_image.url}` 
+    ? `${strapiUrl}${book.cover_image.url}` 
     : null;
+
+  // Debug logging (remove in production)
+  if (process.env.NODE_ENV === 'development') {
+    console.log('BookCard Debug:', {
+      strapiUrl,
+      originalUrl: book.cover_image?.url,
+      finalUrl: coverImageUrl
+    });
+  }
 
   return (
     <a 
