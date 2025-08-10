@@ -13,8 +13,8 @@ const inter = Inter({
 });
 
 // Separate viewport export (fixes the warning)
-export const viewport: Viewport = {
-  width: "device-width",
+export const viewport = {
+  width: 'device-width',
   initialScale: 1,
 };
 

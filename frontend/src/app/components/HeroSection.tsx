@@ -1,9 +1,11 @@
 // src/app/components/HeroSection.tsx
 'use client';
 
-import Link from 'next/link';
+import { useState } from 'react';
 
 export default function HeroSection() {
+  const [isButtonHovered, setIsButtonHovered] = useState(false);
+
   const scrollToExploreAll = () => {
     const target = document.querySelector('.explore-all-hikes-header');
     if (target) {
@@ -15,128 +17,106 @@ export default function HeroSection() {
     }
   };
 
-  // Updated styles with consistent typography
-  const heroStyles = {
-    section: {
-      position: 'relative' as const,
-      width: '100%',
-      height: '75vh',
-      minHeight: '600px',
-      maxHeight: '800px',
-      overflow: 'hidden',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center'
-    },
-    background: {
-      position: 'absolute' as const,
-      top: 0,
-      left: 0,
-      width: '100%',
-      height: '100%',
-      backgroundImage: "url('/IMG_1682.jpg')",
-      backgroundSize: 'cover',
-      backgroundPosition: 'center',
-      backgroundRepeat: 'no-repeat'
-    },
-    gradientOverlay: {
-      position: 'absolute' as const,
-      top: 0,
-      left: 0,
-      width: '100%',
-      height: '100%',
-      background: 'var(--gradient-hero)',
-      opacity: 0.6,
-      zIndex: 1
-    },
-    darkOverlay: {
-      position: 'absolute' as const,
-      top: 0,
-      left: 0,
-      width: '100%',
-      height: '100%',
-      background: 'rgba(0, 0, 0, 0.1)',
-      zIndex: 2
-    },
-    content: {
-      position: 'relative' as const,
-      zIndex: 20,
-      textAlign: 'center' as const,
-      color: 'var(--ds-primary-foreground)',
-      maxWidth: '800px',
-      padding: '0 var(--space-xl)',
-      marginTop: '-10vh'
-    },
-    button: {
-      display: 'inline-flex',
-      alignItems: 'center',
-      padding: 'var(--space-md) var(--space-2xl)',
-      background: 'var(--ds-accent)',
-      border: '2px solid transparent',
-      color: 'var(--ds-accent-foreground)',
-      textDecoration: 'none',
-      fontFamily: 'Inter, system-ui, sans-serif',
-      fontSize: 'var(--text-base)',
-      fontWeight: 600,
-      letterSpacing: '1px',
-      borderRadius: '50px',
-      transition: 'all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55)',
-      boxShadow: 'var(--shadow-float)',
-      cursor: 'pointer'
-    },
-    buttonHover: {
-      transform: 'translateY(-2px)',
-      boxShadow: '0 15px 50px rgba(0, 0, 0, 0.3)'
-    },
-    arrow: {
-      marginLeft: 'var(--space-xs)',
-      width: '1.25rem',
-      height: '1.25rem',
-      transition: 'transform 0.3s ease'
-    },
-    arrowHover: {
-      transform: 'translateX(4px)'
-    }
-  };
-
   return (
-    <section style={heroStyles.section}>
-      <div style={heroStyles.background}></div>
-      <div style={heroStyles.gradientOverlay}></div>
-      <div style={heroStyles.darkOverlay}></div>
+    <section 
+      style={{
+        position: 'relative',
+        width: '100%',
+        height: '75vh',
+        minHeight: '600px',
+        maxHeight: '800px',
+        overflow: 'hidden',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+      }}
+      className="hero-section-responsive"
+    >
+      {/* Background */}
+      <div style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        backgroundImage: "url('/IMG_1682.webp')",
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat'
+      }} />
       
-      <div style={heroStyles.content}>
-        {/* Use consistent CSS class for hero title */}
+      {/* Gradient Overlay */}
+      <div style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        background: 'var(--gradient-hero)',
+        opacity: 0.6,
+        zIndex: 1
+      }} />
+      
+      {/* Dark Overlay */}
+      <div style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        background: 'rgba(0, 0, 0, 0.1)',
+        zIndex: 2
+      }} />
+      
+      {/* Content */}
+      <div style={{
+        position: 'relative',
+        zIndex: 20,
+        textAlign: 'center',
+        color: 'var(--ds-primary-foreground)',
+        maxWidth: '800px',
+        padding: '0 var(--space-xl)',
+        marginTop: '-10vh'
+      }}>
+        {/* Hero Title */}
         <h1 className="hero-title">Path Unfolding.</h1>
         
-        {/* Use consistent CSS class for hero subtitle */}
-        <p className="hero-subtitle">
-          The world's most rewarding trails. 
-          Memories that last a lifetime.        </p>
+        {/* Hero Subtitle - fixed whitespace */}
+        <p className="hero-subtitle">The world's most rewarding trails. Memories that last a lifetime.</p>
         
-        {/* Updated button with consistent spacing */}
+        {/* CTA Button */}
         <button 
           onClick={scrollToExploreAll} 
-          style={heroStyles.button}
-          onMouseEnter={(e) => {
-            Object.assign(e.currentTarget.style, heroStyles.buttonHover);
-            const arrow = e.currentTarget.querySelector('svg');
-            if (arrow) {
-              Object.assign(arrow.style, heroStyles.arrowHover);
-            }
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            padding: 'var(--space-md) var(--space-2xl)',
+            background: 'var(--ds-accent)',
+            border: '2px solid transparent',
+            color: 'var(--ds-accent-foreground)',
+            textDecoration: 'none',
+            fontFamily: 'Inter, system-ui, sans-serif',
+            fontSize: 'var(--text-base)',
+            fontWeight: 600,
+            letterSpacing: '1px',
+            borderRadius: '50px',
+            transition: 'all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55)',
+            boxShadow: isButtonHovered ? '0 15px 50px rgba(0, 0, 0, 0.3)' : 'var(--shadow-float)',
+            cursor: 'pointer',
+            transform: isButtonHovered ? 'translateY(-2px)' : 'translateY(0)'
           }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.transform = 'translateY(0)';
-            e.currentTarget.style.boxShadow = 'var(--shadow-float)';
-            const arrow = e.currentTarget.querySelector('svg');
-            if (arrow) {
-              arrow.style.transform = 'translateX(0)';
-            }
-          }}
+          onMouseEnter={() => setIsButtonHovered(true)}
+          onMouseLeave={() => setIsButtonHovered(false)}
         >
           <span>Explore the trails</span>
           <svg 
-            style={heroStyles.arrow}
+            style={{
+              marginLeft: 'var(--space-xs)',
+              width: '1.25rem',
+              height: '1.25rem',
+              transition: 'transform 0.3s ease',
+              transform: isButtonHovered ? 'translateX(4px)' : 'translateX(0)'
+            }}
             fill="none" 
             stroke="currentColor" 
             viewBox="0 0 24 24"
@@ -145,23 +125,6 @@ export default function HeroSection() {
           </svg>
         </button>
       </div>
-      
-      {/* Responsive Styles with consistent breakpoints */}
-      <style jsx>{`
-        @media (max-width: 768px) {
-          section {
-            height: 70vh !important;
-            min-height: 500px !important;
-          }
-        }
-
-        @media (max-width: 480px) {
-          section {
-            height: 65vh !important;
-            min-height: 450px !important;
-          }
-        }
-      `}</style>
     </section>
   );
 }

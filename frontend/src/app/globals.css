@@ -161,6 +161,19 @@ body {
     font-size: var(--text-xl); /* 24px on large screens */
   }
 }
+@media (max-width: 768px) {
+  .hero-section-responsive {
+    height: 70vh !important;
+    min-height: 500px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-section-responsive {
+    height: 65vh !important;
+    min-height: 450px !important;
+  }
+}
 
 /* Featured Hike Title */
 .featured-hike-title {
