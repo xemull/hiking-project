@@ -1,4 +1,4 @@
-import type { Metadata, Viewport } from "next";
+import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import Script from 'next/script'
 import { GA_MEASUREMENT_ID } from '../lib/gtag'
@@ -35,6 +35,48 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={inter.variable}>
+      <head>
+       <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+       <link rel="dns-prefetch" href="//fonts.gstatic.com" />
+       <link rel="dns-prefetch" href="//www.googletagmanager.com" />   
+        {/* Preload critical Inter font weights */}
+        <link
+          rel="preload"
+          href="https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiJ-Ek-_EeA.woff2"
+          as="font"
+          type="font/woff2"
+          crossOrigin=""
+        />
+        <link
+          rel="preload"
+          href="https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuDyfAZ9hiA.woff2"
+          as="font"
+          type="font/woff2"
+          crossOrigin=""
+        />
+        <link
+    rel="preload"
+    href="https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiJ-Ek-_EeA.woff2"
+    as="font"
+    type="font/woff2"
+    crossOrigin=""
+  />
+  <link
+    rel="preload"
+    href="https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuDyfAZ9hiA.woff2"
+    as="font"
+    type="font/woff2"
+    crossOrigin=""
+  />
+  
+  {/* Preload critical hero background image - NEW */}
+  <link
+    rel="preload"
+    href="/IMG_1682.webp"
+    as="image"
+    type="image/webp"
+  />  
+      </head>      
       <body className={`${inter.className} antialiased`}>
         {/* Google Analytics */}
         <Script

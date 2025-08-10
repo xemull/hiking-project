@@ -11,8 +11,6 @@ const nextConfig: NextConfig = {
   experimental: {
     // Enable optimized package imports
     optimizePackageImports: ['react', 'react-dom'],
-    // Remove this line - it goes to root level now
-    // serverComponentsExternalPackages: ['pg', 'sqlite3'],
   },
 
   // Enable compression
@@ -91,6 +89,36 @@ const nextConfig: NextConfig = {
           {
             key: 'Cache-Control',
             value: 'public, max-age=300' // 5 minutes
+          }
+        ]
+      },
+      {
+        // Cache specific hero image
+        source: '/IMG_1682.webp',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=15552000, immutable' // 6 months
+          }
+        ]
+      },
+      {
+        // Cache other images in subdirectories
+        source: '/:path*.(jpg|jpeg|png|webp|avif|ico|svg)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=15552000' // 6 months
+          }
+        ]
+      },
+      {
+        // Cache fonts for better performance
+        source: '/fonts/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable' // 1 year
           }
         ]
       }
