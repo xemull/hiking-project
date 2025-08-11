@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { usePathname } from 'next/navigation';
 import { Menu, X, Search } from 'lucide-react';
 import SearchModal from './SearchModal';
 import type { HikeSummary } from '../../types';
@@ -12,11 +11,38 @@ interface NavigationProps {
   hikes?: HikeSummary[];
 }
 
+// Custom hook to get pathname that works with both App and Pages router
+const useCurrentPath = () => {
+  const [pathname, setPathname] = useState('');
+
+  useEffect(() => {
+    // Try App Router first
+    try {
+      const { usePathname } = require('next/navigation');
+      setPathname(usePathname());
+      return;
+    } catch (e) {
+      // Fallback to Pages Router
+      try {
+        const { useRouter } = require('next/router');
+        const router = useRouter();
+        setPathname(router.pathname || router.asPath);
+        return;
+      } catch (e) {
+        // Fallback to window.location
+        setPathname(window.location.pathname);
+      }
+    }
+  }, []);
+
+  return pathname;
+};
+
 const Navigation = ({ hikes = [] }: NavigationProps) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMac, setIsMac] = useState(false);
-  const pathname = usePathname();
+  const pathname = useCurrentPath();
 
   // Detect operating system
   useEffect(() => {
@@ -49,89 +75,15 @@ const Navigation = ({ hikes = [] }: NavigationProps) => {
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  // Updated styles - bolder text, no active underline
-  const navStyles = {
-    nav: {
-      backgroundColor: 'rgba(255, 255, 255, 0.85)',
-      backdropFilter: 'blur(10px)',
-      boxShadow: 'var(--shadow-soft)',
-      borderBottom: '1px solid var(--ds-border)',
-      position: 'sticky' as const,
-      top: 0,
-      zIndex: 50,
-      transition: 'all 0.3s ease'
-    },
-    logo: {
-      transition: 'all 0.3s ease'
-    },
-    searchButton: {
-      display: 'flex',
-      alignItems: 'center',
-      gap: '0.5rem',
-      padding: '0.5rem 0.75rem',
-      backgroundColor: 'var(--ds-muted)',
-      border: '1px solid var(--ds-border)',
-      borderRadius: '0.5rem',
-      color: 'var(--ds-muted-foreground)',
-      fontSize: '0.875rem',
-      transition: 'all 0.3s ease',
-      cursor: 'pointer',
-      minWidth: '200px'
-    },
-    searchButtonHover: {
-      backgroundColor: 'white',
-      borderColor: 'var(--ds-primary)',
-      color: 'var(--ds-foreground)'
-    },
-    navLink: {
-      padding: '0.5rem 0.75rem',
-      fontSize: '0.875rem',
-      fontWeight: 600,
-      textDecoration: 'none',
-      transition: 'all 0.3s ease',
-      borderRadius: '0.375rem',
-      fontFamily: 'Inter, system-ui, sans-serif'
-    },
-    navLinkActive: {
-      color: 'var(--ds-primary)',
-    },
-    navLinkInactive: {
-      color: '#6b7280',
-    },
-    navLinkHover: {
-      color: 'var(--ds-primary)',
-      backgroundColor: 'var(--ds-muted)'
-    },
-    mobileButton: {
-      padding: '0.5rem',
-      color: '#6b7280',
-      transition: 'all 0.3s ease',
-      borderRadius: '0.375rem'
-    },
-    mobileButtonHover: {
-      color: 'var(--ds-primary)',
-      backgroundColor: 'var(--ds-muted)'
-    },
-    mobileLinkActive: {
-      color: 'var(--ds-primary)',
-      backgroundColor: 'rgba(var(--ds-primary), 0.1)',
-      borderRight: '2px solid var(--ds-primary)'
-    },
-    mobileLinkInactive: {
-      color: '#6b7280'
-    }
-  };
-
   return (
     <>
-      <nav style={navStyles.nav}>
+      <nav className="sticky top-0 z-50 bg-white/85 backdrop-blur-lg shadow-sm border-b border-gray-200">
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
             <Link 
               href="/" 
               className="hover:opacity-80 transition-opacity"
-              style={navStyles.logo}
             >
               <Image
                 src="/trailhead-logo.png"
@@ -152,13 +104,7 @@ const Navigation = ({ hikes = [] }: NavigationProps) => {
               {/* Search Button */}
               <button
                 onClick={() => setIsSearchOpen(true)}
-                style={navStyles.searchButton}
-                onMouseEnter={(e) => {
-                  Object.assign(e.currentTarget.style, navStyles.searchButtonHover);
-                }}
-                onMouseLeave={(e) => {
-                  Object.assign(e.currentTarget.style, navStyles.searchButton);
-                }}
+                className="flex items-center gap-2 px-3 py-2 bg-gray-100 border border-gray-300 rounded-lg text-gray-600 text-sm transition-all hover:bg-white hover:border-green-700 hover:text-gray-900 min-w-[180px]"
               >
                 <Search className="w-4 h-4" />
                 <span>Search hikes...</span>
@@ -183,23 +129,13 @@ const Navigation = ({ hikes = [] }: NavigationProps) => {
                     <Link
                       key={item.href}
                       href={item.href}
-                      style={{
-                        ...navStyles.navLink,
-                        ...(active ? navStyles.navLinkActive : navStyles.navLinkInactive)
-                      }}
-                      onMouseEnter={(e) => {
-                        if (!active) {
-                          Object.assign(e.currentTarget.style, navStyles.navLinkHover);
-                        }
-                      }}
-                      onMouseLeave={(e) => {
-                        if (!active) {
-                          Object.assign(e.currentTarget.style, navStyles.navLinkInactive);
-                          e.currentTarget.style.backgroundColor = 'transparent';
-                        }
-                      }}
+                      className={`px-3 py-2 text-sm font-semibold transition-all rounded-md ${
+                        active 
+                          ? 'text-green-700' 
+                          : 'text-gray-600 hover:text-green-700 hover:bg-gray-100'
+                      }`}
                     >
-                      <span>{item.label}</span>
+                      {item.label}
                     </Link>
                   );
                 })}
@@ -211,14 +147,7 @@ const Navigation = ({ hikes = [] }: NavigationProps) => {
               {/* Mobile Search Button */}
               <button
                 onClick={() => setIsSearchOpen(true)}
-                style={navStyles.mobileButton}
-                onMouseEnter={(e) => {
-                  Object.assign(e.currentTarget.style, navStyles.mobileButtonHover);
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.color = '#6b7280';
-                  e.currentTarget.style.backgroundColor = 'transparent';
-                }}
+                className="p-2 text-gray-600 transition-all rounded-md hover:text-green-700 hover:bg-gray-100"
               >
                 <Search className="h-5 w-5" />
               </button>
@@ -226,14 +155,7 @@ const Navigation = ({ hikes = [] }: NavigationProps) => {
               {/* Mobile Menu Toggle */}
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                style={navStyles.mobileButton}
-                onMouseEnter={(e) => {
-                  Object.assign(e.currentTarget.style, navStyles.mobileButtonHover);
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.color = '#6b7280';
-                  e.currentTarget.style.backgroundColor = 'transparent';
-                }}
+                className="p-2 text-gray-600 transition-all rounded-md hover:text-green-700 hover:bg-gray-100"
               >
                 {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
               </button>
@@ -242,7 +164,7 @@ const Navigation = ({ hikes = [] }: NavigationProps) => {
 
           {/* Mobile Navigation */}
           {isMobileMenuOpen && (
-            <div className="md:hidden border-t" style={{ borderColor: 'var(--ds-border)' }}>
+            <div className="md:hidden border-t border-gray-200">
               <div className="py-2 space-y-1">
                 {navItems.map((item) => {
                   const active = isActive(item.href);
@@ -251,21 +173,13 @@ const Navigation = ({ hikes = [] }: NavigationProps) => {
                       key={item.href}
                       href={item.href}
                       onClick={() => setIsMobileMenuOpen(false)}
-                      className="flex items-center w-full px-4 py-3 transition-colors"
-                      style={active ? navStyles.mobileLinkActive : navStyles.mobileLinkInactive}
-                      onMouseEnter={(e) => {
-                        if (!active) {
-                          Object.assign(e.currentTarget.style, navStyles.navLinkHover);
-                        }
-                      }}
-                      onMouseLeave={(e) => {
-                        if (!active) {
-                          Object.assign(e.currentTarget.style, navStyles.mobileLinkInactive);
-                          e.currentTarget.style.backgroundColor = 'transparent';
-                        }
-                      }}
+                      className={`flex items-center w-full px-4 py-3 transition-colors font-medium ${
+                        active 
+                          ? 'text-green-700 bg-green-50 border-r-2 border-green-700' 
+                          : 'text-gray-600 hover:text-green-700 hover:bg-gray-100'
+                      }`}
                     >
-                      <span className="font-medium">{item.label}</span>
+                      {item.label}
                     </Link>
                   );
                 })}
