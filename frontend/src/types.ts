@@ -50,6 +50,55 @@ interface AccommodationTag {
   AccommodationType: string;
 }
 
+// --- QUIZ TYPES ---
+export interface QuizAnswer {
+  text: string;
+  tags: string[];
+}
+
+export interface QuizQuestion {
+  id: number;
+  question: string;
+  answers: QuizAnswer[];
+}
+
+export interface QuizResult {
+  name: string;
+  tags: string[];
+  persona: string;
+  description: string;
+  distance: string;
+  duration: string;
+  difficulty: string;
+  country: string;
+  highlights: string;
+  slug: string;
+}
+
+export interface QuizCompletion {
+  id?: number;
+  answers: QuizAnswer[];
+  result: QuizResult;
+  email?: string;
+  completionTimeMs?: number;
+  completedAt?: string;
+}
+
+export interface QuizAnalytics {
+  totalCompletions: number;
+  uniqueEmailCompletions: number;
+  avgCompletionTimeMs: number;
+  topResults: Array<{
+    hikeName: string;
+    persona: string;
+    count: number;
+  }>;
+  conversionRates: {
+    emailCapture: number;
+    newsletterSignup: number;
+  };
+}
+
 // --- TYPE FOR THE HOMEPAGE LIST (from Strapi) ---
 export interface HikeSummary {
   id: number; // Strapi database ID
@@ -97,4 +146,16 @@ export interface Hike {
     Blogs: Blog[]; // ADDED: Missing Blogs field
     landmarks: any[];
   };
+}
+
+// --- NEWSLETTER TYPES ---
+export interface NewsletterSubscription {
+  email: string;
+  source?: 'general' | 'quiz' | 'footer' | 'modal';
+  quizResult?: string;
+}
+
+export interface NewsletterResponse {
+  success: boolean;
+  message: string;
 }
