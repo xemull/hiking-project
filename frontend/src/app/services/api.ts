@@ -1,5 +1,5 @@
 // src/app/services/api.ts
-import type { Hike, HikeSummary } from '../../types';
+import type { Hike, HikeSummary, QuizCompletion, QuizAnalytics, NewsletterSubscription, NewsletterResponse } from '../../types';
 
 const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337';
 const CUSTOM_BACKEND_URL = process.env.NEXT_PUBLIC_CUSTOM_BACKEND_URL || 'http://localhost:4000';
@@ -269,6 +269,100 @@ export async function getHikeById(id: string): Promise<Hike | null> {
   } catch (error) {
     console.error('❌ Error fetching hike from custom backend:', error);
     return null;
+  }
+}
+
+// --- QUIZ API FUNCTIONS ---
+
+// Submit quiz completion
+export async function submitQuizCompletion(completion: QuizCompletion): Promise<{ success: boolean; completionId?: number }> {
+  const fullUrl = `${CUSTOM_BACKEND_URL}/api/quiz/complete`;
+
+  try {
+    const response = await fetchWithTimeout(fullUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(completion),
+      timeout: 5000
+    });
+
+    if (!response.ok) {
+      throw new Error(`Quiz submission failed: ${response.status}`);
+    }
+
+    const result = await response.json();
+    console.log('✅ Quiz completion submitted successfully');
+    
+    return { success: true, completionId: result.completionId };
+  } catch (error) {
+    console.error('❌ Error submitting quiz completion:', error);
+    return { success: false };
+  }
+}
+
+// Get quiz analytics (admin function)
+export async function getQuizAnalytics(): Promise<QuizAnalytics | null> {
+  const cacheKey = 'quiz-analytics';
+  
+  // Try client-side cache first (shorter TTL for analytics)
+  const cached = getCachedData<QuizAnalytics>(cacheKey);
+  if (cached) {
+    console.log('✅ Using cached quiz analytics');
+    return cached;
+  }
+
+  const fullUrl = `${CUSTOM_BACKEND_URL}/api/quiz/analytics`;
+
+  try {
+    const response = await fetchWithTimeout(fullUrl, { 
+      timeout: 10000 
+    });
+
+    if (!response.ok) {
+      throw new Error(`Analytics fetch failed: ${response.status}`);
+    }
+
+    const result = await response.json();
+    console.log('✅ Quiz analytics received');
+    
+    // Cache for 5 minutes
+    setCachedData(cacheKey, result.data, 300000);
+    
+    return result.data;
+  } catch (error) {
+    console.error('❌ Error fetching quiz analytics:', error);
+    return null;
+  }
+}
+
+// --- NEWSLETTER API FUNCTIONS ---
+
+// Enhanced newsletter subscription with quiz source tracking
+export async function subscribeToNewsletter(subscription: NewsletterSubscription): Promise<NewsletterResponse> {
+  const fullUrl = `${CUSTOM_BACKEND_URL}/api/newsletter/subscribe`;
+
+  try {
+    const response = await fetchWithTimeout(fullUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(subscription),
+      timeout: 5000
+    });
+
+    const result = await response.json();
+    
+    if (!response.ok) {
+      throw new Error(result.message || 'Newsletter subscription failed');
+    }
+
+    console.log('✅ Newsletter subscription successful');
+    return result;
+  } catch (error) {
+    console.error('❌ Error subscribing to newsletter:', error);
+    return {
+      success: false,
+      message: 'Subscription failed. Please try again.'
+    };
   }
 }
 
