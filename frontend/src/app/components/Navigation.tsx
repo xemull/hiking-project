@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Menu, X, Search } from 'lucide-react';
+import { Menu, X, Search, Target } from 'lucide-react';
 import SearchModal from './SearchModal';
 import type { HikeSummary } from '../../types';
 
@@ -51,6 +51,7 @@ const Navigation = ({ hikes = [] }: NavigationProps) => {
 
   const navItems = [
     { href: '/', label: 'Hikes' },
+    { href: '/quiz', label: 'Quiz', icon: Target, highlight: true },
     { href: '/about', label: 'About' },
     { href: '/contact', label: 'Contact' }
   ];
@@ -125,16 +126,21 @@ const Navigation = ({ hikes = [] }: NavigationProps) => {
               <div className="flex space-x-6">
                 {navItems.map((item) => {
                   const active = isActive(item.href);
+                  const Icon = item.icon;
+                  
                   return (
                     <Link
                       key={item.href}
                       href={item.href}
-                      className={`px-3 py-2 text-sm font-semibold transition-all rounded-md ${
+                      className={`flex items-center gap-1.5 px-3 py-2 text-sm font-semibold transition-all rounded-md ${
                         active 
                           ? 'text-green-700' 
+                          : item.highlight
+                          ? 'text-green-600 hover:text-green-700 hover:bg-green-50'
                           : 'text-gray-600 hover:text-green-700 hover:bg-gray-100'
-                      }`}
+                      } ${item.highlight ? 'ring-1 ring-green-200' : ''}`}
                     >
+                      {Icon && <Icon className="h-4 w-4" />}
                       {item.label}
                     </Link>
                   );
@@ -168,17 +174,22 @@ const Navigation = ({ hikes = [] }: NavigationProps) => {
               <div className="py-2 space-y-1">
                 {navItems.map((item) => {
                   const active = isActive(item.href);
+                  const Icon = item.icon;
+                  
                   return (
                     <Link
                       key={item.href}
                       href={item.href}
                       onClick={() => setIsMobileMenuOpen(false)}
-                      className={`flex items-center w-full px-4 py-3 transition-colors font-medium ${
+                      className={`flex items-center gap-2 w-full px-4 py-3 transition-colors font-medium ${
                         active 
                           ? 'text-green-700 bg-green-50 border-r-2 border-green-700' 
+                          : item.highlight
+                          ? 'text-green-600 hover:text-green-700 hover:bg-green-50'
                           : 'text-gray-600 hover:text-green-700 hover:bg-gray-100'
                       }`}
                     >
+                      {Icon && <Icon className="h-4 w-4" />}
                       {item.label}
                     </Link>
                   );
