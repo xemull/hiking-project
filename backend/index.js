@@ -517,3 +517,384 @@ app.listen(port, () => {
   console.log(`🚀 Backend server listening at http://localhost:${port}`);
   console.log(`📊 Cache TTL: Hikes=${CACHE_TTL.HIKES_LIST/1000}s, Featured=${CACHE_TTL.FEATURED_HIKE/1000}s, Detail=${CACHE_TTL.HIKE_DETAIL/1000}s`);
 });
+
+// Add these endpoints to your existing index.js file
+
+// Quiz completion tracking endpoint
+app.post('/api/quiz/complete', async (req, res) => {
+  const { answers, result, email, startTime } = req.body;
+  
+  try {
+    // Create quiz_completions table if it doesn't exist
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS quiz_completions (
+        id SERIAL PRIMARY KEY,
+        answers JSONB NOT NULL,
+        result_hike VARCHAR(255) NOT NULL,
+        result_persona VARCHAR(255) NOT NULL,
+        email VARCHAR(255),
+        completion_time_ms INTEGER,
+        user_agent TEXT,
+        ip_address INET,
+        completed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+    
+    // Calculate completion time
+    const completionTime = startTime ? Date.now() - startTime : null;
+    
+    // Get user agent and IP
+    const userAgent = req.headers['user-agent'] || null;
+    const ipAddress = req.ip || req.connection.remoteAddress || null;
+    
+    // Insert quiz completion
+    const query = `
+      INSERT INTO quiz_completions 
+      (answers, result_hike, result_persona, email, completion_time_ms, user_agent, ip_address) 
+      VALUES ($1, $2, $3, $4, $5, $6, $7) 
+      RETURNING id
+    `;
+    
+    const values = [
+      JSON.stringify(answers),
+      result.name,
+      result.persona,
+      email || null,
+      completionTime,
+      userAgent,
+      ipAddress
+    ];
+    
+    const { rows } = await pool.query(query, values);
+    
+    console.log(`✅ Quiz completion tracked: ${result.persona} -> ${result.name} (ID: ${rows[0].id})`);
+    
+    res.json({ 
+      success: true, 
+      completionId: rows[0].id,
+      message: 'Quiz completion tracked successfully' 
+    });
+    
+  } catch (error) {
+    console.error('❌ Quiz completion tracking error:', error);
+    res.status(500).json({ 
+      success: false, 
+      message: 'Failed to track quiz completion' 
+    });
+  }
+});
+
+// Quiz analytics endpoint
+app.get('/api/quiz/analytics', async (req, res) => {
+  try {
+    // Get basic completion stats
+    const completionStats = await pool.query(`
+      SELECT 
+        COUNT(*) as total_completions,
+        COUNT(DISTINCT email) FILTER (WHERE email IS NOT NULL) as unique_email_completions,
+        AVG(completion_time_ms) as avg_completion_time_ms
+      FROM quiz_completions 
+      WHERE completed_at > NOW() - INTERVAL '30 days'
+    `);
+    
+    // Get hike recommendations breakdown
+    const hikeStats = await pool.query(`
+      SELECT 
+        result_hike,
+        result_persona,
+        COUNT(*) as count,
+        ROUND(COUNT(*) * 100.0 / SUM(COUNT(*)) OVER (), 2) as percentage
+      FROM quiz_completions 
+      WHERE completed_at > NOW() - INTERVAL '30 days'
+      GROUP BY result_hike, result_persona
+      ORDER BY count DESC
+    `);
+    
+    // Get daily completion trends
+    const dailyTrends = await pool.query(`
+      SELECT 
+        DATE(completed_at) as date,
+        COUNT(*) as completions,
+        COUNT(DISTINCT email) FILTER (WHERE email IS NOT NULL) as email_signups
+      FROM quiz_completions 
+      WHERE completed_at > NOW() - INTERVAL '30 days'
+      GROUP BY DATE(completed_at)
+      ORDER BY date DESC
+    `);
+    
+    // Get most popular hiking personas
+    const personaStats = await pool.query(`
+      SELECT 
+        result_persona,
+        COUNT(*) as count,
+        ROUND(COUNT(*) * 100.0 / SUM(COUNT(*)) OVER (), 2) as percentage
+      FROM quiz_completions 
+      WHERE completed_at > NOW() - INTERVAL '30 days'
+      GROUP BY result_persona
+      ORDER BY count DESC
+    `);
+    
+    res.json({
+      success: true,
+      data: {
+        completionStats: completionStats.rows[0] || {},
+        hikeStats: hikeStats.rows,
+        dailyTrends: dailyTrends.rows,
+        personaStats: personaStats.rows,
+        generatedAt: new Date().toISOString()
+      }
+    });
+    
+  } catch (error) {
+    console.error('❌ Quiz analytics error:', error);
+    res.status(500).json({ 
+      success: false, 
+      message: 'Failed to retrieve quiz analytics' 
+    });
+  }
+});
+
+// Enhanced newsletter subscription with quiz source tracking
+app.post('/api/newsletter/subscribe', async (req, res) => {
+  const { email, source = 'general', quizResult = null } = req.body;
+  
+  if (!email || !email.includes('@')) {
+    return res.status(400).json({ 
+      success: false, 
+      message: 'Please provide a valid email address' 
+    });
+  }
+  
+  try {
+    // Update newsletter table structure to match your schema
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS newsletter_subscribers (
+        id SERIAL PRIMARY KEY,
+        email VARCHAR(255) UNIQUE NOT NULL,
+        subscribed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        is_active BOOLEAN DEFAULT true,
+        source VARCHAR(100) DEFAULT 'general',
+        quiz_result VARCHAR(255),
+        user_agent TEXT,
+        ip_address INET
+      )
+    `);
+    
+    const userAgent = req.headers['user-agent'] || null;
+    const ipAddress = req.ip || req.connection.remoteAddress || null;
+    
+    const query = `
+      INSERT INTO newsletter_subscribers (email, source, quiz_result, user_agent, ip_address) 
+      VALUES ($1, $2, $3, $4, $5) 
+      ON CONFLICT (email) DO UPDATE SET 
+        subscribed_at = CURRENT_TIMESTAMP,
+        is_active = true,
+        source = EXCLUDED.source,
+        quiz_result = COALESCE(EXCLUDED.quiz_result, newsletter_subscribers.quiz_result)
+      RETURNING *
+    `;
+    
+    const values = [
+      email.toLowerCase().trim(),
+      source,
+      quizResult,
+      userAgent,
+      ipAddress
+    ];
+    
+    await pool.query(query, values);
+    
+    console.log(`📧 Newsletter subscription: ${email} (source: ${source}${quizResult ? `, quiz: ${quizResult}` : ''})`);
+    
+    res.json({ 
+      success: true, 
+      message: 'Successfully subscribed to newsletter!' 
+    });
+    
+  } catch (error) {
+    console.error('❌ Newsletter subscription error:', error);
+    res.status(500).json({ 
+      success: false, 
+      message: 'Subscription failed. Please try again.' 
+    });
+  }
+});
+
+// Quiz conversion funnel endpoint
+app.get('/api/quiz/funnel', async (req, res) => {
+  try {
+    const funnelData = await pool.query(`
+      WITH quiz_metrics AS (
+        SELECT 
+          COUNT(*) as total_completions,
+          COUNT(email) FILTER (WHERE email IS NOT NULL) as email_captures,
+          AVG(completion_time_ms) as avg_completion_time
+        FROM quiz_completions 
+        WHERE completed_at > NOW() - INTERVAL '30 days'
+      ),
+      newsletter_metrics AS (
+        SELECT 
+          COUNT(*) as quiz_newsletters
+        FROM newsletter_subscribers 
+        WHERE source = 'quiz' 
+        AND subscribed_at > NOW() - INTERVAL '30 days'
+      )
+      SELECT 
+        q.total_completions,
+        q.email_captures,
+        q.avg_completion_time,
+        n.quiz_newsletters,
+        ROUND(
+          CASE 
+            WHEN q.total_completions > 0 
+            THEN (q.email_captures * 100.0 / q.total_completions) 
+            ELSE 0 
+          END, 2
+        ) as email_conversion_rate,
+        ROUND(
+          CASE 
+            WHEN q.email_captures > 0 
+            THEN (n.quiz_newsletters * 100.0 / q.email_captures) 
+            ELSE 0 
+          END, 2
+        ) as newsletter_conversion_rate
+      FROM quiz_metrics q
+      CROSS JOIN newsletter_metrics n
+    `);
+    
+    res.json({
+      success: true,
+      data: funnelData.rows[0] || {},
+      generatedAt: new Date().toISOString()
+    });
+    
+  } catch (error) {
+    console.error('❌ Quiz funnel analytics error:', error);
+    res.status(500).json({ 
+      success: false, 
+      message: 'Failed to retrieve funnel data' 
+    });
+  }
+});
+
+// Quiz results breakdown endpoint
+app.get('/api/quiz/results', async (req, res) => {
+  try {
+    const { period = '30' } = req.query; // Default to 30 days
+    
+    const resultsBreakdown = await pool.query(`
+      SELECT 
+        result_hike,
+        result_persona,
+        COUNT(*) as completions,
+        COUNT(email) FILTER (WHERE email IS NOT NULL) as email_captures,
+        ROUND(AVG(completion_time_ms) / 1000.0, 1) as avg_completion_seconds,
+        ROUND(
+          COUNT(email) FILTER (WHERE email IS NOT NULL) * 100.0 / COUNT(*), 
+          2
+        ) as email_capture_rate,
+        MAX(completed_at) as last_completion
+      FROM quiz_completions 
+      WHERE completed_at > NOW() - INTERVAL '${parseInt(period)} days'
+      GROUP BY result_hike, result_persona
+      ORDER BY completions DESC
+    `);
+    
+    // Get newsletter signups by quiz result
+    const newsletterByQuiz = await pool.query(`
+      SELECT 
+        quiz_result,
+        COUNT(*) as newsletter_signups
+      FROM newsletter_subscribers 
+      WHERE source = 'quiz' 
+      AND quiz_result IS NOT NULL
+      AND subscribed_at > NOW() - INTERVAL '${parseInt(period)} days'
+      GROUP BY quiz_result
+      ORDER BY newsletter_signups DESC
+    `);
+    
+    res.json({
+      success: true,
+      data: {
+        resultsBreakdown: resultsBreakdown.rows,
+        newsletterByQuiz: newsletterByQuiz.rows,
+        period: `${period} days`,
+        generatedAt: new Date().toISOString()
+      }
+    });
+    
+  } catch (error) {
+    console.error('❌ Quiz results breakdown error:', error);
+    res.status(500).json({ 
+      success: false, 
+      message: 'Failed to retrieve quiz results breakdown' 
+    });
+  }
+});
+
+// Get quiz insights (most/least popular answers)
+app.get('/api/quiz/insights', async (req, res) => {
+  try {
+    // Analyze quiz answers to see patterns
+    const answerInsights = await pool.query(`
+      WITH answer_analysis AS (
+        SELECT 
+          result_persona,
+          result_hike,
+          answers,
+          jsonb_array_elements(answers) as individual_answer
+        FROM quiz_completions 
+        WHERE completed_at > NOW() - INTERVAL '30 days'
+      ),
+      answer_counts AS (
+        SELECT 
+          individual_answer->>'text' as answer_text,
+          COUNT(*) as selection_count,
+          COUNT(DISTINCT result_persona) as personas_that_selected,
+          array_agg(DISTINCT result_persona) as selecting_personas
+        FROM answer_analysis
+        GROUP BY individual_answer->>'text'
+      )
+      SELECT 
+        answer_text,
+        selection_count,
+        personas_that_selected,
+        selecting_personas,
+        ROUND(selection_count * 100.0 / SUM(selection_count) OVER (), 2) as percentage
+      FROM answer_counts
+      ORDER BY selection_count DESC
+    `);
+    
+    // Get completion time insights
+    const timeInsights = await pool.query(`
+      SELECT 
+        result_persona,
+        COUNT(*) as completions,
+        ROUND(AVG(completion_time_ms) / 1000.0, 1) as avg_seconds,
+        ROUND(MIN(completion_time_ms) / 1000.0, 1) as fastest_seconds,
+        ROUND(MAX(completion_time_ms) / 1000.0, 1) as slowest_seconds,
+        ROUND(PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY completion_time_ms) / 1000.0, 1) as median_seconds
+      FROM quiz_completions 
+      WHERE completed_at > NOW() - INTERVAL '30 days'
+      AND completion_time_ms IS NOT NULL
+      GROUP BY result_persona
+      ORDER BY avg_seconds DESC
+    `);
+    
+    res.json({
+      success: true,
+      data: {
+        answerInsights: answerInsights.rows,
+        timeInsights: timeInsights.rows,
+        generatedAt: new Date().toISOString()
+      }
+    });
+    
+  } catch (error) {
+    console.error('❌ Quiz insights error:', error);
+    res.status(500).json({ 
+      success: false, 
+      message: 'Failed to retrieve quiz insights' 
+    });
+  }
+});

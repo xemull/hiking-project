@@ -2,9 +2,11 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 
 export default function HeroSection() {
-  const [isButtonHovered, setIsButtonHovered] = useState(false);
+  const [isExploreHovered, setIsExploreHovered] = useState(false);
+  const [isQuizHovered, setIsQuizHovered] = useState(false);
 
   const scrollToExploreAll = () => {
     const target = document.querySelector('.explore-all-hikes-header');
@@ -81,49 +83,98 @@ export default function HeroSection() {
         {/* Hero Title */}
         <h1 className="hero-title">Path Unfolding.</h1>
         
-        {/* Hero Subtitle - fixed whitespace */}
+        {/* Hero Subtitle */}
         <p className="hero-subtitle">The world's most rewarding trails. Memories that last a lifetime.</p>
         
-        {/* CTA Button */}
-        <button 
-          onClick={scrollToExploreAll} 
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            padding: 'var(--space-md) var(--space-2xl)',
-            background: 'var(--ds-accent)',
-            border: '2px solid transparent',
-            color: 'var(--ds-accent-foreground)',
-            textDecoration: 'none',
-            fontFamily: 'Inter, system-ui, sans-serif',
-            fontSize: 'var(--text-base)',
-            fontWeight: 600,
-            letterSpacing: '1px',
-            borderRadius: '50px',
-            transition: 'all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55)',
-            boxShadow: isButtonHovered ? '0 15px 50px rgba(0, 0, 0, 0.3)' : 'var(--shadow-float)',
-            cursor: 'pointer',
-            transform: isButtonHovered ? 'translateY(-2px)' : 'translateY(0)'
-          }}
-          onMouseEnter={() => setIsButtonHovered(true)}
-          onMouseLeave={() => setIsButtonHovered(false)}
-        >
-          <span>Explore the trails</span>
-          <svg 
+        {/* CTA Buttons */}
+        <div style={{
+          display: 'flex',
+          gap: 'var(--space-md)',
+          justifyContent: 'center',
+          flexWrap: 'wrap'
+        }}>
+          {/* Primary CTA - Explore Trails */}
+          <button 
+            onClick={scrollToExploreAll} 
             style={{
-              marginLeft: 'var(--space-xs)',
-              width: '1.25rem',
-              height: '1.25rem',
-              transition: 'transform 0.3s ease',
-              transform: isButtonHovered ? 'translateX(4px)' : 'translateX(0)'
+              display: 'inline-flex',
+              alignItems: 'center',
+              padding: 'var(--space-md) var(--space-2xl)',
+              background: 'var(--ds-accent)',
+              border: '2px solid transparent',
+              color: 'var(--ds-accent-foreground)',
+              textDecoration: 'none',
+              fontFamily: 'Inter, system-ui, sans-serif',
+              fontSize: 'var(--text-base)',
+              fontWeight: 600,
+              letterSpacing: '1px',
+              borderRadius: '50px',
+              transition: 'all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55)',
+              boxShadow: isExploreHovered ? '0 15px 50px rgba(0, 0, 0, 0.3)' : 'var(--shadow-float)',
+              cursor: 'pointer',
+              transform: isExploreHovered ? 'translateY(-2px)' : 'translateY(0)'
             }}
-            fill="none" 
-            stroke="currentColor" 
-            viewBox="0 0 24 24"
+            onMouseEnter={() => setIsExploreHovered(true)}
+            onMouseLeave={() => setIsExploreHovered(false)}
           >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-          </svg>
-        </button>
+            <span>Explore the trails</span>
+            <svg 
+              style={{
+                marginLeft: 'var(--space-xs)',
+                width: '1.25rem',
+                height: '1.25rem',
+                transition: 'transform 0.3s ease',
+                transform: isExploreHovered ? 'translateX(4px)' : 'translateX(0)'
+              }}
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+            </svg>
+          </button>
+
+          {/* Secondary CTA - Take Quiz */}
+          <Link 
+            href="/quiz"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              padding: 'var(--space-md) var(--space-2xl)',
+              background: 'transparent',
+              border: '2px solid var(--ds-primary-foreground)',
+              color: 'var(--ds-primary-foreground)',
+              textDecoration: 'none',
+              fontFamily: 'Inter, system-ui, sans-serif',
+              fontSize: 'var(--text-base)',
+              fontWeight: 600,
+              letterSpacing: '1px',
+              borderRadius: '50px',
+              transition: 'all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55)',
+              boxShadow: isQuizHovered ? '0 15px 50px rgba(0, 0, 0, 0.2)' : 'none',
+              transform: isQuizHovered ? 'translateY(-2px)' : 'translateY(0)',
+              backdropFilter: 'blur(10px)',
+              backgroundColor: isQuizHovered ? 'rgba(255, 255, 255, 0.1)' : 'rgba(255, 255, 255, 0.05)'
+            }}
+            onMouseEnter={() => setIsQuizHovered(true)}
+            onMouseLeave={() => setIsQuizHovered(false)}
+          >
+            <svg 
+              style={{
+                marginRight: 'var(--space-xs)',
+                width: '1.25rem',
+                height: '1.25rem',
+                transition: 'transform 0.3s ease'
+              }}
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span>Find my perfect hike</span>
+          </Link>
+        </div>
       </div>
     </section>
   );

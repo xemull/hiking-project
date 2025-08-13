@@ -44,6 +44,19 @@ const TrailheadQuiz = () => {
   const [allHikes, setAllHikes] = useState<HikeSummary[]>([]);
   const [loading, setLoading] = useState(true);
 
+// Mobile detection hook
+const [isMobile, setIsMobile] = useState(false);
+
+useEffect(() => {
+  const checkScreenSize = () => {
+    setIsMobile(window.innerWidth <= 768);
+  };
+
+  checkScreenSize();
+  window.addEventListener('resize', checkScreenSize);
+  return () => window.removeEventListener('resize', checkScreenSize);
+}, []);
+
   // Load hikes data from your API
   useEffect(() => {
     const loadHikes = async () => {
@@ -69,7 +82,7 @@ const TrailheadQuiz = () => {
     '/IMG_6991.jpg',  // Question 2
     '/IMG_6969.jpg',  // Question 3
     '/IMG_6920.jpg',  // Question 4
-    '/DJI_0213-HDR.jpg', // Question 5
+    '/IMG_1682.jpg', // Question 5
   ];
 
   // Quiz questions with exact content from your brief
@@ -428,7 +441,7 @@ const TrailheadQuiz = () => {
   };
 
   // Function to get description preview from Strapi data
-  const getDescriptionPreview = (description: any[]): string => {
+const getDescriptionPreview = (description: any[] | undefined): string => {
     if (!description || !Array.isArray(description)) return '';
     
     let text = '';
@@ -505,7 +518,7 @@ const TrailheadQuiz = () => {
               </div>
               
               <h1 style={{
-                fontSize: 'clamp(2.5rem, 5vw, 4rem)',
+                fontSize: isMobile ? 'clamp(1.75rem, 8vw, 2.5rem)' : 'clamp(2.5rem, 5vw, 4rem)',
                 fontWeight: 700,
                 color: 'var(--ds-foreground)',
                 marginBottom: 'var(--space-lg)'
@@ -522,7 +535,7 @@ const TrailheadQuiz = () => {
               </h1>
               
               <p style={{
-                fontSize: 'var(--text-xl)',
+                fontSize: isMobile ? 'var(--text-base)' : 'var(--text-xl)',
                 color: '#2d3748',
                 maxWidth: '800px',
                 margin: '0 auto',
@@ -564,86 +577,29 @@ const TrailheadQuiz = () => {
                 }
               }}
             >
-              <div style={{ display: 'flex', flexDirection: 'row', minHeight: '400px' }}>
                 {/* Image Section - Left Side */}
-                <div style={{ 
-                  position: 'relative', 
-                  width: '50%', 
-                  flexShrink: 0,
-                  overflow: 'hidden'
-                }}>
-                  {(() => {
-                    const primaryHike = findHikeByName(result.name);
-                    return (
-                      <Image 
-                        src={getHikeImageUrl(primaryHike)}
-                        alt={result.name}
-                        fill
-                        style={{ objectFit: 'cover', transition: 'transform 0.3s ease' }}
-                      />
-                    );
-                  })()}
-                  <div style={{
-                    position: 'absolute',
-                    inset: 0,
-                    background: 'rgba(255, 255, 255, 0.2)',
-                  }} />
-                  <div style={{
-                    position: 'absolute',
-                    top: 'var(--space-lg)',
-                    left: 'var(--space-lg)',
-                    background: 'var(--ds-accent)',
-                    color: 'var(--ds-accent-foreground)',
-                    padding: 'var(--space-xs) var(--space-md)',
-                    borderRadius: '20px',
-                    fontSize: 'var(--text-sm)',
-                    fontWeight: 600,
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.5px'
-                  }}>
-                    Perfect Match
-                  </div>
-                </div>
                 
-                {/* Content Section - Right Side */}
-                <div style={{ 
-                  padding: 'var(--space-3xl)', 
-                  width: '50%',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'space-between'
-                }}>
-                  <div>
-                    <h2 style={{
-                      fontSize: 'var(--text-3xl)',
-                      fontWeight: 600,
-                      color: 'var(--ds-foreground)',
-                      marginBottom: 'var(--space-lg)'
+                <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', minHeight: isMobile ? 'auto' : '400px' }}>
+                  {isMobile ? (
+                    // MOBILE LAYOUT: Country → Title → Image → Description → Details → Button
+                    <div style={{ 
+                      padding: 'var(--space-lg)',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      textAlign: 'center'
                     }}>
-                      {result.name}
-                    </h2>
-                    
-                    <p style={{
-                      color: 'var(--ds-muted-foreground)',
-                      marginBottom: 'var(--space-xl)',
-                      lineHeight: 1.6,
-                      fontSize: 'var(--text-base)'
-                    }}>
-                      {(() => {
-                        const primaryHike = findHikeByName(result.name);
-                        return primaryHike ? getDescriptionPreview(primaryHike.Description) : result.highlights;
-                      })()}
-                    </p>
-                    
-                    <div style={{
-                      display: 'grid',
-                      gridTemplateColumns: '1fr 1fr',
-                      gap: 'var(--space-lg)',
-                      marginBottom: 'var(--space-xl)'
-                    }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-sm)' }}>
-                        <MapPin style={{ width: '16px', height: '16px', color: 'var(--ds-primary)' }} />
-                        <span style={{ fontSize: 'var(--text-sm)', color: 'var(--ds-muted-foreground)' }}>
+                      {/* Country */}
+                      <div style={{ 
+                        display: 'flex', 
+                        alignItems: 'center', 
+                        gap: 'var(--space-xs)',
+                        justifyContent: 'center',
+                        marginBottom: 'var(--space-sm)',
+                        color: 'var(--ds-muted-foreground)',
+                        fontSize: '0.8rem'
+                      }}>
+                        <MapPin style={{ width: '12px', height: '12px' }} />
+                        <span>
                           {(() => {
                             const primaryHike = findHikeByName(result.name);
                             if (primaryHike?.countries?.length) {
@@ -653,45 +609,270 @@ const TrailheadQuiz = () => {
                           })()}
                         </span>
                       </div>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-sm)' }}>
-                        <Route style={{ width: '16px', height: '16px', color: 'var(--ds-primary)' }} />
-                        <span style={{ fontSize: 'var(--text-sm)', color: 'var(--ds-muted-foreground)' }}>
-                          {(() => {
-                            const primaryHike = findHikeByName(result.name);
-                            return primaryHike?.Length ? `${primaryHike.Length} km` : result.distance;
-                          })()}
-                        </span>
+
+                      {/* Title */}
+                      <h2 style={{
+                        fontSize: 'var(--text-xl)',
+                        fontWeight: 600,
+                        color: 'var(--ds-foreground)',
+                        marginBottom: 'var(--space-md)',
+                        lineHeight: 1.3
+                      }}>
+                        {result.name}
+                      </h2>
+
+                      {/* Image */}
+                      <div style={{ 
+                        position: 'relative', 
+                        width: '100%', 
+                        height: '280px',
+                        borderRadius: '12px',
+                        overflow: 'hidden',
+                        marginBottom: 'var(--space-lg)'
+                      }}>
+                        {(() => {
+                          const primaryHike = findHikeByName(result.name);
+                          return (
+                            <Image 
+                              src={getHikeImageUrl(primaryHike)}
+                              alt={result.name}
+                              fill
+                              style={{ objectFit: 'cover', transition: 'transform 0.3s ease' }}
+                            />
+                          );
+                        })()}
+                        <div style={{
+                          position: 'absolute',
+                          inset: 0,
+                          background: 'rgba(255, 255, 255, 0.2)',
+                        }} />
+                        <div style={{
+                          position: 'absolute',
+                          top: 'var(--space-md)',
+                          left: 'var(--space-md)',
+                          background: 'var(--ds-accent)',
+                          color: 'var(--ds-accent-foreground)',
+                          padding: 'var(--space-xs) var(--space-sm)',
+                          borderRadius: '20px',
+                          fontSize: 'var(--text-xs)',
+                          fontWeight: 600,
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.5px'
+                        }}>
+                          Perfect Match
+                        </div>
                       </div>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-sm)' }}>
-                        <TrendingUp style={{ width: '16px', height: '16px', color: 'var(--ds-primary)' }} />
-                        <span style={{ fontSize: 'var(--text-sm)', color: 'var(--ds-muted-foreground)' }}>
-                          {(() => {
-                            const primaryHike = findHikeByName(result.name);
-                            return primaryHike?.Difficulty || result.difficulty;
-                          })()}
-                        </span>
+
+                      {/* Description */}
+                      <p style={{
+                        color: 'var(--ds-muted-foreground)',
+                        marginBottom: 'var(--space-lg)',
+                        lineHeight: 1.6,
+                        fontSize: 'var(--text-sm)'
+                      }}>
+                        {(() => {
+                          const primaryHike = findHikeByName(result.name);
+                          return primaryHike ? getDescriptionPreview(primaryHike.Description) : result.highlights;
+                        })()}
+                      </p>
+                      
+                      {/* Info Grid - Single Column for Mobile */}
+                      <div style={{
+                        display: 'grid',
+                        gridTemplateColumns: '1fr',
+                        gap: 'var(--space-sm)',
+                        marginBottom: 'var(--space-xl)'
+                      }}>
+                        <div style={{ 
+                          display: 'flex', 
+                          alignItems: 'center', 
+                          gap: 'var(--space-xs)',
+                          justifyContent: 'center'
+                        }}>
+                          <Route style={{ width: '14px', height: '14px', color: 'var(--ds-muted-foreground)' }} />
+                          <span style={{ fontSize: 'var(--text-sm)', color: 'var(--ds-muted-foreground)' }}>
+                            {(() => {
+                              const primaryHike = findHikeByName(result.name);
+                              return primaryHike?.Length ? `${primaryHike.Length} km` : result.distance;
+                            })()}
+                          </span>
+                        </div>
+                        <div style={{ 
+                          display: 'flex', 
+                          alignItems: 'center', 
+                          gap: 'var(--space-xs)',
+                          justifyContent: 'center'
+                        }}>
+                          <TrendingUp style={{ width: '14px', height: '14px', color: 'var(--ds-muted-foreground)' }} />
+                          <span style={{ fontSize: 'var(--text-sm)', color: 'var(--ds-muted-foreground)' }}>
+                            {(() => {
+                              const primaryHike = findHikeByName(result.name);
+                              return primaryHike?.Difficulty || result.difficulty;
+                            })()}
+                          </span>
+                        </div>
+                        <div style={{ 
+                          display: 'flex', 
+                          alignItems: 'center', 
+                          gap: 'var(--space-xs)',
+                          justifyContent: 'center'
+                        }}>
+                          <Calendar style={{ width: '14px', height: '14px', color: 'var(--ds-muted-foreground)' }} />
+                          <span style={{ fontSize: 'var(--text-sm)', color: 'var(--ds-muted-foreground)' }}>
+                            {(() => {
+                              const primaryHike = findHikeByName(result.name);
+                              return primaryHike?.Best_time || result.duration;
+                            })()}
+                          </span>
+                        </div>
                       </div>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-sm)' }}>
-                        <Calendar style={{ width: '16px', height: '16px', color: 'var(--ds-primary)' }} />
-                        <span style={{ fontSize: 'var(--text-sm)', color: 'var(--ds-muted-foreground)' }}>
-                          {(() => {
-                            const primaryHike = findHikeByName(result.name);
-                            return primaryHike?.Best_time || result.duration;
-                          })()}
-                        </span>
-                      </div>
+                      
+                      {/* Button */}
+                      <button 
+                        className="btn-primary"
+                        style={{ 
+                          alignSelf: 'center',
+                          fontSize: 'var(--text-sm)',
+                          padding: 'var(--space-sm) var(--space-lg)'
+                        }}
+                        onClick={() => navigateToHike(result.name)}
+                      >
+                        <span>View Complete Guide</span>
+                        <ChevronRight style={{ height: '16px', width: '16px' }} />
+                      </button>
                     </div>
-                  </div>
-                  
-                  <button 
-                    className="btn-primary"
-                    style={{ alignSelf: 'flex-start' }}
-                    onClick={() => navigateToHike(result.name)}
-                  >
-                    <span>View Complete Guide</span>
-                    <ChevronRight style={{ height: '20px', width: '20px' }} />
-                  </button>
-                </div>
+                  ) : (
+                    // DESKTOP LAYOUT: Keep your existing layout
+                    <>
+                      {/* Image Section - Left Side */}
+                      <div style={{ 
+                        position: 'relative', 
+                        width: '50%', 
+                        flexShrink: 0,
+                        overflow: 'hidden'
+                      }}>
+                        {(() => {
+                          const primaryHike = findHikeByName(result.name);
+                          return (
+                            <Image 
+                              src={getHikeImageUrl(primaryHike)}
+                              alt={result.name}
+                              fill
+                              style={{ objectFit: 'cover', transition: 'transform 0.3s ease' }}
+                            />
+                          );
+                        })()}
+                        <div style={{
+                          position: 'absolute',
+                          inset: 0,
+                          background: 'rgba(255, 255, 255, 0.2)',
+                        }} />
+                        <div style={{
+                          position: 'absolute',
+                          top: 'var(--space-lg)',
+                          left: 'var(--space-lg)',
+                          background: 'var(--ds-accent)',
+                          color: 'var(--ds-accent-foreground)',
+                          padding: 'var(--space-xs) var(--space-md)',
+                          borderRadius: '20px',
+                          fontSize: 'var(--text-sm)',
+                          fontWeight: 600,
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.5px'
+                        }}>
+                          Perfect Match
+                        </div>
+                      </div>
+                      
+                      {/* Content Section - Right Side */}
+                      <div style={{ 
+                        padding: 'var(--space-3xl)', 
+                        width: '50%',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'space-between'
+                      }}>
+                        <div>
+                          <h2 style={{
+                            fontSize: 'var(--text-3xl)',
+                            fontWeight: 600,
+                            color: 'var(--ds-foreground)',
+                            marginBottom: 'var(--space-lg)'
+                          }}>
+                            {result.name}
+                          </h2>
+                          
+                          <p style={{
+                            color: 'var(--ds-muted-foreground)',
+                            marginBottom: 'var(--space-xl)',
+                            lineHeight: 1.6,
+                            fontSize: 'var(--text-base)'
+                          }}>
+                            {(() => {
+                              const primaryHike = findHikeByName(result.name);
+                              return primaryHike ? getDescriptionPreview(primaryHike.Description) : result.highlights;
+                            })()}
+                          </p>
+                          
+                          <div style={{
+                            display: 'grid',
+                            gridTemplateColumns: '1fr 1fr',
+                            gap: 'var(--space-lg)',
+                            marginBottom: 'var(--space-xl)'
+                          }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-sm)' }}>
+                              <MapPin style={{ width: '16px', height: '16px', color: 'var(--ds-primary)' }} />
+                              <span style={{ fontSize: 'var(--text-sm)', color: 'var(--ds-muted-foreground)' }}>
+                                {(() => {
+                                  const primaryHike = findHikeByName(result.name);
+                                  if (primaryHike?.countries?.length) {
+                                    return primaryHike.countries.map(c => c.name).join(', ');
+                                  }
+                                  return result.country;
+                                })()}
+                              </span>
+                            </div>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-sm)' }}>
+                              <Route style={{ width: '16px', height: '16px', color: 'var(--ds-primary)' }} />
+                              <span style={{ fontSize: 'var(--text-sm)', color: 'var(--ds-muted-foreground)' }}>
+                                {(() => {
+                                  const primaryHike = findHikeByName(result.name);
+                                  return primaryHike?.Length ? `${primaryHike.Length} km` : result.distance;
+                                })()}
+                              </span>
+                            </div>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-sm)' }}>
+                              <TrendingUp style={{ width: '16px', height: '16px', color: 'var(--ds-primary)' }} />
+                              <span style={{ fontSize: 'var(--text-sm)', color: 'var(--ds-muted-foreground)' }}>
+                                {(() => {
+                                  const primaryHike = findHikeByName(result.name);
+                                  return primaryHike?.Difficulty || result.difficulty;
+                                })()}
+                              </span>
+                            </div>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-sm)' }}>
+                              <Calendar style={{ width: '16px', height: '16px', color: 'var(--ds-primary)' }} />
+                              <span style={{ fontSize: 'var(--text-sm)', color: 'var(--ds-muted-foreground)' }}>
+                                {(() => {
+                                  const primaryHike = findHikeByName(result.name);
+                                  return primaryHike?.Best_time || result.duration;
+                                })()}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <button 
+                          className="btn-primary"
+                          style={{ alignSelf: 'flex-start' }}
+                          onClick={() => navigateToHike(result.name)}
+                        >
+                          <span>View Complete Guide</span>
+                          <ChevronRight style={{ height: '20px', width: '20px' }} />
+                        </button>
+                      </div>
+                    </>
+                  )}
               </div>
             </div>
 
@@ -699,7 +880,7 @@ const TrailheadQuiz = () => {
             {secondaries.length > 0 && !loading && (
               <div style={{ marginBottom: 'var(--space-3xl)' }}>
                 <h3 style={{
-                  fontSize: 'var(--text-2xl)',
+                  fontSize: isMobile ? 'var(--text-xl)' : 'var(--text-2xl)',
                   fontWeight: 600,
                   color: 'var(--ds-foreground)',
                   textAlign: 'center',
@@ -764,122 +945,277 @@ const TrailheadQuiz = () => {
                           }
                         }}
                       >
-                        <div style={{ display: 'flex', minHeight: '240px' }}>
-                          {/* Image Section - Left Side (40%) */}
-                          <div style={{ 
-                            position: 'relative', 
-                            width: '40%', 
-                            flexShrink: 0,
-                            overflow: 'hidden'
-                          }}>
-                            <Image 
-                              src={getHikeImageUrl(hikeData)}
-                              alt={hikeData.title}
-                              fill
-                              style={{ 
-                                objectFit: 'cover', 
-                                transition: 'transform 0.5s ease'
-                              }}
-                            />
-                            <div style={{
-                              position: 'absolute',
-                              inset: 0,
-                              background: 'rgba(0, 0, 0, 0.1)',
-                            }} />
-                          </div>
-                          
-                          {/* Content Section - Right Side (60%) */}
-                          <div style={{ 
-                            padding: 'var(--space-xl)', 
-                            display: 'flex', 
-                            flexDirection: 'column',
-                            justifyContent: 'space-between',
-                            flex: 1
-                          }}>
-                            {/* Header */}
-                            <div>
+                        <div style={{ 
+                          display: 'flex', 
+                          flexDirection: isMobile ? 'column' : 'row',
+                          minHeight: isMobile ? 'auto' : '240px' 
+                        }}>
+                          {isMobile ? (
+                            // MOBILE LAYOUT: Country → Title → Image → Description → Details → Button
+                            <div style={{ 
+                              padding: 'var(--space-lg)', 
+                              display: 'flex',
+                              flexDirection: 'column',
+                              textAlign: 'center'
+                            }}>
                               {/* Country */}
                               <div style={{
                                 display: 'flex',
                                 alignItems: 'center',
                                 gap: 'var(--space-xs)',
+                                justifyContent: 'center',
                                 marginBottom: 'var(--space-sm)',
                                 color: 'var(--ds-muted-foreground)',
-                                fontSize: 'var(--text-sm)'
+                                fontSize: '0.8rem'
                               }}>
-                                <MapPin size={14} />
+                                <MapPin size={12} />
                                 <span>{countryDisplay}</span>
                               </div>
                               
+                              {/* Title */}
                               <h4 style={{
-                                fontSize: 'var(--text-xl)',
+                                fontSize: 'var(--text-lg)',
                                 fontWeight: 600,
                                 color: 'var(--ds-foreground)',
-                                marginBottom: 'var(--space-sm)',
+                                marginBottom: 'var(--space-md)',
                                 lineHeight: 1.3,
                                 transition: 'color 0.3s ease'
                               }}>
                                 {hikeData.title}
                               </h4>
+
+                              {/* Image */}
+                              <div style={{ 
+                                position: 'relative', 
+                                width: '100%', 
+                                height: '200px',
+                                borderRadius: '8px',
+                                overflow: 'hidden',
+                                marginBottom: 'var(--space-md)'
+                              }}>
+                                <Image 
+                                  src={getHikeImageUrl(hikeData)}
+                                  alt={hikeData.title}
+                                  fill
+                                  style={{ 
+                                    objectFit: 'cover', 
+                                    transition: 'transform 0.5s ease'
+                                  }}
+                                />
+                                <div style={{
+                                  position: 'absolute',
+                                  inset: 0,
+                                  background: 'rgba(0, 0, 0, 0.1)',
+                                }} />
+                              </div>
                               
+                              {/* Description */}
                               <p style={{
                                 color: 'var(--ds-muted-foreground)',
                                 fontSize: 'var(--text-sm)',
-                                marginBottom: 'var(--space-lg)',
+                                marginBottom: 'var(--space-md)',
                                 lineHeight: 1.5
                               }}>
                                 {getDescriptionPreview(hikeData.Description) || "Experience this incredible multi-day journey through stunning landscapes."}
                               </p>
-                            </div>
-                            
-                            {/* Info Grid */}
-                            <div style={{ 
-                              display: 'grid', 
-                              gridTemplateColumns: '1fr 1fr', 
-                              gap: 'var(--space-md)',
-                              marginBottom: 'var(--space-lg)'
-                            }}>
-                              {hikeData.Length && (
-                                <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-xs)' }}>
-                                  <Route style={{ width: '14px', height: '14px', color: 'var(--ds-muted-foreground)' }} />
-                                  <span style={{ fontSize: 'var(--text-sm)', color: 'var(--ds-muted-foreground)' }}>
-                                    {hikeData.Length} km
-                                  </span>
-                                </div>
-                              )}
-                              {hikeData.Difficulty && (
-                                <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-xs)' }}>
-                                  <TrendingUp style={{ width: '14px', height: '14px', color: 'var(--ds-muted-foreground)' }} />
-                                  <span style={{ 
-                                    fontSize: 'var(--text-sm)', 
-                                    fontWeight: 500,
-                                    color: 'var(--ds-muted-foreground)'
-                                  }}>
-                                    {hikeData.Difficulty}
-                                  </span>
-                                </div>
-                              )}
-                            </div>
-                            
-                            {/* Learn More Button */}
-                            <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
-                              <span style={{
-                                fontSize: 'var(--text-sm)',
-                                color: 'var(--ds-primary)',
-                                fontWeight: 600,
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: 'var(--space-xs)',
-                                padding: 'var(--space-xs) var(--space-md)',
-                                borderRadius: '6px',
-                                border: '1px solid var(--ds-primary)',
-                                transition: 'all 0.2s ease'
+                              
+                              {/* Details - Single Column */}
+                              <div style={{ 
+                                display: 'grid', 
+                                gridTemplateColumns: '1fr',
+                                gap: 'var(--space-sm)',
+                                marginBottom: 'var(--space-lg)'
                               }}>
-                                Learn More
-                                <ChevronRight style={{ width: '14px', height: '14px' }} />
-                              </span>
+                                {hikeData.Length && (
+                                  <div style={{ 
+                                    display: 'flex', 
+                                    alignItems: 'center', 
+                                    gap: 'var(--space-xs)',
+                                    justifyContent: 'center'
+                                  }}>
+                                    <Route style={{ width: '14px', height: '14px', color: 'var(--ds-muted-foreground)' }} />
+                                    <span style={{ fontSize: 'var(--text-sm)', color: 'var(--ds-muted-foreground)' }}>
+                                      {hikeData.Length} km
+                                    </span>
+                                  </div>
+                                )}
+                                {hikeData.Difficulty && (
+                                  <div style={{ 
+                                    display: 'flex', 
+                                    alignItems: 'center', 
+                                    gap: 'var(--space-xs)',
+                                    justifyContent: 'center'
+                                  }}>
+                                    <TrendingUp style={{ width: '14px', height: '14px', color: 'var(--ds-muted-foreground)' }} />
+                                    <span style={{ 
+                                      fontSize: 'var(--text-sm)', 
+                                      fontWeight: 500,
+                                      color: 'var(--ds-muted-foreground)'
+                                    }}>
+                                      {hikeData.Difficulty}
+                                    </span>
+                                  </div>
+                                )}
+                                {hikeData.Best_time && (
+                                  <div style={{ 
+                                    display: 'flex', 
+                                    alignItems: 'center', 
+                                    gap: 'var(--space-xs)',
+                                    justifyContent: 'center'
+                                  }}>
+                                    <Calendar style={{ width: '14px', height: '14px', color: 'var(--ds-muted-foreground)' }} />
+                                    <span style={{ fontSize: 'var(--text-sm)', color: 'var(--ds-muted-foreground)' }}>
+                                      {hikeData.Best_time}
+                                    </span>
+                                  </div>
+                                )}
+                              </div>                              
+                              {/* Learn More Button */}
+                              <div style={{ display: 'flex', justifyContent: 'center' }}>
+                                <span style={{
+                                  fontSize: 'var(--text-sm)',
+                                  color: 'var(--ds-primary)',
+                                  fontWeight: 600,
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  gap: 'var(--space-xs)',
+                                  padding: 'var(--space-xs) var(--space-md)',
+                                  borderRadius: '6px',
+                                  border: '1px solid var(--ds-primary)',
+                                  transition: 'all 0.2s ease'
+                                }}>
+                                  Learn More
+                                  <ChevronRight style={{ width: '14px', height: '14px' }} />
+                                </span>
+                              </div>
                             </div>
-                          </div>
+                          ) : (
+                            // DESKTOP LAYOUT: Keep existing side-by-side layout
+                            <>
+                              {/* Image Section - Left Side (40%) */}
+                              <div style={{ 
+                                position: 'relative', 
+                                width: '40%', 
+                                flexShrink: 0,
+                                overflow: 'hidden'
+                              }}>
+                                <Image 
+                                  src={getHikeImageUrl(hikeData)}
+                                  alt={hikeData.title}
+                                  fill
+                                  style={{ 
+                                    objectFit: 'cover', 
+                                    transition: 'transform 0.5s ease'
+                                  }}
+                                />
+                                <div style={{
+                                  position: 'absolute',
+                                  inset: 0,
+                                  background: 'rgba(0, 0, 0, 0.1)',
+                                }} />
+                              </div>
+                              
+                              {/* Content Section - Right Side (60%) */}
+                              <div style={{ 
+                                padding: 'var(--space-xl)', 
+                                display: 'flex', 
+                                flexDirection: 'column',
+                                justifyContent: 'space-between',
+                                flex: 1
+                              }}>
+                                {/* Header */}
+                                <div>
+                                  {/* Country */}
+                                  <div style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: 'var(--space-xs)',
+                                    marginBottom: 'var(--space-sm)',
+                                    color: 'var(--ds-muted-foreground)',
+                                    fontSize: 'var(--text-sm)'
+                                  }}>
+                                    <MapPin size={14} />
+                                    <span>{countryDisplay}</span>
+                                  </div>
+                                  
+                                  <h4 style={{
+                                    fontSize: 'var(--text-xl)',
+                                    fontWeight: 600,
+                                    color: 'var(--ds-foreground)',
+                                    marginBottom: 'var(--space-sm)',
+                                    lineHeight: 1.3,
+                                    transition: 'color 0.3s ease'
+                                  }}>
+                                    {hikeData.title}
+                                  </h4>
+                                  
+                                  <p style={{
+                                    color: 'var(--ds-muted-foreground)',
+                                    fontSize: 'var(--text-sm)',
+                                    marginBottom: 'var(--space-lg)',
+                                    lineHeight: 1.5
+                                  }}>
+                                    {getDescriptionPreview(hikeData.Description) || "Experience this incredible multi-day journey through stunning landscapes."}
+                                  </p>
+                                </div>
+                                
+                                {/* Info Grid */}
+                                <div style={{ 
+                                  display: 'grid', 
+                                  gridTemplateColumns: '1fr 1fr', 
+                                  gap: 'var(--space-md)',
+                                  marginBottom: 'var(--space-lg)'
+                                }}>
+                                  {hikeData.Length && (
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-xs)' }}>
+                                      <Route style={{ width: '14px', height: '14px', color: 'var(--ds-muted-foreground)' }} />
+                                      <span style={{ fontSize: 'var(--text-sm)', color: 'var(--ds-muted-foreground)' }}>
+                                        {hikeData.Length} km
+                                      </span>
+                                    </div>
+                                  )}
+                                  {hikeData.Difficulty && (
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-xs)' }}>
+                                      <TrendingUp style={{ width: '14px', height: '14px', color: 'var(--ds-muted-foreground)' }} />
+                                      <span style={{ 
+                                        fontSize: 'var(--text-sm)', 
+                                        fontWeight: 500,
+                                        color: 'var(--ds-muted-foreground)'
+                                      }}>
+                                        {hikeData.Difficulty}
+                                      </span>
+                                    </div>
+                                  )}
+                                  {hikeData.Best_time && (
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-xs)' }}>
+                                      <Calendar style={{ width: '14px', height: '14px', color: 'var(--ds-muted-foreground)' }} />
+                                      <span style={{ fontSize: 'var(--text-sm)', color: 'var(--ds-muted-foreground)' }}>
+                                        {hikeData.Best_time}
+                                      </span>
+                                    </div>
+                                  )}
+                                </div>                                
+                                {/* Learn More Button */}
+                                <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
+                                  <span style={{
+                                    fontSize: 'var(--text-sm)',
+                                    color: 'var(--ds-primary)',
+                                    fontWeight: 600,
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: 'var(--space-xs)',
+                                    padding: 'var(--space-xs) var(--space-md)',
+                                    borderRadius: '6px',
+                                    border: '1px solid var(--ds-primary)',
+                                    transition: 'all 0.2s ease'
+                                  }}>
+                                    Learn More
+                                    <ChevronRight style={{ width: '14px', height: '14px' }} />
+                                  </span>
+                                </div>
+                              </div>
+                            </>
+                          )}
                         </div>
                       </div>
                     );
@@ -1043,7 +1379,7 @@ const TrailheadQuiz = () => {
       </div>
       
       {/* Content */}
-      <div className="relative z-10 min-h-screen flex flex-col px-4 py-8">
+      <div className={`relative z-10 min-h-screen flex flex-col py-8 ${isMobile ? 'px-2' : 'px-4'}`}>
         
         {currentQuestion >= 0 && (
           /* Progress Header - Only show during questions */
@@ -1089,7 +1425,7 @@ const TrailheadQuiz = () => {
         
         {/* Main Content */}
         <div className="flex-1 flex items-center justify-center">
-          <div className="max-w-4xl mx-auto w-full">
+          <div className={`${isMobile ? 'max-w-full' : 'max-w-4xl'} mx-auto w-full`}>
             
             {currentQuestion === -1 ? (
               /* Start Screen */
@@ -1107,8 +1443,8 @@ const TrailheadQuiz = () => {
                     display: 'inline-flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    width: '64px',
-                    height: '64px',
+                    width: isMobile ? '56px' : '64px',
+                    height: isMobile ? '56px' : '64px',
                     background: 'var(--gradient-hero)',
                     borderRadius: '50%',
                     marginBottom: 'var(--space-xl)',
@@ -1118,7 +1454,7 @@ const TrailheadQuiz = () => {
                   </div>
                   
                   <h1 style={{
-                    fontSize: 'clamp(2rem, 5vw, 3rem)',
+                    fontSize: isMobile ? 'clamp(1.5rem, 8vw, 2.25rem)' : 'clamp(2rem, 5vw, 3rem)',
                     fontWeight: 700,
                     color: 'var(--ds-foreground)',
                     marginBottom: 'var(--space-lg)'
@@ -1162,12 +1498,13 @@ const TrailheadQuiz = () => {
                 
                 <div style={{
                   display: 'flex',
+                  flexDirection: 'column',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  gap: 'var(--space-xl)',
+                  gap: 'var(--space-md)',
                   fontSize: 'var(--text-sm)',
                   color: 'var(--ds-muted-foreground)'
-                }} className="flex-col sm:flex-row sm:space-x-6 space-y-2 sm:space-y-0">
+                }} className="sm:flex-row">
                   <span style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-xs)' }}>
                     <span style={{
                       width: '8px',
@@ -1203,7 +1540,7 @@ const TrailheadQuiz = () => {
                 background: 'rgba(255, 255, 255, 0.95)',
                 backdropFilter: 'blur(20px)',
                 borderRadius: '20px',
-                padding: 'var(--space-3xl)',
+                padding: isMobile ? 'var(--space-xl)' : 'var(--space-3xl)',  // Reduced mobile padding
                 boxShadow: 'var(--shadow-float)',
                 border: '1px solid rgba(255, 255, 255, 0.2)'
               }}>
@@ -1224,7 +1561,7 @@ const TrailheadQuiz = () => {
                       onClick={() => setSelectedAnswer(answer.text)}
                       style={{
                         width: '100%',
-                        padding: 'var(--space-lg)',
+                        padding: isMobile ? 'var(--space-md)' : 'var(--space-lg)',
                         textAlign: 'left',
                         background: selectedAnswer === answer.text ? 'var(--ds-muted)' : 'var(--ds-off-white)',
                         border: selectedAnswer === answer.text ? '2px solid var(--ds-primary)' : '2px solid var(--ds-border)',
@@ -1251,10 +1588,10 @@ const TrailheadQuiz = () => {
                         }
                       }}
                     >
-                      <div style={{ display: 'flex', alignItems: 'flex-start', gap: 'var(--space-lg)', width: '100%' }}>
+                      <div style={{ display: 'flex', alignItems: 'flex-start', gap: isMobile ? 'var(--space-sm)' : 'var(--space-lg)', width: '100%' }}>
                         <div style={{
-                          width: '24px',
-                          height: '24px',
+                          width: isMobile ? '20px' : '24px',
+                          height: isMobile ? '20px' : '24px',
                           borderRadius: '50%',
                           border: selectedAnswer === answer.text ? '2px solid var(--ds-primary)' : '2px solid var(--ds-muted-foreground)',
                           background: selectedAnswer === answer.text ? 'var(--ds-primary)' : 'transparent',
@@ -1267,8 +1604,8 @@ const TrailheadQuiz = () => {
                         }}>
                           {selectedAnswer === answer.text && (
                             <div style={{
-                              width: '8px',
-                              height: '8px',
+                              width: isMobile ? '6px' : '8px',
+                              height: isMobile ? '6px' : '8px',
                               background: 'var(--ds-primary-foreground)',
                               borderRadius: '50%'
                             }} />
@@ -1278,7 +1615,9 @@ const TrailheadQuiz = () => {
                           fontSize: 'var(--text-base)', 
                           lineHeight: 1.6, 
                           color: 'var(--ds-foreground)',
-                          margin: 0
+                          margin: 0,
+                          flex: 1,  // This makes the text take up available space
+                          minWidth: 0  // Allows text to wrap properly
                         }}>
                           {answer.text}
                         </p>

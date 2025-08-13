@@ -4,7 +4,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Heart, Mail } from 'lucide-react';
+import { Heart, Mail, Target } from 'lucide-react';
 import NewsletterModal from './NewsletterModal';
 
 export default function Footer() {
@@ -79,7 +79,10 @@ export default function Footer() {
       textDecoration: 'none',
       fontSize: '0.9rem',
       transition: 'color 0.2s ease',
-      fontFamily: 'Inter, system-ui, sans-serif'
+      fontFamily: 'Inter, system-ui, sans-serif',
+      display: 'flex',
+      alignItems: 'center',
+      gap: '0.5rem'
     },
     footerButton: {
       color: 'var(--ds-muted-foreground)',
@@ -91,7 +94,10 @@ export default function Footer() {
       border: 'none',
       cursor: 'pointer',
       padding: 0,
-      textAlign: 'left' as const
+      textAlign: 'left' as const,
+      display: 'flex',
+      alignItems: 'center',
+      gap: '0.5rem'
     },
     contactSection: {
       display: 'flex',
@@ -171,6 +177,19 @@ export default function Footer() {
                   }}
                 >
                   All Hikes
+                </Link>
+                <Link 
+                  href="/quiz" 
+                  style={{...styles.footerLink, color: 'var(--ds-primary)'}}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.color = 'var(--ds-foreground)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.color = 'var(--ds-primary)';
+                  }}
+                >
+                  <Target size={14} />
+                  Find your perfect hike
                 </Link>
                 <Link 
                   href="/about" 
