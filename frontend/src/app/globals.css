@@ -32,15 +32,15 @@
   --shadow-card: 0 8px 30px hsl(140, 35%, 25%, 0.12);
   --shadow-float: 0 12px 40px hsl(140, 35%, 25%, 0.15);
 
-  /* Typography Scale - Mobile First */
+  /* Typography Scale - Mobile First - IMPROVED */
   --text-xs: 0.75rem;     /* 12px */
   --text-sm: 0.875rem;    /* 14px */
-  --text-base: 1rem;      /* 16px */
-  --text-lg: 1.125rem;    /* 18px */
-  --text-xl: 1.25rem;     /* 20px */
-  --text-2xl: 1.5rem;     /* 24px */
-  --text-3xl: 1.875rem;   /* 30px */
-  --text-4xl: 2.25rem;    /* 36px */
+  --text-base: 1.125rem;  /* 18px - INCREASED from 16px */
+  --text-lg: 1.25rem;     /* 20px - INCREASED from 18px */
+  --text-xl: 1.375rem;    /* 22px */
+  --text-2xl: 1.625rem;   /* 26px */
+  --text-3xl: 2rem;       /* 32px */
+  --text-4xl: 2.5rem;     /* 40px */
   --text-5xl: 3rem;       /* 48px */
   --text-6xl: 3.75rem;    /* 60px */
   
@@ -61,16 +61,6 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-    --ds-background: #0a0a0a;
-    --ds-foreground: #ededed;
-    --ds-muted-foreground: hsl(210, 10%, 70%);
-  }
-}
-
 /* Desktop Typography Scale */
 @media (min-width: 768px) {
   :root {
@@ -89,8 +79,8 @@ body {
   color: var(--foreground);
   font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   font-display: swap;
-  font-size: var(--text-base);
-  line-height: 1.6;
+  font-size: var(--text-base); /* Now 18px on mobile */
+  line-height: 1.7; /* INCREASED from 1.6 for better readability */
 }
 
 @layer utilities {
@@ -99,6 +89,26 @@ body {
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+  }
+  
+  /* NEW: Content readability utilities */
+  .content-text {
+    font-size: var(--text-base); /* 18px */
+    line-height: 1.7;
+    max-width: 65ch; /* Optimal reading width */
+    margin: 0 auto;
+  }
+  
+  .content-container {
+    padding: 0 var(--space-lg); /* Better side padding on mobile */
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  @media (min-width: 768px) {
+    .content-container {
+      padding: 0 var(--space-2xl);
+    }
   }
 }
 
@@ -110,16 +120,16 @@ body {
 
 .section-title {
   font-family: 'Inter', system-ui, sans-serif;
-  font-size: var(--text-3xl); /* 30px mobile, 36px desktop */
+  font-size: var(--text-3xl); /* 32px mobile, 36px desktop */
   font-weight: 600;
   color: var(--ds-foreground);
-  margin-bottom: var(--space-sm);
+  margin-bottom: var(--space-lg); /* INCREASED spacing */
   line-height: 1.2;
 }
 
 .section-subtitle {
   color: var(--ds-muted-foreground);
-  font-size: var(--text-lg); /* 18px mobile, 20px desktop */
+  font-size: var(--text-lg); /* 20px mobile, 20px desktop */
   text-align: center;
   margin-bottom: var(--space-2xl);
   max-width: 600px;
@@ -131,7 +141,7 @@ body {
 /* Hero Typography - Improved Mobile Scaling */
 .hero-title {
   font-family: 'Inter', system-ui, sans-serif;
-  font-size: var(--text-4xl); /* 36px mobile, 48px desktop */
+  font-size: var(--text-4xl); /* 40px mobile, 48px desktop */
   font-weight: 300;
   letter-spacing: 1px;
   text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
@@ -141,7 +151,7 @@ body {
 
 .hero-subtitle {
   font-family: 'Inter', system-ui, sans-serif;
-  font-size: var(--text-lg); /* 18px mobile, 20px desktop */
+  font-size: var(--text-lg); /* 20px mobile, 20px desktop */
   font-weight: 300;
   line-height: 1.6;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
@@ -161,6 +171,7 @@ body {
     font-size: var(--text-xl); /* 24px on large screens */
   }
 }
+
 @media (max-width: 768px) {
   .hero-section-responsive {
     height: 70vh !important;
@@ -178,10 +189,10 @@ body {
 /* Featured Hike Title */
 .featured-hike-title {
   font-family: 'Inter', system-ui, sans-serif;
-  font-size: var(--text-2xl); /* 24px mobile, 30px desktop */
+  font-size: var(--text-2xl); /* 26px mobile, 30px desktop */
   font-weight: 600;
   color: var(--ds-foreground);
-  margin-bottom: var(--space-sm);
+  margin-bottom: var(--space-lg); /* INCREASED spacing */
   line-height: 1.2;
 }
 
@@ -194,10 +205,10 @@ body {
 /* Card Titles */
 .card-title {
   font-family: 'Inter', system-ui, sans-serif;
-  font-size: var(--text-lg); /* 18px mobile, 20px desktop */
+  font-size: var(--text-lg); /* 20px mobile, 20px desktop */
   font-weight: 600;
   line-height: 1.3;
-  margin-bottom: var(--space-xs);
+  margin-bottom: var(--space-sm); /* INCREASED spacing */
 }
 
 /* Specific spacing for "Explore All Hikes" section */
@@ -272,17 +283,17 @@ body {
   animation: spin 1s linear infinite;
 }
 
-/* Responsive Container */
+/* Responsive Container - IMPROVED */
 .container-responsive {
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 var(--space-md);
+  padding: 0 var(--space-lg); /* Better mobile padding */
 }
 
 @media (min-width: 768px) {
   .container-responsive {
-    padding: 0 var(--space-xl);
+    padding: 0 var(--space-2xl); /* More generous desktop padding */
   }
 }
 

@@ -413,7 +413,6 @@ export default async function HikeDetailPage({ params }: { params: Promise<{ slu
             padding: 1rem;
             border-radius: 8px;
             text-align: center;
-            border: 1px solid var(--ds-border);
             box-shadow: var(--shadow-soft);
           }
           
@@ -493,9 +492,8 @@ export default async function HikeDetailPage({ params }: { params: Promise<{ slu
             font-size: var(--text-xl);
             font-weight: 600;
             color: var(--ds-foreground);
-            margin-bottom: 1.25rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid var(--ds-border);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0;
           }
           
           /* Prose Content - Mobile Optimized */
@@ -508,16 +506,15 @@ export default async function HikeDetailPage({ params }: { params: Promise<{ slu
           
           /* Remove left border on mobile */
           .prose-content p {
-            margin-bottom: 1.25rem;
+            margin-bottom: 1.5rem;
             padding: 0; /* Remove padding */
             border-left: none; /* Remove left border */
             padding-left: 0; /* Remove left padding */
           }
           
           .prose-content p:not(:last-child) {
-            border-bottom: 1px solid var(--ds-border);
-            padding-bottom: 1rem;
-            margin-bottom: 1.5rem;
+            padding-bottom: 0rem;
+            margin-bottom: 1.75rem;
           }
           
           .prose-content ul {
@@ -525,7 +522,7 @@ export default async function HikeDetailPage({ params }: { params: Promise<{ slu
             padding: 0; /* Remove padding */
             border-left: none; /* Remove left border */
             padding-left: 1rem; /* Just basic list padding */
-            margin-bottom: 1.25rem;
+            margin-bottom: 1.5rem;
           }
           
           .prose-content li {
@@ -621,6 +618,7 @@ export default async function HikeDetailPage({ params }: { params: Promise<{ slu
             
             .section-title {
               font-size: var(--text-2xl);
+              margin-bottom: 2rem; /* More generous spacing */
             }
             
             .map-container {
@@ -629,13 +627,11 @@ export default async function HikeDetailPage({ params }: { params: Promise<{ slu
             
             /* Restore left borders on desktop for prose */
             .prose-content p {
-              border-left: 3px solid var(--ds-border);
-              padding-left: 1.5rem;
+              padding-left: 0;
             }
             
             .prose-content ul {
-              border-left: 3px solid var(--ds-border);
-              padding-left: 1.5rem;
+              padding-left: 1rem;
             }
           }
           
