@@ -11,6 +11,15 @@ interface LengthRange {
   value: string;
 }
 
+// Transform HikeSummary to match the expected structure for FilterBar
+interface TransformedHike {
+  country: string;
+  continent: string;
+  difficulty: string;
+  length?: string;
+  month?: string;
+}
+
 export default function ClientFilters({ hikes }: { hikes: HikeSummary[] }) {
   const [filters, setFilters] = useState({
     country: '',
@@ -21,7 +30,7 @@ export default function ClientFilters({ hikes }: { hikes: HikeSummary[] }) {
     month: ''
   });
 
-  const [displayCount, setDisplayCount] = useState(15); // ADDED: Show 15 initially
+  const [displayCount, setDisplayCount] = useState(15);
 
   // Extract unique values for filter options
   const filterOptions = useMemo(() => {
@@ -50,6 +59,40 @@ export default function ClientFilters({ hikes }: { hikes: HikeSummary[] }) {
     ];
 
     return { countries, continents, difficulties, sceneries, months, lengthRanges };
+  }, [hikes]);
+
+  // Transform hikes data for FilterBar dynamic filtering
+  const transformedHikes = useMemo((): TransformedHike[] => {
+    const transformed: TransformedHike[] = [];
+    
+    hikes.forEach(hike => {
+      // Create entries for each country the hike spans
+      const hikeCountries = hike.countries?.map(c => c.name) || [''];
+      const hikeMonths = hike.months?.map(m => m.MonthTag) || [''];
+      
+      // Determine length category
+      let lengthCategory = '';
+      const length = hike.Length || 0;
+      if (length < 50) lengthCategory = 'short';
+      else if (length < 150) lengthCategory = 'medium';
+      else if (length < 250) lengthCategory = 'long';
+      else lengthCategory = 'very-long';
+      
+      // Create combinations for each country and month
+      hikeCountries.forEach(country => {
+        hikeMonths.forEach(month => {
+          transformed.push({
+            country: country,
+            continent: hike.continent || '',
+            difficulty: hike.Difficulty || '',
+            length: lengthCategory,
+            month: month
+          });
+        });
+      });
+    });
+    
+    return transformed;
   }, [hikes]);
 
   // Filter hikes based on current filters
@@ -109,7 +152,7 @@ export default function ClientFilters({ hikes }: { hikes: HikeSummary[] }) {
     });
   }, [hikes, filters]);
 
-  // ADDED: Get displayed hikes (limited by displayCount)
+  // Get displayed hikes (limited by displayCount)
   const displayedHikes = filteredHikes.slice(0, displayCount);
   const hasMoreHikes = displayCount < filteredHikes.length;
 
@@ -118,7 +161,7 @@ export default function ClientFilters({ hikes }: { hikes: HikeSummary[] }) {
       ...prev,
       [filterType]: value
     }));
-    // ADDED: Reset display count when filters change
+    // Reset display count when filters change
     setDisplayCount(15);
   };
 
@@ -131,11 +174,11 @@ export default function ClientFilters({ hikes }: { hikes: HikeSummary[] }) {
       scenery: '',
       month: ''
     });
-    // ADDED: Reset display count when clearing filters
+    // Reset display count when clearing filters
     setDisplayCount(15);
   };
 
-  // ADDED: Load more function
+  // Load more function
   const handleLoadMore = () => {
     setDisplayCount(prev => prev + 15);
   };
@@ -167,9 +210,7 @@ export default function ClientFilters({ hikes }: { hikes: HikeSummary[] }) {
 
   return (
     <div>
-      {/* REMOVED: Section Header (moved to main page) */}
-
-      {/* Filter Bar */}
+      {/* Filter Bar with Dynamic Filtering */}
       <FilterBar
         countries={filterOptions.countries}
         continents={filterOptions.continents}
@@ -177,18 +218,20 @@ export default function ClientFilters({ hikes }: { hikes: HikeSummary[] }) {
         lengthRanges={filterOptions.lengthRanges}
         sceneries={filterOptions.sceneries}
         months={filterOptions.months}
+        allHikes={hikes} // CHANGED: Pass original hikes instead of transformed
+        currentFilters={filters} // NEW: Pass current filter state
         onFilterChange={handleFilterChange}
         onClearFilters={handleClearFilters}
       />
 
-      {/* Hike Grid - Now shows limited results */}
+      {/* Hike Grid - Shows limited results */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
         {displayedHikes.map((hike) => (
           <HikeCard key={hike.id} hike={hike} />
         ))}
       </div>
 
-      {/* ADDED: Load More Button */}
+      {/* Load More Button */}
       {hasMoreHikes && (
         <div style={loadMoreStyles.container}>
           <button

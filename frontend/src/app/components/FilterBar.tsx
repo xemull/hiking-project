@@ -8,6 +8,16 @@ interface LengthRange {
   value: string;
 }
 
+interface Hike {
+  id: number;
+  countries?: Array<{ name: string }>;
+  continent: string;
+  Difficulty: string;
+  Length?: number;
+  months?: Array<{ MonthTag: string }>;
+  // Add other hike properties as needed
+}
+
 interface FilterBarProps {
   countries: string[];
   sceneries: string[];
@@ -15,6 +25,14 @@ interface FilterBarProps {
   lengthRanges: LengthRange[];
   continents: string[];
   months: string[];
+  allHikes: Hike[]; // Add this to calculate filtered options
+  currentFilters: {
+    continent?: string;
+    country?: string;
+    difficulty?: string;
+    length?: string;
+    month?: string;
+  };
   onFilterChange: (filterType: string, value: string) => void;
   onClearFilters: () => void;
 }
@@ -26,12 +44,112 @@ export default function FilterBar({
   lengthRanges,
   continents,
   months,
+  allHikes,
+  currentFilters,
   onFilterChange,
   onClearFilters
 }: FilterBarProps) {
   
+  // Function to get available options and counts based on current selections
+  const getOptionsWithCounts = () => {
+    // Work directly with the original hikes data to count unique hikes
+    const getUniqueHikesCount = (filterType: string, optionValue: string) => {
+      return allHikes.filter((hike: Hike) => {
+        // Apply all current filters except the one we're calculating for
+        if (filterType !== 'continent' && currentFilters.continent && hike.continent !== currentFilters.continent) return false;
+        if (filterType !== 'country' && currentFilters.country && !hike.countries?.some(c => c.name === currentFilters.country)) return false;
+        if (filterType !== 'difficulty' && currentFilters.difficulty && hike.Difficulty !== currentFilters.difficulty) return false;
+        
+        if (filterType !== 'length' && currentFilters.length) {
+          const length = hike.Length || 0;
+          let hikeCategory = '';
+          if (length < 50) hikeCategory = 'short';
+          else if (length < 150) hikeCategory = 'medium';
+          else if (length < 250) hikeCategory = 'long';
+          else hikeCategory = 'very-long';
+          if (hikeCategory !== currentFilters.length) return false;
+        }
+        
+        if (filterType !== 'month' && currentFilters.month && !hike.months?.some(m => m.MonthTag === currentFilters.month)) return false;
+        
+        // Then check if this hike matches the option we're testing
+        if (filterType === 'continent' && hike.continent !== optionValue) return false;
+        if (filterType === 'country' && !hike.countries?.some(c => c.name === optionValue)) return false;
+        if (filterType === 'difficulty' && hike.Difficulty !== optionValue) return false;
+        
+        if (filterType === 'length') {
+          const length = hike.Length || 0;
+          let hikeCategory = '';
+          if (length < 50) hikeCategory = 'short';
+          else if (length < 150) hikeCategory = 'medium';
+          else if (length < 250) hikeCategory = 'long';
+          else hikeCategory = 'very-long';
+          if (hikeCategory !== optionValue) return false;
+        }
+        
+        if (filterType === 'month' && !hike.months?.some(m => m.MonthTag === optionValue)) return false;
+        
+        return true;
+      }).length;
+    };
+
+    // Calculate counts for each filter option - only include options with >0 count
+    const continentCounts = new Map<string, number>();
+    continents.forEach(continent => {
+      const count = getUniqueHikesCount('continent', continent);
+      if (count > 0 || currentFilters.continent === continent) {
+        continentCounts.set(continent, count);
+      }
+    });
+
+    const countryCounts = new Map<string, number>();
+    countries.forEach(country => {
+      const count = getUniqueHikesCount('country', country);
+      if (count > 0 || currentFilters.country === country) {
+        countryCounts.set(country, count);
+      }
+    });
+
+    const difficultyCounts = new Map<string, number>();
+    difficulties.forEach(difficulty => {
+      const count = getUniqueHikesCount('difficulty', difficulty);
+      if (count > 0 || currentFilters.difficulty === difficulty) {
+        difficultyCounts.set(difficulty, count);
+      }
+    });
+
+    const lengthCounts = new Map<string, number>();
+    lengthRanges.forEach(range => {
+      const count = getUniqueHikesCount('length', range.value);
+      if (count > 0 || currentFilters.length === range.value) {
+        lengthCounts.set(range.value, count);
+      }
+    });
+
+    const monthCounts = new Map<string, number>();
+    months.forEach(month => {
+      const count = getUniqueHikesCount('month', month);
+      if (count > 0 || currentFilters.month === month) {
+        monthCounts.set(month, count);
+      }
+    });
+
+    return {
+      continentCounts,
+      countryCounts,
+      difficultyCounts,
+      lengthCounts,
+      monthCounts
+    };
+  };
+
+  const optionCounts = getOptionsWithCounts();
+  
   // Sort months in chronological order
-  const sortedMonths = [...months].sort((a, b) => {
+  const sortedMonths = [...months].filter(Boolean).sort((a, b) => {
+    // Safety check - ensure both a and b are defined
+    if (!a || !b) return 0;
+    
     const monthOrder = [
       'January', 'February', 'March', 'April', 'May', 'June',
       'July', 'August', 'September', 'October', 'November', 'December'
@@ -125,6 +243,18 @@ export default function FilterBar({
       outline: 'none',
       boxShadow: '0 0 0 3px rgba(59, 130, 246, 0.1)'
     },
+    option: {
+      padding: '0.5rem 0.75rem',
+      fontSize: '0.875rem'
+    },
+    selectedOption: {
+      fontWeight: 600,
+      background: '#f3f4f6'
+    },
+    disabledOption: {
+      color: '#9ca3af',
+      fontStyle: 'italic'
+    },
     clearText: {
       color: '#6b7280',
       fontSize: '0.875rem',
@@ -143,40 +273,23 @@ export default function FilterBar({
       height: '1px',
       background: '#e5e7eb',
       marginTop: '1rem'
-    },
-    // Mobile-specific styles
-    '@media (max-width: 640px)': {
-      container: {
-        padding: '0 1rem'
-      },
-      filterHeader: {
-        flexDirection: 'column' as const,
-        alignItems: 'flex-start',
-        gap: '0.75rem'
-      },
-      filtersGrid: {
-        gridTemplateColumns: 'repeat(2, 1fr)',
-        gap: '0.5rem'
-      },
-      select: {
-        fontSize: '0.8125rem',
-        padding: '0.625rem'
-      },
-      filterLabel: {
-        fontSize: '0.8125rem'
-      },
-      clearText: {
-        fontSize: '0.8125rem',
-        alignSelf: 'flex-end'
-      }
-    },
-    // Extra small mobile
-    '@media (max-width: 480px)': {
-      filtersGrid: {
-        gridTemplateColumns: '1fr',
-        gap: '0.5rem'
-      }
     }
+  };
+
+  // Helper function to render option with count and styling
+  const renderOption = (value: string, label: string, count: number, isSelected: boolean) => {
+    return (
+      <option 
+        key={value} 
+        value={value}
+        style={{
+          ...filterStyles.option,
+          ...(isSelected ? filterStyles.selectedOption : {})
+        }}
+      >
+        {isSelected ? '✓ ' : ''}{label} ({count})
+      </option>
+    );
   };
 
   return (
@@ -208,29 +321,12 @@ export default function FilterBar({
             </span>
           </div>
 
-          {/* Filters Grid */}
+          {/* Filters Grid - Note: Continent and Country are swapped */}
           <div style={filterStyles.filtersGrid}>
-            {/* Country Filter */}
+            {/* Continent Filter - Now first */}
             <select 
               style={filterStyles.select}
-              onChange={(e) => onFilterChange('country', e.target.value)}
-              onFocus={(e) => {
-                Object.assign(e.currentTarget.style, filterStyles.selectHover);
-              }}
-              onBlur={(e) => {
-                e.currentTarget.style.borderColor = '#d1d5db';
-                e.currentTarget.style.boxShadow = 'none';
-              }}
-            >
-              <option value="">Country</option>
-              {countries.map((country, index) => (
-                <option key={index} value={country}>{country}</option>
-              ))}
-            </select>
-
-            {/* Continent Filter */}
-            <select 
-              style={filterStyles.select}
+              value={currentFilters.continent || ''}
               onChange={(e) => onFilterChange('continent', e.target.value)}
               onFocus={(e) => {
                 Object.assign(e.currentTarget.style, filterStyles.selectHover);
@@ -240,15 +336,45 @@ export default function FilterBar({
                 e.currentTarget.style.boxShadow = 'none';
               }}
             >
-              <option value="">Continent</option>
-              {continents.map((continent, index) => (
-                <option key={index} value={continent}>{continent}</option>
-              ))}
+              <option value="" style={filterStyles.option}>Continent</option>
+              {Array.from(optionCounts.continentCounts.entries()).map(([continent, count]) => 
+                renderOption(
+                  continent, 
+                  continent, 
+                  count,
+                  currentFilters.continent === continent
+                )
+              )}
+            </select>
+
+            {/* Country Filter - Now second */}
+            <select 
+              style={filterStyles.select}
+              value={currentFilters.country || ''}
+              onChange={(e) => onFilterChange('country', e.target.value)}
+              onFocus={(e) => {
+                Object.assign(e.currentTarget.style, filterStyles.selectHover);
+              }}
+              onBlur={(e) => {
+                e.currentTarget.style.borderColor = '#d1d5db';
+                e.currentTarget.style.boxShadow = 'none';
+              }}
+            >
+              <option value="" style={filterStyles.option}>Country</option>
+              {Array.from(optionCounts.countryCounts.entries()).map(([country, count]) => 
+                renderOption(
+                  country, 
+                  country, 
+                  count,
+                  currentFilters.country === country
+                )
+              )}
             </select>
 
             {/* Difficulty Filter */}
             <select 
               style={filterStyles.select}
+              value={currentFilters.difficulty || ''}
               onChange={(e) => onFilterChange('difficulty', e.target.value)}
               onFocus={(e) => {
                 Object.assign(e.currentTarget.style, filterStyles.selectHover);
@@ -258,15 +384,21 @@ export default function FilterBar({
                 e.currentTarget.style.boxShadow = 'none';
               }}
             >
-              <option value="">Difficulty</option>
-              {difficulties.map((difficulty, index) => (
-                <option key={index} value={difficulty}>{difficulty}</option>
-              ))}
+              <option value="" style={filterStyles.option}>Difficulty</option>
+              {Array.from(optionCounts.difficultyCounts.entries()).map(([difficulty, count]) => 
+                renderOption(
+                  difficulty, 
+                  difficulty, 
+                  count,
+                  currentFilters.difficulty === difficulty
+                )
+              )}
             </select>
 
             {/* Duration Filter */}
             <select 
               style={filterStyles.select}
+              value={currentFilters.length || ''}
               onChange={(e) => onFilterChange('length', e.target.value)}
               onFocus={(e) => {
                 Object.assign(e.currentTarget.style, filterStyles.selectHover);
@@ -276,15 +408,22 @@ export default function FilterBar({
                 e.currentTarget.style.boxShadow = 'none';
               }}
             >
-              <option value="">Duration</option>
-              {lengthRanges.map((range) => (
-                <option key={range.value} value={range.value}>{range.label}</option>
-              ))}
+              <option value="" style={filterStyles.option}>Duration</option>
+              {Array.from(optionCounts.lengthCounts.entries()).map(([lengthValue, count]) => {
+                const range = lengthRanges.find(r => r.value === lengthValue);
+                return range ? renderOption(
+                  range.value, 
+                  range.label, 
+                  count,
+                  currentFilters.length === range.value
+                ) : null;
+              })}
             </select>
 
             {/* Season Filter */}
             <select 
               style={filterStyles.select}
+              value={currentFilters.month || ''}
               onChange={(e) => onFilterChange('month', e.target.value)}
               onFocus={(e) => {
                 Object.assign(e.currentTarget.style, filterStyles.selectHover);
@@ -294,10 +433,29 @@ export default function FilterBar({
                 e.currentTarget.style.boxShadow = 'none';
               }}
             >
-              <option value="">Season</option>
-              {sortedMonths.map((month, index) => (
-                <option key={index} value={month}>{month}</option>
-              ))}
+              <option value="" style={filterStyles.option}>Season</option>
+              {Array.from(optionCounts.monthCounts.entries())
+                .sort(([a], [b]) => {
+                  // Sort by month order
+                  const monthOrder = [
+                    'January', 'February', 'March', 'April', 'May', 'June',
+                    'July', 'August', 'September', 'October', 'November', 'December'
+                  ];
+                  const aIndex = monthOrder.findIndex(month => month.toLowerCase().includes(a.toLowerCase()) || a.toLowerCase().includes(month.toLowerCase()));
+                  const bIndex = monthOrder.findIndex(month => month.toLowerCase().includes(b.toLowerCase()) || b.toLowerCase().includes(month.toLowerCase()));
+                  if (aIndex !== -1 && bIndex !== -1) return aIndex - bIndex;
+                  if (aIndex !== -1) return -1;
+                  if (bIndex !== -1) return 1;
+                  return a.localeCompare(b);
+                })
+                .map(([month, count]) => 
+                  renderOption(
+                    month, 
+                    month, 
+                    count,
+                    currentFilters.month === month
+                  )
+                )}
             </select>
           </div>
         </div>

@@ -47,6 +47,7 @@ const TrailheadQuiz = () => {
 // Mobile detection hook
 const [isMobile, setIsMobile] = useState(false);
 
+// Mobile detection hook
 useEffect(() => {
   const checkScreenSize = () => {
     setIsMobile(window.innerWidth <= 768);
@@ -57,23 +58,38 @@ useEffect(() => {
   return () => window.removeEventListener('resize', checkScreenSize);
 }, []);
 
-  // Load hikes data from your API
-  useEffect(() => {
-    const loadHikes = async () => {
-      try {
-        const hikesData = await getHikes();
-        if (hikesData) {
-          setAllHikes(hikesData);
-        }
-      } catch (error) {
-        console.error('Error loading hikes:', error);
-      } finally {
-        setLoading(false);
+// Load hikes data from your API
+useEffect(() => {
+  const loadHikes = async () => {
+    try {
+      const hikesData = await getHikes();
+      if (hikesData) {
+        setAllHikes(hikesData);
       }
-    };
+    } catch (error) {
+      console.error('Error loading hikes:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    loadHikes();
-  }, []);
+  loadHikes();
+}, []);
+
+// Scroll to top when question changes (mobile UX fix)
+useEffect(() => {
+  // Only scroll to top when moving between questions (not on initial load or results)
+  if (currentQuestion >= 0 && !showResults) {
+    // Use setTimeout to ensure the DOM has updated
+    setTimeout(() => {
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: 'smooth' // Smooth scroll for better UX
+      });
+    }, 100);
+  }
+}, [currentQuestion, showResults]);
 
   // Background images for each question
   const backgroundImages = [
@@ -208,7 +224,7 @@ useEffect(() => {
       highlights: 'Loch Lomond, Highland villages, whisky distilleries',
       slug: 'west-highland-way'
     },
-    'Camino Francés': {
+    'Camino de Santiago - Camino Francés': {
       tags: ['Easy', 'Pastoral', 'Cultural', 'Social', 'Comfort', 'LuggageTransfer'],
       persona: 'The Cultural Explorer',
       description: 'Because you seek meaningful connections and cultural immersion, preferring well-established trails with rich history, we think your perfect match is the Camino Francés.',
@@ -268,7 +284,7 @@ useEffect(() => {
   // Secondary recommendations mapping - Updated to match your actual hike database
   const secondaryRecommendations: Record<string, string[]> = {
     'West Highland Way': ['South West Coast Path', 'Malerweg'],
-    'Camino Francés': ['West Highland Way', 'Malerweg'], 
+    'Camino de Santiago - Camino Francés': ['West Highland Way', 'Malerweg'], 
     'Fishermans Trail': ['South West Coast Path', 'Camiño dos Faros'],
     'Tour du Mont Blanc': ['Alta Via 1', 'Tour of Monte Rosa'],
     'Everest Base Camp': ['Salkantay Trek', 'Kungsleden'],
@@ -1554,76 +1570,82 @@ const getDescriptionPreview = (description: any[] | undefined): string => {
                   {questions[currentQuestion].question}
                 </h2>
                 
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-lg)' }}>
-                  {questions[currentQuestion].answers.map((answer, index) => (
-                    <button
-                      key={index}
-                      onClick={() => setSelectedAnswer(answer.text)}
-                      style={{
-                        width: '100%',
-                        padding: isMobile ? 'var(--space-md)' : 'var(--space-lg)',
-                        textAlign: 'left',
-                        background: selectedAnswer === answer.text ? 'var(--ds-muted)' : 'var(--ds-off-white)',
-                        border: selectedAnswer === answer.text ? '2px solid var(--ds-primary)' : '2px solid var(--ds-border)',
-                        borderRadius: '12px',
-                        transition: 'all 0.2s ease',
-                        cursor: 'pointer',
-                        fontSize: 'var(--text-base)',
-                        lineHeight: 1.5,
-                        boxShadow: selectedAnswer === answer.text ? 'var(--shadow-soft)' : 'none',
-                        transform: selectedAnswer === answer.text ? 'scale(1.02)' : 'scale(1)'
-                      }}
-                      onMouseEnter={(e) => {
-                        if (selectedAnswer !== answer.text) {
-                          const target = e.target as HTMLButtonElement;
-                          target.style.borderColor = 'var(--ds-primary)';
-                          target.style.background = 'var(--ds-muted)';
-                        }
-                      }}
-                      onMouseLeave={(e) => {
-                        if (selectedAnswer !== answer.text) {
-                          const target = e.target as HTMLButtonElement;
-                          target.style.borderColor = 'var(--ds-border)';
-                          target.style.background = 'var(--ds-off-white)';
-                        }
-                      }}
-                    >
-                      <div style={{ display: 'flex', alignItems: 'flex-start', gap: isMobile ? 'var(--space-sm)' : 'var(--space-lg)', width: '100%' }}>
-                        <div style={{
-                          width: isMobile ? '20px' : '24px',
-                          height: isMobile ? '20px' : '24px',
-                          borderRadius: '50%',
-                          border: selectedAnswer === answer.text ? '2px solid var(--ds-primary)' : '2px solid var(--ds-muted-foreground)',
-                          background: selectedAnswer === answer.text ? 'var(--ds-primary)' : 'transparent',
-                          flexShrink: 0,
-                          marginTop: '2px',
+<div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-lg)' }}>
+                  {questions[currentQuestion].answers.map((answer, index) => {
+                    const isSelected = selectedAnswer === answer.text;
+                    
+                    return (
+                      <button
+                        key={index}
+                        onClick={() => setSelectedAnswer(answer.text)}
+                        style={{
+                          width: '100%',
+                          padding: isMobile ? 'var(--space-md)' : 'var(--space-lg)',
+                          textAlign: 'left',
+                          background: isSelected ? 'var(--ds-muted)' : 'var(--ds-off-white)',
+                          border: isSelected ? '2px solid var(--ds-primary)' : '2px solid var(--ds-border)',
+                          borderRadius: '12px',
                           transition: 'all 0.2s ease',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center'
-                        }}>
-                          {selectedAnswer === answer.text && (
-                            <div style={{
-                              width: isMobile ? '6px' : '8px',
-                              height: isMobile ? '6px' : '8px',
-                              background: 'var(--ds-primary-foreground)',
-                              borderRadius: '50%'
-                            }} />
-                          )}
-                        </div>
-                        <p style={{ 
-                          fontSize: 'var(--text-base)', 
-                          lineHeight: 1.6, 
+                          cursor: 'pointer',
+                          fontSize: 'var(--text-base)',
+                          lineHeight: 1.5,
                           color: 'var(--ds-foreground)',
-                          margin: 0,
-                          flex: 1,  // This makes the text take up available space
-                          minWidth: 0  // Allows text to wrap properly
-                        }}>
-                          {answer.text}
-                        </p>
-                      </div>
-                    </button>
-                  ))}
+                          fontFamily: 'inherit',
+                          outline: 'none',
+                          boxShadow: isSelected ? 'var(--shadow-soft)' : 'none',
+                          transform: isSelected ? 'scale(1.02)' : 'scale(1)'
+                        }}
+                        onMouseEnter={(e) => {
+                          if (!isSelected) {
+                            e.currentTarget.style.borderColor = 'var(--ds-primary)';
+                            e.currentTarget.style.background = 'var(--ds-muted)';
+                          }
+                        }}
+                        onMouseLeave={(e) => {
+                          if (!isSelected) {
+                            e.currentTarget.style.borderColor = 'var(--ds-border)';
+                            e.currentTarget.style.background = 'var(--ds-off-white)';
+                          }
+                        }}
+                      >
+                        <div style={{ display: 'flex', alignItems: 'flex-start', gap: isMobile ? 'var(--space-sm)' : 'var(--space-lg)', width: '100%' }}>
+                          {/* Clean radio button */}
+                          <div style={{
+                            width: isMobile ? '20px' : '24px',
+                            height: isMobile ? '20px' : '24px',
+                            borderRadius: '50%',
+                            backgroundColor: isSelected ? 'var(--ds-primary)' : 'transparent',
+                            border: `2px solid ${isSelected ? 'var(--ds-primary)' : 'var(--ds-muted-foreground)'}`,
+                            flexShrink: 0,
+                            marginTop: '2px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            transition: 'all 0.2s ease'
+                          }}>
+                            {isSelected && (
+                              <div style={{
+                                width: isMobile ? '6px' : '8px',
+                                height: isMobile ? '6px' : '8px',
+                                backgroundColor: 'var(--ds-primary-foreground)',
+                                borderRadius: '50%'
+                              }} />
+                            )}
+                          </div>
+                          <p style={{ 
+                            fontSize: 'var(--text-base)', 
+                            lineHeight: 1.6, 
+                            color: 'var(--ds-foreground)',
+                            margin: 0,
+                            flex: 1,
+                            minWidth: 0
+                          }}>
+                            {answer.text}
+                          </p>
+                        </div>
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             )}
