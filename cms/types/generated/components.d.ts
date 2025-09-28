@@ -1,5 +1,22 @@
 import type { Schema, Struct } from '@strapi/strapi';
 
+export interface AccommodationService extends Struct.ComponentSchema {
+  collectionName: 'components_accommodation_services';
+  info: {
+    displayName: 'Service';
+    icon: 'heart';
+  };
+  attributes: {
+    additional_cost: Schema.Attribute.Decimal;
+    available: Schema.Attribute.Boolean &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<true>;
+    notes: Schema.Attribute.String;
+    service_details: Schema.Attribute.String;
+    service_name: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
 export interface HikeBlog extends Struct.ComponentSchema {
   collectionName: 'components_hike_blogs';
   info: {
@@ -53,6 +70,7 @@ export interface HikeVideo extends Struct.ComponentSchema {
 declare module '@strapi/strapi' {
   export module Public {
     export interface ComponentSchemas {
+      'accommodation.service': AccommodationService;
       'hike.blog': HikeBlog;
       'hike.books': HikeBooks;
       'hike.landmark': HikeLandmark;

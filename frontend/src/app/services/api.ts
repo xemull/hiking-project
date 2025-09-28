@@ -198,11 +198,17 @@ export async function getFeaturedHike(): Promise<HikeSummary | null> {
 export async function getHikeBySlug(slug: string): Promise<Hike | null> {
   const cacheKey = `hike-slug-${slug}`;
   
-  // Try client-side cache first
-  const cached = getCachedData<Hike>(cacheKey);
-  if (cached) {
-    console.log('✅ Using cached hike detail (client-side)');
-    return cached;
+  // Try client-side cache first (skip in development if BYPASS_CACHE is set)
+  const bypassCache = process.env.NODE_ENV === 'development' && process.env.NEXT_PUBLIC_BYPASS_CACHE === 'true';
+
+  if (!bypassCache) {
+    const cached = getCachedData<Hike>(cacheKey);
+    if (cached) {
+      console.log('✅ Using cached hike detail (client-side)');
+      return cached;
+    }
+  } else {
+    console.log('🔄 Bypassing cache in development mode');
   }
 
   const fullUrl = `${CUSTOM_BACKEND_URL}/api/hikes/slug/${slug}`;
@@ -392,7 +398,164 @@ export async function preloadCriticalData(): Promise<void> {
 }
 
 // Function to clear client cache (useful for development)
-export function clearCache(): void {
+export async function clearCache(): Promise<void> {
+  // Clear client-side cache
   clientCache.clear();
   console.log('🗑️  Client cache cleared');
+
+  // Also clear backend cache if in development
+  if (process.env.NODE_ENV === 'development') {
+    try {
+      const response = await fetch(`${CUSTOM_BACKEND_URL}/api/cache/clear`, {
+        method: 'POST'
+      });
+
+      if (response.ok) {
+        console.log('🗑️  Backend cache cleared');
+      } else {
+        console.warn('⚠️  Could not clear backend cache:', response.statusText);
+      }
+    } catch (error) {
+      console.warn('⚠️  Could not clear backend cache:', error);
+    }
+  }
+}
+
+// Make clearCache available globally for console debugging (development only)
+if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
+  (window as any).clearCache = clearCache;
+}
+
+// Add these functions to your existing src/app/services/api.ts file
+
+export interface TMBAccommodation {
+  id: number;
+  documentId: string;
+  name: string;
+  type: 'Refuge' | 'Hotel' | 'B&B' | 'Campsite';
+  location_type: 'On-trail' | 'Near-trail' | 'Off-trail';
+  booking_difficulty: 'Easy' | 'Moderate' | 'Hard' | 'Very Hard';
+  booking_method?: 'Online Portal' | 'Email Only' | 'Phone Only' | 'Multiple';
+  latitude: number;
+  longitude: number;
+  altitude?: number;
+  website?: string;
+  phone?: string;
+  email?: string;
+  price_range?: string;
+  capacity?: number;
+  notes?: string;
+  photos?: Array<{
+    id: number;
+    url: string;
+    alternativeText?: string;
+  }>;
+  stage?: {
+    id: number;
+    name: string;
+    stage_number: number;
+    start_location: string;
+    end_location: string;
+  };
+  Accommodation_Service?: Array<{
+    id: number;
+    service_name: string;
+    available: boolean;
+    service_details?: string;
+    additional_cost?: number;
+    notes?: string;
+  }>;
+}
+
+export interface TMBTrailData {
+  id: number;
+  name: string;
+  track: {
+    type: string;
+    coordinates: Array<[number, number]>;
+  };
+}
+
+// Get all TMB accommodations (using mock data for development)
+export async function getTMBAccommodations(): Promise<TMBAccommodation[] | null> {
+  const cacheKey = 'tmb-accommodations';
+  
+  // Try client-side cache first
+  const cached = getCachedData<TMBAccommodation[]>(cacheKey);
+  if (cached) {
+    console.log('Using cached TMB accommodations data');
+    return cached;
+  }
+
+  // Use mock endpoint for development
+  const fullUrl = `${CUSTOM_BACKEND_URL}/api/tmb/accommodations`;
+
+  console.log('Fetching TMB accommodations from backend:', fullUrl);
+
+  try {
+    const response = await fetchWithTimeout(fullUrl, { 
+      cache: 'force-cache',
+      timeout: 10000
+    });
+    
+    console.log(`TMB accommodations API response status: ${response.status}`);
+
+    if (!response.ok) {
+      console.error('TMB accommodations API response not ok:', response.status, response.statusText);
+      return null;
+    }
+
+    const accommodations = await response.json();
+    console.log('TMB accommodations received:', accommodations?.length || 0, 'accommodations');
+    
+    // Cache for 10 minutes
+    setCachedData(cacheKey, accommodations, 600000);
+    
+    return accommodations;
+  } catch (error) {
+    console.error('Error fetching TMB accommodations:', error);
+    return null;
+  }
+}
+
+// Get TMB trail data for the map (using mock data for development)
+export async function getTMBTrailData(): Promise<TMBTrailData | null> {
+  const cacheKey = 'tmb-trail-data';
+  
+  // Try client-side cache first
+  const cached = getCachedData<TMBTrailData>(cacheKey);
+  if (cached) {
+    console.log('Using cached TMB trail data');
+    return cached;
+  }
+
+  // Use mock endpoint for development
+  const fullUrl = `${CUSTOM_BACKEND_URL}/api/tmb/trail/mock`;
+
+  console.log('Fetching TMB trail data from backend:', fullUrl);
+
+  try {
+    const response = await fetchWithTimeout(fullUrl, { 
+      cache: 'force-cache',
+      timeout: 10000
+    });
+    
+    console.log(`TMB trail data API response status: ${response.status}`);
+
+    if (!response.ok) {
+      console.error('TMB trail API response not ok:', response.status, response.statusText);
+      return null;
+    }
+
+    const trailData = await response.json();
+    console.log('TMB trail data received:', trailData?.name || 'unknown trail');
+    
+    // Cache for 30 minutes (trail data doesn't change often)
+    setCachedData(cacheKey, trailData, 1800000);
+    
+    return trailData;
+  } catch (error) {
+    console.error('Error fetching TMB trail data:', error);
+    return null;
+  }
 }

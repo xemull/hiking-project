@@ -1,4 +1,5 @@
-// src/app/components/Map.tsx
+// Add this debug version of your Map component to check data flow
+
 'use client';
 
 import { useEffect, useState, useMemo } from 'react';
@@ -14,58 +15,57 @@ interface MapProps {
   height?: string;
 }
 
-// Component to handle map logic and auto-fitting
-function MapController({ track, map }: { track: TrackData; map: any }) {
-  useEffect(() => {
-    if (!map || !track?.coordinates || track.coordinates.length === 0) return;
-
-    // Dynamic import L inside useEffect
-    import('leaflet').then((L) => {
-      // Convert GeoJSON [lon, lat] to Leaflet [lat, lon]
-      const positions = track.coordinates!.map(coord => [coord[1], coord[0]] as [number, number]);
-      
-      // Create bounds and fit map with more generous padding
-      const bounds = L.latLngBounds(positions);
-      
-      // Use setTimeout to ensure map is fully rendered before fitting bounds
-      setTimeout(() => {
-        map.fitBounds(bounds, { 
-          padding: [50, 50], // Increased padding
-          maxZoom: 14 // Reduced max zoom to show more area
-        });
-      }, 100);
-    });
-  }, [track, map]);
-
-  return null;
-}
-
-// Main Map component
-export default function Map({ track, className = '', height = '400px' }: MapProps) {
+export default function DebugMap({ track, className = '', height = '400px' }: MapProps) {
   const [mapComponents, setMapComponents] = useState<any>(null);
   const [leaflet, setLeaflet] = useState<any>(null);
   const [mapInstance, setMapInstance] = useState<any>(null);
 
-  // Process track data - ALWAYS call useMemo before any early returns
+
+  // Process track data
   const processedTrack = useMemo(() => {
+    console.log('Processing track data...');
+    
     if (!track?.coordinates || track.coordinates.length === 0) {
+      console.log('No coordinates found');
+      return null;
+    }
+
+    console.log('Track coordinates structure:', track.coordinates[0]);
+    
+    // Check if coordinates are in the right format
+    const firstCoord = track.coordinates[0];
+    if (!Array.isArray(firstCoord) || firstCoord.length < 2) {
+      console.error('Invalid coordinate format:', firstCoord);
       return null;
     }
 
     // Convert GeoJSON [lon, lat] to Leaflet [lat, lon] format
-    const positions = track.coordinates.map(coord => [coord[1], coord[0]] as [number, number]);
+    const positions = track.coordinates.map(coord => {
+      if (!Array.isArray(coord) || coord.length < 2) {
+        console.warn('Invalid coordinate:', coord);
+        return [0, 0] as [number, number];
+      }
+      return [coord[1], coord[0]] as [number, number];
+    });
+    
+    console.log('Processed positions:', positions.slice(0, 3)); // First 3 positions
     
     // Calculate bounds for better initial view
     const lats = positions.map(pos => pos[0]);
     const lngs = positions.map(pos => pos[1]);
-    const minLat = Math.min(...lats);
-    const maxLat = Math.max(...lats);
-    const minLng = Math.min(...lngs);
-    const maxLng = Math.max(...lngs);
-    
-    // Add padding to bounds
-    const latPadding = (maxLat - minLat) * 0.1; // 10% padding
-    const lngPadding = (maxLng - minLng) * 0.1;
+    const rawMinLat = Math.min(...lats);
+    const rawMaxLat = Math.max(...lats);
+    const rawMinLng = Math.min(...lngs);
+    const rawMaxLng = Math.max(...lngs);
+
+    // Add padding (roughly 10% on each side)
+    const latPadding = (rawMaxLat - rawMinLat) * 0.1;
+    const lngPadding = (rawMaxLng - rawMinLng) * 0.1;
+
+    const minLat = rawMinLat - latPadding;
+    const maxLat = rawMaxLat + latPadding;
+    const minLng = rawMinLng - lngPadding;
+    const maxLng = rawMaxLng + lngPadding;
     
     // Calculate center point
     const center: [number, number] = [
@@ -73,30 +73,31 @@ export default function Map({ track, className = '', height = '400px' }: MapProp
       (minLng + maxLng) / 2
     ];
     
+    console.log('Map center calculated:', center);
+    console.log('Bounds:', { minLat, maxLat, minLng, maxLng });
+    
     return {
       positions,
       center,
       start: positions[0],
       end: positions[positions.length - 1],
       totalPoints: positions.length,
-      bounds: {
-        minLat: minLat - latPadding,
-        maxLat: maxLat + latPadding,
-        minLng: minLng - lngPadding,
-        maxLng: maxLng + lngPadding
-      }
+      bounds: { minLat, maxLat, minLng, maxLng }
     };
   }, [track?.coordinates]);
 
-  // Dynamically import react-leaflet and leaflet only on client side
+  // Load map components
   useEffect(() => {
     const loadMapComponents = async () => {
       try {
-        // Import all needed components
+        console.log('Loading map components...');
+        
         const [reactLeaflet, L] = await Promise.all([
           import('react-leaflet'),
           import('leaflet')
         ]);
+
+        console.log('Map components loaded successfully');
 
         // Fix for default markers in Next.js
         delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -135,22 +136,24 @@ export default function Map({ track, className = '', height = '400px' }: MapProp
           endIcon
         });
         setLeaflet(L);
+        console.log('Map components set successfully');
       } catch (error) {
         console.error('Failed to load map components:', error);
+        setDebugInfo(prev => prev + '\nMap load error: ' + error.message);
       }
     };
 
     loadMapComponents();
   }, []);
 
-  // Early return for no track data - AFTER all hooks
+  // Debug render states
   if (!processedTrack) {
     return (
       <div 
-        className={`bg-gray-100 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center ${className}`}
+        className={`bg-gray-100 border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center p-4 ${className}`}
         style={{ height }}
       >
-        <div className="text-center text-gray-600">
+        <div className="text-center text-gray-600 mb-4">
           <svg className="w-12 h-12 mx-auto mb-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
           </svg>
@@ -161,14 +164,13 @@ export default function Map({ track, className = '', height = '400px' }: MapProp
     );
   }
 
-  // Show loading state while components are loading - AFTER all hooks
   if (!mapComponents || !leaflet) {
     return (
       <div 
-        className={`bg-gray-100 rounded-lg flex items-center justify-center ${className}`}
+        className={`bg-gray-100 rounded-lg flex flex-col items-center justify-center p-4 ${className}`}
         style={{ height }}
       >
-        <div className="text-center text-gray-600">
+        <div className="text-center text-gray-600 mb-4">
           <svg className="w-8 h-8 mx-auto mb-2 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
           </svg>
@@ -183,63 +185,37 @@ export default function Map({ track, className = '', height = '400px' }: MapProp
   return (
     <div className={`rounded-lg overflow-hidden shadow-sm border relative ${className}`} style={{ height }}>
       <MapContainer
-        center={processedTrack.center}
-        zoom={8} // Start with lower zoom level
+        bounds={[[processedTrack.bounds.minLat, processedTrack.bounds.minLng], [processedTrack.bounds.maxLat, processedTrack.bounds.maxLng]]}
         style={{ height: '100%', width: '100%' }}
         scrollWheelZoom={true}
         className="z-0"
-        whenCreated={setMapInstance}
+        whenCreated={(mapInstance) => {
+          setMapInstance(mapInstance);
+        }}
       >
-        {/* Base map tiles */}
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
         
-        {/* Trail polyline */}
         <Polyline 
           positions={processedTrack.positions}
-          color="#3b82f6" // Blue color
+          color="#3b82f6"
           weight={4}
           opacity={0.8}
           lineCap="round"
           lineJoin="round"
         />
         
-        {/* Start marker */}
         <Marker position={processedTrack.start} icon={startIcon}>
-          <Popup>
-            <div className="text-center">
-              <strong className="text-green-700">Trail Start</strong>
-              <br />
-              <span className="text-sm text-gray-600">
-                {processedTrack.start[0].toFixed(4)}, {processedTrack.start[1].toFixed(4)}
-              </span>
-            </div>
-          </Popup>
+          <Popup>Trail Start</Popup>
         </Marker>
         
-        {/* End marker */}
         <Marker position={processedTrack.end} icon={endIcon}>
-          <Popup>
-            <div className="text-center">
-              <strong className="text-red-700">Trail End</strong>
-              <br />
-              <span className="text-sm text-gray-600">
-                {processedTrack.end[0].toFixed(4)}, {processedTrack.end[1].toFixed(4)}
-              </span>
-            </div>
-          </Popup>
+          <Popup>Trail End</Popup>
         </Marker>
       </MapContainer>
 
-      {/* Map controller for auto-fitting */}
-      {mapInstance && <MapController track={track} map={mapInstance} />}
-      
-      {/* Map info overlay */}
-      <div className="absolute bottom-2 right-2 bg-white/90 backdrop-blur-sm rounded px-2 py-1 text-xs text-gray-600 shadow-sm z-10">
-        {processedTrack.totalPoints.toLocaleString()} GPS points
-      </div>
     </div>
   );
 }

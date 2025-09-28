@@ -544,6 +544,103 @@ export interface ApiSceneryScenery extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiTmbStageTmbStage extends Struct.CollectionTypeSchema {
+  collectionName: 'tmb_stages';
+  info: {
+    displayName: 'TMB Stage';
+    pluralName: 'tmb-stages';
+    singularName: 'tmb-stage';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    description: Schema.Attribute.RichText;
+    difficulty: Schema.Attribute.Enumeration<
+      ['Easy', 'Moderate', 'Hard', 'Very Hard']
+    >;
+    distance_km: Schema.Attribute.Decimal;
+    elevation_gain: Schema.Attribute.Integer;
+    elevation_loss: Schema.Attribute.Integer;
+    end_location: Schema.Attribute.String & Schema.Attribute.Required;
+    estimated_time: Schema.Attribute.String;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::tmb-stage.tmb-stage'
+    > &
+      Schema.Attribute.Private;
+    name: Schema.Attribute.String & Schema.Attribute.Required;
+    publishedAt: Schema.Attribute.DateTime;
+    stage_number: Schema.Attribute.Integer & Schema.Attribute.Required;
+    start_location: Schema.Attribute.String & Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiTmbaccommodationTmbaccommodation
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'tmbaccommodations';
+  info: {
+    displayName: 'tmbaccommodation';
+    pluralName: 'tmbaccommodations';
+    singularName: 'tmbaccommodation';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    Accommodation_Service: Schema.Attribute.Component<
+      'accommodation.service',
+      true
+    >;
+    altitude: Schema.Attribute.Integer;
+    booking_difficulty: Schema.Attribute.Enumeration<
+      ['Easy', 'Moderate', 'Hard', 'Very Hard']
+    >;
+    booking_method: Schema.Attribute.Enumeration<
+      ['Online Portal', 'Email', 'Phone', 'Multiple']
+    >;
+    capacity: Schema.Attribute.Integer;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    description: Schema.Attribute.Text;
+    email: Schema.Attribute.Email;
+    latitude: Schema.Attribute.Decimal;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::tmbaccommodation.tmbaccommodation'
+    > &
+      Schema.Attribute.Private;
+    location_type: Schema.Attribute.Enumeration<
+      ['On-trail', 'Near-trail', 'Off-trail']
+    >;
+    longitude: Schema.Attribute.Decimal;
+    name: Schema.Attribute.String;
+    notes: Schema.Attribute.Text;
+    phone: Schema.Attribute.String;
+    photos: Schema.Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios',
+      true
+    >;
+    price_range: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    stage: Schema.Attribute.Relation<'oneToOne', 'api::tmb-stage.tmb-stage'>;
+    type: Schema.Attribute.Enumeration<['Refuge', 'Hotel', 'B&B', 'Campsite']>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    website: Schema.Attribute.String;
+  };
+}
+
 export interface PluginContentReleasesRelease
   extends Struct.CollectionTypeSchema {
   collectionName: 'strapi_releases';
@@ -1058,6 +1155,8 @@ declare module '@strapi/strapi' {
       'api::hike.hike': ApiHikeHike;
       'api::month.month': ApiMonthMonth;
       'api::scenery.scenery': ApiSceneryScenery;
+      'api::tmb-stage.tmb-stage': ApiTmbStageTmbStage;
+      'api::tmbaccommodation.tmbaccommodation': ApiTmbaccommodationTmbaccommodation;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;

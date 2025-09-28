@@ -1,0 +1,29 @@
+{
+  "collectionName": "components_accommodation_services",
+  "info": {
+    "displayName": "Service",
+    "icon": "heart"
+  },
+  "options": {},
+  "attributes": {
+    "service_name": {
+      "type": "string",
+      "required": true
+    },
+    "available": {
+      "type": "boolean",
+      "required": true,
+      "default": true
+    },
+    "service_details": {
+      "type": "string"
+    },
+    "additional_cost": {
+      "type": "decimal"
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "config": {}
+}

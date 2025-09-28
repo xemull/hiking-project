@@ -1,0 +1,51 @@
+{
+  "kind": "collectionType",
+  "collectionName": "tmb_stages",
+  "info": {
+    "singularName": "tmb-stage",
+    "pluralName": "tmb-stages",
+    "displayName": "TMB Stage"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "stage_number": {
+      "type": "integer"
+    },
+    "start_location": {
+      "type": "string"
+    },
+    "end_location": {
+      "type": "string"
+    },
+    "distance_km": {
+      "type": "decimal"
+    },
+    "elevation_gain": {
+      "type": "decimal"
+    },
+    "elevation_loss": {
+      "type": "decimal"
+    },
+    "difficulty": {
+      "type": "enumeration",
+      "enum": [
+        "Easy",
+        "Moderate",
+        "Hard",
+        "Very Hard"
+      ]
+    },
+    "description": {
+      "type": "blocks"
+    },
+    "estimated_time": {
+      "type": "string"
+    }
+  }
+}

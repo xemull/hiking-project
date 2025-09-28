@@ -497,7 +497,7 @@ const getDescriptionPreview = (description: any[] | undefined): string => {
     return backgroundImages[currentQuestion + 1] || backgroundImages[0];
   };
 
-  const progress = currentQuestion >= 0 ? ((currentQuestion + 1) / questions.length) * 100 : 0;
+const progress = currentQuestion >= 0 ? (answers.length / questions.length) * 100 : 0;
 
   if (showResults) {
     const result = calculateResult();
@@ -1406,20 +1406,20 @@ const getDescriptionPreview = (description: any[] | undefined): string => {
               justifyContent: 'space-between',
               marginBottom: 'var(--space-sm)'
             }}>
-              <span style={{
-                fontSize: 'var(--text-sm)',
-                fontWeight: 500,
-                color: 'rgba(255, 255, 255, 0.7)'
-              }}>
-                Question {currentQuestion + 1} of {questions.length}
-              </span>
-              <span style={{
-                fontSize: 'var(--text-sm)',
-                fontWeight: 500,
-                color: 'var(--ds-accent)'
-              }}>
-                {Math.round(progress)}% Complete
-              </span>
+            <span style={{
+              fontSize: 'var(--text-sm)',
+              fontWeight: 500,
+              color: 'rgba(255, 255, 255, 0.7)'
+            }}>
+              Question {currentQuestion + 1} of {questions.length}
+            </span>
+            <span style={{
+              fontSize: 'var(--text-sm)',
+              fontWeight: 500,
+              color: 'var(--ds-accent)'
+            }}>
+              {Math.round(progress)}% Complete
+            </span>
             </div>
             <div style={{
               width: '100%',

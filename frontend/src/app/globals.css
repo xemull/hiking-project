@@ -326,3 +326,32 @@ body {
     grid-template-columns: repeat(4, 1fr);
   }
 }
+
+/* Itinerary Card Hover Effects */
+.itinerary-card {
+  transition: all 0.3s ease;
+}
+
+.itinerary-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-float);
+}
+
+/* Quick Nav Button Hover Effects */
+.quick-nav-button {
+  transition: all 0.2s ease;
+}
+
+.quick-nav-button:hover {
+  background: var(--ds-muted) !important;
+  color: var(--ds-primary) !important;
+}
+
+/* Link Hover Effects */
+.itinerary-link {
+  transition: all 0.2s ease;
+}
+
+.itinerary-link:hover {
+  transform: translateY(-1px);
+}

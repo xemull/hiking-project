@@ -5,8 +5,8 @@ import { notFound } from 'next/navigation';
 import { getHikeBySlug, getHikes } from '../../services/api'; 
 import type { Hike } from '../../../types';
 import StrapiRichText from '../../components/StrapiRichText';
-import Map from '../../components/Map';
-import ElevationProfile from '../../components/ElevationProfile';
+import DynamicMap from '../../components/DynamicMap';
+import DynamicElevationProfile from '../../components/DynamicElevationProfile';
 import TagBadge from '../../components/TagBadge';
 import StatCard from '../../components/StatCard';
 import BookCard from '../../components/BookCard';
@@ -17,6 +17,7 @@ import BlogList from '../../components/BlogList';
 import { MapPin, Route, TrendingUp, Mountain, AlertTriangle } from 'lucide-react';
 import InlineBackButton from '../../components/InlineBackButton';
 import Footer from '../../components/Footer';
+import CacheClearButton from '../../components/CacheClearButton';
 
 // Generate dynamic page metadata for SEO
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
@@ -59,6 +60,13 @@ export default async function HikeDetailPage({ params }: { params: Promise<{ slu
   }
 
   const { content, track, simplified_profile } = hike;
+
+  // Debug logging
+  console.log('🔍 Hike content received:', content);
+  console.log('🔍 Countries:', content?.countries);
+  console.log('🔍 Sceneries:', content?.sceneries);
+  console.log('🔍 Accommodations:', content?.accommodations);
+
   const {
     title,
     Length,
@@ -86,13 +94,19 @@ export default async function HikeDetailPage({ params }: { params: Promise<{ slu
 
   // Get countries from relation - handle multiple countries
   const countryNames = countries?.map(country => country.name) || [];
-  const primaryCountry = countryNames.length > 0 
-    ? countryNames.length === 1 
+  const primaryCountry = countryNames.length > 0
+    ? countryNames.length === 1
       ? countryNames[0]
       : countryNames.length === 2
         ? countryNames.join(' & ')
         : `${countryNames.slice(0, -1).join(', ')} & ${countryNames[countryNames.length - 1]}`
     : '';
+
+  // Debug logging for processed data
+  console.log('🔍 Country names extracted:', countryNames);
+  console.log('🔍 Primary country:', primaryCountry);
+  console.log('🔍 Sceneries count:', sceneries?.length);
+  console.log('🔍 Accommodations count:', accommodations?.length);
 
   // Helper function to get icon for stats
   const getStatIcon = (type: string) => {
@@ -262,7 +276,7 @@ export default async function HikeDetailPage({ params }: { params: Promise<{ slu
                   <div className="content-section">
                     <h2 className="section-title">Route</h2>
                     <div className="map-container">
-                      <Map track={track} />
+                      <DynamicMap track={track} />
                     </div>
                   </div>
                 )}
@@ -271,8 +285,8 @@ export default async function HikeDetailPage({ params }: { params: Promise<{ slu
                 {simplified_profile && simplified_profile.length > 0 && (
                   <div className="content-section">
                     <h2 className="section-title">Elevation</h2>
-                    <ElevationProfile 
-                      data={simplified_profile} 
+                    <DynamicElevationProfile
+                      data={simplified_profile}
                       landmarks={content.landmarks}
                       height="320px"
                     />
@@ -655,6 +669,9 @@ export default async function HikeDetailPage({ params }: { params: Promise<{ slu
           }
         `
       }} />
+
+      {/* Debug Cache Clear Button - Development Only */}
+      <CacheClearButton />
     </div>
   );
 }

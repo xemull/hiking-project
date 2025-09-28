@@ -13,11 +13,11 @@ function getDistance(lat1, lon1, lat2, lon2) {
   return R * c; // Distance in km
 }
 const pool = new Pool({
-  user: 'hike_admin',
-  host: '127.0.0.1',
-  database: 'hikes_db',
+  user: 'strapi_dev',
+  host: 'localhost',
+  database: 'strapi_clean',
   password: 'eXstas1987X!', // Your correct password
-  port: 5433,
+  port: 5432,
 });
 const parseGpxManually = (filePath) => {
   return new Promise((resolve, reject) => {
@@ -36,7 +36,7 @@ const addNewHike = async () => {
   try {
     await client.query('BEGIN');
 
-    const filename = '../data/salkantay.gpx'; // <-- Your new filename
+    const filename = '../data/westhighlandway.gpx'; // <-- Your new filename
     console.log(`Parsing GPX file: ${filename}...`);
     const gpxData = await parseGpxManually(filename);
     
@@ -78,7 +78,7 @@ const addNewHike = async () => {
       }
       return { x: cumulativeDistance, y: p.ele };
     });
-    const tolerance = 2;
+    const tolerance = 15;
     const simplifiedPoints = simplify(pointsForSimplification, tolerance, true);
     const finalProfile = simplifiedPoints.map(p => [parseFloat(p.x.toFixed(2)), parseFloat(p.y.toFixed(1))]);
     console.log(`Simplified elevation profile from ${validPoints.length} to ${finalProfile.length} points.`);
@@ -86,7 +86,7 @@ const addNewHike = async () => {
     const wkt = `LINESTRING${hasElevation ? ' Z' : ''} (${validPoints.map(p => `${p.lon} ${p.lat}${hasElevation ? ` ${p.ele}` : ''}`).join(',')})`;
     
     const insertQuery = `
-      INSERT INTO Hikes (name, track, simplified_profile)
+      INSERT INTO trails (name, track, simplified_profile)
       VALUES ($1, ST_GeogFromText($2), $3)
       ON CONFLICT (name) DO UPDATE SET
         track = EXCLUDED.track,
@@ -96,14 +96,15 @@ const addNewHike = async () => {
     const values = [hikeName, wkt, JSON.stringify(finalProfile)];
     await client.query(insertQuery, values);
     console.log(`✅ Successfully added or updated "${hikeName}" in the database!`);
-    
+    //
+    /*
     const allHikesResult = await client.query('SELECT id, name FROM Hikes ORDER BY id;');
     console.log('\n--- Hikes currently in database ---');
     allHikesResult.rows.forEach(hike => {
         console.log(`ID: ${hike.id}, Name: ${hike.name}`);
     });
     console.log('---------------------------------');
-    
+    */
     await client.query('COMMIT');
 
   } catch (error) {

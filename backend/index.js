@@ -51,9 +51,9 @@ const pool = new Pool({
 // Simple in-memory cache
 const cache = new Map();
 const CACHE_TTL = {
-  HIKES_LIST: 5 * 60 * 1000, // 5 minutes
-  FEATURED_HIKE: 10 * 60 * 1000, // 10 minutes
-  HIKE_DETAIL: 15 * 60 * 1000, // 15 minutes
+  HIKES_LIST: process.env.NODE_ENV === 'development' ? 30 * 1000 : 5 * 60 * 1000, // 30s dev, 5min prod
+  FEATURED_HIKE: process.env.NODE_ENV === 'development' ? 60 * 1000 : 10 * 60 * 1000, // 1min dev, 10min prod
+  HIKE_DETAIL: process.env.NODE_ENV === 'development' ? 60 * 1000 : 15 * 60 * 1000, // 1min dev, 15min prod
 };
 
 function getCachedData(key) {
@@ -220,7 +220,7 @@ app.get('/api/hikes', async (req, res) => {
         id, 
         name,
         created_at
-      FROM Hikes 
+      FROM trails   
       ORDER BY created_at DESC
       LIMIT 100
     `;
@@ -348,12 +348,12 @@ app.get('/api/hikes/slug/:slug', async (req, res) => {
     }
     
     console.log('✅ Found matching hike:', matchingHike.title, 'with hike_id:', matchingHike.hike_id);
-    
+
     // Get geodata in parallel (don't wait for Strapi to complete first)
     let geoData = null;
     if (matchingHike.hike_id) {
       try {
-        const geoQuery = 'SELECT id, name, simplified_profile, ST_AsGeoJSON(track) as track FROM Hikes WHERE id = $1';
+        const geoQuery = 'SELECT id, name, simplified_profile, ST_AsGeoJSON(track) as track FROM trails WHERE id = $1';
         const geoResult = await pool.query(geoQuery, [matchingHike.hike_id]);
 
         if (geoResult.rows.length > 0) {
@@ -366,15 +366,16 @@ app.get('/api/hikes/slug/:slug', async (req, res) => {
     }
     
     // Combine data
-    const fullHikeData = geoData ? 
-      { ...geoData, content: matchingHike } : 
-      { 
-        id: matchingHike.hike_id || matchingHike.id, 
-        name: matchingHike.title, 
-        track: null, 
+    const fullHikeData = geoData ?
+      { ...geoData, content: matchingHike } :
+      {
+        id: matchingHike.hike_id || matchingHike.id,
+        name: matchingHike.title,
+        track: null,
         simplified_profile: null,
-        content: matchingHike 
+        content: matchingHike
       };
+
     
     const timestamp = Date.now();
     const dataWithTimestamp = { data: fullHikeData, timestamp };
@@ -409,7 +410,7 @@ app.get('/api/hikes/:id', async (req, res) => {
 
     // Start both requests in parallel
     const [geoResult, strapiResponse] = await Promise.allSettled([
-      pool.query('SELECT id, name, simplified_profile, ST_AsGeoJSON(track) as track FROM Hikes WHERE id = $1', [id]),
+      pool.query('SELECT id, name, simplified_profile, ST_AsGeoJSON(track) as track FROM trails WHERE id = $1', [id]),
       fetchWithTimeout(`${STRAPI_URL}/api/hikes?populate[mainImage]=true&populate[countries]=true&populate[sceneries]=true&populate[months]=true&populate[accommodations]=true&populate[Videos]=true&populate[Blogs]=true&populate[landmarks]=true&populate[Books][populate][0]=cover_image&filters[hike_id][$eq]=${id}`, { timeout: 8000, retries: 2 })
     ]);
 
@@ -511,6 +512,17 @@ process.on('SIGTERM', () => {
   pool.end(() => {
     console.log('Database pool closed');
   });
+});
+
+// Cache clearing endpoint for development
+app.post('/api/cache/clear', (req, res) => {
+  if (process.env.NODE_ENV === 'development') {
+    cache.clear();
+    console.log('🗑️  Backend cache cleared');
+    res.json({ success: true, message: 'Cache cleared successfully' });
+  } else {
+    res.status(403).json({ error: 'Cache clearing only available in development' });
+  }
 });
 
 app.listen(port, () => {
@@ -896,5 +908,48 @@ app.get('/api/quiz/insights', async (req, res) => {
       success: false, 
       message: 'Failed to retrieve quiz insights' 
     });
+  }
+});
+
+// Replace the mock endpoint with real Strapi data
+app.get('/api/tmb/accommodations', async (req, res) => {
+  try {
+    const cacheKey = 'tmb-accommodations-real';
+    const cached = getCachedData(cacheKey);
+    
+    if (cached) {
+      console.log('✅ Serving real TMB accommodations from cache');
+      return res.json(cached.data);
+    }
+
+    console.log('🔄 Fetching real TMB accommodations from Strapi');
+    
+    const populateParams = [
+      'populate[photos]=true',
+      'populate[stage]=true', 
+      'populate[Accommodation_Service]=true'
+    ].join('&');
+    
+    const strapiResponse = await fetchWithTimeout(
+      `${STRAPI_URL}/api/tmbaccommodations?${populateParams}`,
+      { timeout: 8000, retries: 2 }
+    );
+    
+    if (!strapiResponse.ok) {
+      console.error('❌ Strapi response not ok:', strapiResponse.status);
+      return res.status(500).json({ error: 'Failed to fetch accommodations' });
+    }
+    
+    const strapiData = await strapiResponse.json();
+    console.log(`✅ Found ${strapiData.data.length} real TMB accommodations`);
+    
+    // Cache for 10 minutes
+    setCachedData(cacheKey, { data: strapiData.data, timestamp: Date.now() }, 600000);
+    
+    res.json(strapiData.data);
+    
+  } catch (error) {
+    console.error('❌ Error fetching real TMB accommodations:', error);
+    res.status(500).json({ error: 'Error fetching accommodations' });
   }
 });
