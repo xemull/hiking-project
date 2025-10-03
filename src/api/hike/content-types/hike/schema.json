@@ -1,0 +1,138 @@
+{
+  "kind": "collectionType",
+  "collectionName": "hikes",
+  "info": {
+    "singularName": "hike",
+    "pluralName": "hikes",
+    "displayName": "Hike"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "Description": {
+      "type": "blocks"
+    },
+    "Country": {
+      "type": "string"
+    },
+    "Difficulty": {
+      "type": "enumeration",
+      "enum": [
+        "Easy",
+        "Moderate",
+        "Difficult"
+      ]
+    },
+    "Best_time": {
+      "type": "string"
+    },
+    "Length": {
+      "type": "decimal"
+    },
+    "Elevation_gain": {
+      "type": "decimal"
+    },
+    "Accomodation": {
+      "type": "blocks"
+    },
+    "Logistics": {
+      "type": "blocks"
+    },
+    "Waypoints": {
+      "type": "string"
+    },
+    "landmarks": {
+      "type": "component",
+      "component": "hike.landmark",
+      "repeatable": true
+    },
+    "Books": {
+      "type": "component",
+      "component": "hike.books",
+      "repeatable": true
+    },
+    "Blogs": {
+      "type": "component",
+      "component": "hike.blog",
+      "repeatable": true
+    },
+    "hike_id": {
+      "type": "integer"
+    },
+    "terrainProfile": {
+      "type": "enumeration",
+      "enum": [
+        "Mostly Flat",
+        "Rolling Hills",
+        "Mountainous"
+      ]
+    },
+    "continent": {
+      "type": "enumeration",
+      "enum": [
+        "Europe",
+        "North America",
+        "South America",
+        "Asia",
+        "Africa",
+        "Oceania"
+      ]
+    },
+    "routeType": {
+      "type": "enumeration",
+      "enum": [
+        "Point-to-Point",
+        "Loop",
+        "Out-and-Back"
+      ]
+    },
+    "mainImage": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "featured": {
+      "type": "boolean",
+      "default": false
+    },
+    "countries": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::country.country",
+      "mappedBy": "hikes"
+    },
+    "sceneries": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::scenery.scenery",
+      "inversedBy": "hikes"
+    },
+    "accommodations": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::accommodation.accommodation",
+      "mappedBy": "hikes"
+    },
+    "months": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::month.month",
+      "inversedBy": "hikes"
+    },
+    "Videos": {
+      "type": "component",
+      "component": "hike.video",
+      "repeatable": true
+    }
+  }
+}

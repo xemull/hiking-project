@@ -169,8 +169,8 @@ export async function getFeaturedHike(): Promise<HikeSummary | null> {
   console.log('🔄 Fetching featured hike from backend:', fullUrl);
 
   try {
-    const response = await fetchWithTimeout(fullUrl, { 
-      cache: 'force-cache',
+    const response = await fetchWithTimeout(fullUrl, {
+      cache: 'no-cache', // Don't cache featured hike since it can change
       retries: 1 // Less retries for featured hike
     });
     
@@ -184,8 +184,8 @@ export async function getFeaturedHike(): Promise<HikeSummary | null> {
     const featuredHike = await response.json();
     console.log('📊 Featured hike received:', featuredHike ? featuredHike.title : 'none');
     
-    // Cache for 10 minutes (including null values)
-    setCachedData(cacheKey, featuredHike, 600000);
+    // Cache for 2 minutes only since featured hike can change (including null values)
+    setCachedData(cacheKey, featuredHike, 120000);
     
     return featuredHike;
   } catch (error) {
@@ -402,6 +402,31 @@ export async function clearCache(): Promise<void> {
   // Clear client-side cache
   clientCache.clear();
   console.log('🗑️  Client cache cleared');
+
+  // Also clear any browser storage cache entries
+  if (typeof window !== 'undefined') {
+    // Clear localStorage entries that might be cache-related
+    const keysToRemove = [];
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key && (key.includes('hike-') || key.includes('cache-'))) {
+        keysToRemove.push(key);
+      }
+    }
+    keysToRemove.forEach(key => localStorage.removeItem(key));
+
+    // Clear sessionStorage entries
+    const sessionKeysToRemove = [];
+    for (let i = 0; i < sessionStorage.length; i++) {
+      const key = sessionStorage.key(i);
+      if (key && (key.includes('hike-') || key.includes('cache-'))) {
+        sessionKeysToRemove.push(key);
+      }
+    }
+    sessionKeysToRemove.forEach(key => sessionStorage.removeItem(key));
+
+    console.log('🗑️  Browser storage cache cleared');
+  }
 
   // Also clear backend cache if in development
   if (process.env.NODE_ENV === 'development') {

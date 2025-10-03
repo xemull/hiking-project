@@ -87,10 +87,20 @@ export default async function HikeDetailPage({ params }: { params: Promise<{ slu
     Blogs
   } = content;
 
-  // Get hero image URL
-  const heroImageUrl = mainImage?.url 
-    ? `${process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337'}${mainImage.url}` 
-    : null;
+  // Get hero image URL - prefer largest available format
+  const heroImageUrl = mainImage ? (() => {
+    const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337';
+
+    // Try to get the largest available image format
+    if (mainImage.formats?.large?.url) {
+      return `${baseUrl}${mainImage.formats.large.url}`;
+    } else if (mainImage.formats?.medium?.url) {
+      return `${baseUrl}${mainImage.formats.medium.url}`;
+    } else if (mainImage.url) {
+      return `${baseUrl}${mainImage.url}`;
+    }
+    return null;
+  })() : null;
 
   // Get countries from relation - handle multiple countries
   const countryNames = countries?.map(country => country.name) || [];

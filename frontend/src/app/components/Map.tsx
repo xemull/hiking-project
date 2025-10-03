@@ -139,7 +139,6 @@ export default function DebugMap({ track, className = '', height = '400px' }: Ma
         console.log('Map components set successfully');
       } catch (error) {
         console.error('Failed to load map components:', error);
-        setDebugInfo(prev => prev + '\nMap load error: ' + error.message);
       }
     };
 
@@ -189,7 +188,7 @@ export default function DebugMap({ track, className = '', height = '400px' }: Ma
         style={{ height: '100%', width: '100%' }}
         scrollWheelZoom={true}
         className="z-0"
-        whenCreated={(mapInstance) => {
+        whenCreated={(mapInstance: any) => {
           setMapInstance(mapInstance);
         }}
       >

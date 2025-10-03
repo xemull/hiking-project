@@ -18,9 +18,20 @@ export default function HikeCard({ hike }: { hike: HikeSummary }) {
         : `${countryNames.slice(0, -1).join(', ')} & ${countryNames[countryNames.length - 1]}`
     : '';
     
-  const imageUrl = mainImage?.url 
-  ? `${process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337'}${mainImage.url}` 
-  : null;
+  // Get image URL - prefer medium/large format for better quality
+  const imageUrl = mainImage ? (() => {
+    const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337';
+
+    // For card images, medium is usually sufficient and loads faster
+    if (mainImage.formats?.medium?.url) {
+      return `${baseUrl}${mainImage.formats.medium.url}`;
+    } else if (mainImage.formats?.large?.url) {
+      return `${baseUrl}${mainImage.formats.large.url}`;
+    } else if (mainImage.url) {
+      return `${baseUrl}${mainImage.url}`;
+    }
+    return null;
+  })() : null;
   
   const slug = createSlug(title);
 

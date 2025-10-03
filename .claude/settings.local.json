@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -s \"https://cms-service-623946599151.europe-west2.run.app/api/hikes?filters[slug][$eq]=south-west-coast-path&populate=mainImage\")",
+      "Bash(curl -s \"https://cms-service-623946599151.europe-west2.run.app/api/hikes?populate=mainImage\")",
+      "Bash(curl -s \"https://backend-service-623946599151.europe-west2.run.app/api/hikes\")",
+      "Bash(curl -s \"https://cms-service-623946599151.europe-west2.run.app/api/hikes?populate=*\")",
+      "Bash(python:*)",
+      "Bash(curl:*)",
+      "Bash(find:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
