@@ -669,7 +669,7 @@ export interface ApiTmbaccommodationTmbaccommodation
       Schema.Attribute.Private;
     description: Schema.Attribute.String;
     email: Schema.Attribute.Email;
-    latitude: Schema.Attribute.Decimal;
+    latitude: Schema.Attribute.Float;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -679,7 +679,7 @@ export interface ApiTmbaccommodationTmbaccommodation
     location_type: Schema.Attribute.Enumeration<
       ['On-trail', 'Near-trail', 'Off-trail']
     >;
-    longitude: Schema.Attribute.Decimal;
+    longitude: Schema.Attribute.Float;
     name: Schema.Attribute.String;
     notes: Schema.Attribute.String;
     phone: Schema.Attribute.String;
@@ -695,6 +695,53 @@ export interface ApiTmbaccommodationTmbaccommodation
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     website: Schema.Attribute.String;
+  };
+}
+
+export interface ApiTrailNewsTrailNews extends Struct.CollectionTypeSchema {
+  collectionName: 'trail_news';
+  info: {
+    description: 'News and updates about trail conditions, closures, and important information';
+    displayName: 'Trail News';
+    pluralName: 'trail-news-items';
+    singularName: 'trail-news';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    category: Schema.Attribute.Enumeration<
+      ['Trail Update', 'Weather', 'Accommodation', 'Event', 'Alert']
+    > &
+      Schema.Attribute.Required;
+    content: Schema.Attribute.RichText;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    date: Schema.Attribute.Date & Schema.Attribute.Required;
+    expiryDate: Schema.Attribute.Date;
+    image: Schema.Attribute.Media<'images'>;
+    isActive: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::trail-news.trail-news'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    severity: Schema.Attribute.Enumeration<['info', 'warning', 'critical']> &
+      Schema.Attribute.DefaultTo<'info'>;
+    source: Schema.Attribute.String;
+    summary: Schema.Attribute.Text &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 200;
+      }>;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+    trail: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
   };
 }
 
@@ -1215,6 +1262,7 @@ declare module '@strapi/strapi' {
       'api::scenery.scenery': ApiSceneryScenery;
       'api::tmb-stage.tmb-stage': ApiTmbStageTmbStage;
       'api::tmbaccommodation.tmbaccommodation': ApiTmbaccommodationTmbaccommodation;
+      'api::trail-news.trail-news': ApiTrailNewsTrailNews;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;

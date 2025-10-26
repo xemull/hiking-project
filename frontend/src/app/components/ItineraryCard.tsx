@@ -37,39 +37,52 @@ export function ItineraryCard({ title, duration, difficulty, whoFor, description
         fontSize: 'var(--text-sm)',
         fontWeight: '600',
         textAlign: 'center',
-        marginBottom: '1rem'
+        marginBottom: '1rem',
+        minHeight: '64px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        lineHeight: '1.4'
       }}>
         Our Pick For: {whoFor}
       </div>
 
-      {/* Title and Duration Header */}
+      {/* Title */}
+      <h3 style={{
+        fontSize: 'var(--text-xl)',
+        fontWeight: '600',
+        color: 'var(--ds-foreground)',
+        marginBottom: '0.75rem'
+      }}>
+        {title}
+      </h3>
+
+      {/* Duration and Difficulty Badges */}
       <div style={{
         display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'flex-start',
-        marginBottom: '1rem'
+        gap: '0.5rem',
+        marginBottom: '1rem',
+        flexWrap: 'wrap'
       }}>
-        <h3 style={{
-          fontSize: 'var(--text-xl)',
-          fontWeight: '600',
-          color: 'var(--ds-foreground)'
+        <div style={{
+          background: 'rgba(var(--ds-primary-rgb, 59, 130, 246), 0.1)',
+          color: 'var(--ds-primary)',
+          padding: '0.25rem 0.75rem',
+          borderRadius: '12px',
+          fontSize: 'var(--text-sm)',
+          fontWeight: '600'
         }}>
-          {title}
-        </h3>
-        <div style={{ textAlign: 'right' }}>
-          <div style={{
-            fontSize: 'var(--text-sm)',
-            fontWeight: '600',
-            color: 'var(--ds-primary)'
-          }}>
-            {duration}
-          </div>
-          <div style={{
-            fontSize: 'var(--text-xs)',
-            color: 'var(--ds-muted-foreground)'
-          }}>
-            {difficulty}
-          </div>
+          {duration}
+        </div>
+        <div style={{
+          background: 'var(--ds-muted)',
+          color: 'var(--ds-muted-foreground)',
+          padding: '0.25rem 0.75rem',
+          borderRadius: '12px',
+          fontSize: 'var(--text-sm)',
+          fontWeight: '600'
+        }}>
+          {difficulty}
         </div>
       </div>
       

@@ -15,12 +15,12 @@ export function QuickNav() {
   const sections = [
     { id: "is-tmb-right", title: "Is TMB Right for Me?", icon: HelpCircle },
     { id: "when-to-go", title: "When to Go", icon: Calendar },
+    { id: "trail-news", title: "Trail News", icon: Calendar },
     { id: "choose-itinerary", title: "Choose Your Itinerary", icon: Route },
+    { id: "accommodations", title: "Accommodations", icon: Mountain },
     { id: "booking", title: "Booking Your Trip", icon: MapPin },
     { id: "training", title: "Training & Fitness", icon: Dumbbell },
-    { id: "packing", title: "Packing & Gear", icon: Backpack },
     { id: "on-trail", title: "On the Trail", icon: Mountain },
-    { id: "budgeting", title: "Budgeting", icon: DollarSign },
     { id: "faqs", title: "FAQs", icon: HelpCircle },
   ];
 
@@ -33,21 +33,17 @@ export function QuickNav() {
 
   return (
     <nav style={{
-      background: 'rgba(255, 255, 255, 0.95)',
-      backdropFilter: 'blur(10px)',
+      background: 'white',
       border: `1px solid var(--ds-border)`,
       borderRadius: '12px',
-      padding: '1.5rem',
-      boxShadow: 'var(--shadow-soft)',
-      position: 'sticky',
-      top: '1rem',
-      zIndex: 10,
+      padding: '2rem',
+      boxShadow: '0 2px 8px rgba(0, 0, 0, 0.06)',
       marginBottom: '3rem'
     }}>
       <h2 style={{
-        fontSize: 'var(--text-lg)',
+        fontSize: 'var(--text-xl)',
         fontWeight: '600',
-        marginBottom: '1rem',
+        marginBottom: '1.5rem',
         color: 'var(--ds-foreground)',
         textAlign: 'center'
       }}>
@@ -55,8 +51,8 @@ export function QuickNav() {
       </h2>
       <div style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-        gap: '0.5rem'
+        gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
+        gap: '0.75rem'
       }}>
         {sections.map((section) => {
           const IconComponent = section.icon;
@@ -67,27 +63,30 @@ export function QuickNav() {
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: '0.5rem',
-                padding: '0.75rem',
-                background: 'transparent',
-                border: 'none',
+                gap: '0.75rem',
+                padding: '0.875rem 1rem',
+                background: 'var(--ds-off-white)',
+                border: '1px solid var(--ds-border)',
                 borderRadius: '8px',
                 fontSize: 'var(--text-sm)',
-                color: 'var(--ds-muted-foreground)',
+                color: 'var(--ds-foreground)',
                 cursor: 'pointer',
                 transition: 'all 0.2s ease',
-                textAlign: 'left'
+                textAlign: 'left',
+                fontWeight: '500'
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.background = 'var(--ds-muted)';
+                e.currentTarget.style.background = 'white';
+                e.currentTarget.style.borderColor = 'var(--ds-primary)';
                 e.currentTarget.style.color = 'var(--ds-primary)';
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.background = 'transparent';
-                e.currentTarget.style.color = 'var(--ds-muted-foreground)';
+                e.currentTarget.style.background = 'var(--ds-off-white)';
+                e.currentTarget.style.borderColor = 'var(--ds-border)';
+                e.currentTarget.style.color = 'var(--ds-foreground)';
               }}
             >
-              <IconComponent size={16} />
+              <IconComponent size={18} />
               {section.title}
             </button>
           );

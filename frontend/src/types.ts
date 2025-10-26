@@ -159,3 +159,23 @@ export interface NewsletterResponse {
   success: boolean;
   message: string;
 }
+
+// --- TRAIL NEWS TYPES ---
+export interface TrailNews {
+  id: number;
+  documentId: string;
+  title: string;
+  date: string; // ISO date string
+  category: 'Trail Update' | 'Weather' | 'Accommodation' | 'Event' | 'Alert';
+  trail?: string;
+  summary: string;
+  content?: string;
+  severity: 'info' | 'warning' | 'critical';
+  isActive: boolean;
+  expiryDate?: string; // ISO date string
+  source?: string;
+  image?: Media;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt?: string;
+}

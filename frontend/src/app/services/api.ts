@@ -1,5 +1,5 @@
 // src/app/services/api.ts
-import type { Hike, HikeSummary, QuizCompletion, QuizAnalytics, NewsletterSubscription, NewsletterResponse } from '../../types';
+import type { Hike, HikeSummary, QuizCompletion, QuizAnalytics, NewsletterSubscription, NewsletterResponse, TrailNews } from '../../types';
 
 const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337';
 const CUSTOM_BACKEND_URL = process.env.NEXT_PUBLIC_CUSTOM_BACKEND_URL || 'http://localhost:4000';
@@ -501,86 +501,148 @@ export interface TMBTrailData {
   };
 }
 
-// Get all TMB accommodations (using mock data for development)
+// Get all TMB accommodations from Strapi
 export async function getTMBAccommodations(): Promise<TMBAccommodation[] | null> {
   const cacheKey = 'tmb-accommodations';
-  
+
   // Try client-side cache first
   const cached = getCachedData<TMBAccommodation[]>(cacheKey);
   if (cached) {
-    console.log('Using cached TMB accommodations data');
+    console.log('✅ Using cached TMB accommodations data');
     return cached;
   }
 
-  // Use mock endpoint for development
+  // Fetch from backend which gets data from Strapi
   const fullUrl = `${CUSTOM_BACKEND_URL}/api/tmb/accommodations`;
 
-  console.log('Fetching TMB accommodations from backend:', fullUrl);
+  console.log('🔄 Fetching TMB accommodations from backend:', fullUrl);
 
   try {
-    const response = await fetchWithTimeout(fullUrl, { 
+    const response = await fetchWithTimeout(fullUrl, {
       cache: 'force-cache',
       timeout: 10000
     });
-    
-    console.log(`TMB accommodations API response status: ${response.status}`);
+
+    console.log(`✅ TMB accommodations API response status: ${response.status}`);
 
     if (!response.ok) {
-      console.error('TMB accommodations API response not ok:', response.status, response.statusText);
+      console.error('❌ TMB accommodations API response not ok:', response.status, response.statusText);
       return null;
     }
 
     const accommodations = await response.json();
-    console.log('TMB accommodations received:', accommodations?.length || 0, 'accommodations');
-    
+    console.log(`✅ TMB accommodations received: ${accommodations?.length || 0} accommodations`);
+
     // Cache for 10 minutes
     setCachedData(cacheKey, accommodations, 600000);
-    
+
     return accommodations;
   } catch (error) {
-    console.error('Error fetching TMB accommodations:', error);
+    console.error('❌ Error fetching TMB accommodations:', error);
     return null;
   }
 }
 
-// Get TMB trail data for the map (using mock data for development)
+// Get TMB trail data for the map from database (hike_id 28)
 export async function getTMBTrailData(): Promise<TMBTrailData | null> {
   const cacheKey = 'tmb-trail-data';
-  
+
   // Try client-side cache first
   const cached = getCachedData<TMBTrailData>(cacheKey);
   if (cached) {
-    console.log('Using cached TMB trail data');
+    console.log('✅ Using cached TMB trail data');
     return cached;
   }
 
-  // Use mock endpoint for development
-  const fullUrl = `${CUSTOM_BACKEND_URL}/api/tmb/trail/mock`;
+  // Fetch real GPX data from database
+  const fullUrl = `${CUSTOM_BACKEND_URL}/api/tmb/trail`;
 
-  console.log('Fetching TMB trail data from backend:', fullUrl);
+  console.log('🔄 Fetching TMB trail data from backend:', fullUrl);
 
   try {
-    const response = await fetchWithTimeout(fullUrl, { 
+    const response = await fetchWithTimeout(fullUrl, {
       cache: 'force-cache',
       timeout: 10000
     });
-    
-    console.log(`TMB trail data API response status: ${response.status}`);
+
+    console.log(`✅ TMB trail data API response status: ${response.status}`);
 
     if (!response.ok) {
-      console.error('TMB trail API response not ok:', response.status, response.statusText);
+      console.error('❌ TMB trail API response not ok:', response.status, response.statusText);
       return null;
     }
 
     const trailData = await response.json();
-    console.log('TMB trail data received:', trailData?.name || 'unknown trail');
-    
+    console.log(`✅ TMB trail data received: ${trailData?.track?.coordinates?.length || 0} coordinates`);
+
     // Cache for 30 minutes (trail data doesn't change often)
     setCachedData(cacheKey, trailData, 1800000);
-    
+
     return trailData;
   } catch (error) {
-    console.error('Error fetching TMB trail data:', error);
+    console.error('❌ Error fetching TMB trail data:', error);
+    return null;
+  }
+}
+
+// Get trail news - optionally filter by trail
+export async function getTrailNews(trail?: string, limit: number = 5): Promise<TrailNews[] | null> {
+  const cacheKey = `trail-news-${trail || 'all'}-${limit}`;
+
+  // Try client-side cache first
+  const cached = getCachedData<TrailNews[]>(cacheKey);
+  if (cached) {
+    console.log('✅ Using cached trail news');
+    return cached;
+  }
+
+  // Build query parameters
+  const params = new URLSearchParams({
+    'populate': '*',
+    'sort[0]': 'date:desc',
+    'pagination[limit]': limit.toString(),
+    'filters[isActive][$eq]': 'true',
+    'publicationState': 'live'
+  });
+
+  // Filter by trail if specified
+  if (trail) {
+    params.append('filters[trail][$eq]', trail);
+  }
+
+  // Filter out expired news
+  const now = new Date().toISOString();
+  params.append('filters[$or][0][expiryDate][$null]', 'true');
+  params.append('filters[$or][1][expiryDate][$gte]', now);
+
+  const fullUrl = `${STRAPI_URL}/api/trail-news-items?${params.toString()}`;
+
+  console.log('🔄 Fetching trail news from Strapi:', fullUrl);
+
+  try {
+    const response = await fetchWithTimeout(fullUrl, {
+      cache: 'no-store', // News should always be fresh
+      timeout: 8000
+    });
+
+    console.log(`✅ Trail news API response status: ${response.status}`);
+
+    if (!response.ok) {
+      console.error('❌ Trail news API response not ok:', response.status, response.statusText);
+      return null;
+    }
+
+    const json = await response.json();
+    const newsItems: TrailNews[] = json.data || [];
+
+    console.log(`✅ Trail news received: ${newsItems.length} items`);
+
+    // Cache for 5 minutes (news should be relatively fresh)
+    setCachedData(cacheKey, newsItems, 300000);
+
+    return newsItems;
+  } catch (error) {
+    console.error('❌ Error fetching trail news:', error);
     return null;
   }
 }

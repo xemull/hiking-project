@@ -7,7 +7,15 @@
       "Bash(curl -s \"https://cms-service-623946599151.europe-west2.run.app/api/hikes?populate=*\")",
       "Bash(python:*)",
       "Bash(curl:*)",
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "Bash(npm run dev:*)",
+      "Bash(netstat:*)",
+      "Bash(findstr:*)",
+      "Bash(npm run develop:*)",
+      "Bash(taskkill:*)",
+      "Bash(node:*)",
+      "Bash(powershell:*)",
+      "Bash(git add:*)"
     ],
     "deny": [],
     "ask": []

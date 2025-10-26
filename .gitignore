@@ -12,3 +12,22 @@
 *.tfstate.backup
 
 .env
+
+# Uploads (media files should be in cloud storage, not git)
+public/uploads/
+frontend/public/uploads/
+**/uploads/
+
+# Database tools
+cloud_sql_proxy.exe
+cloud-sql-proxy
+
+# Windows reserved filenames
+nul
+**/nul
+
+# CMS generated files (only commit schema, not generated types in some cases)
+tmb-cms-clean/.tmp/
+tmb-cms-clean/.cache/
+tmb-cms-clean/build/
+tmb-cms-clean/dist/

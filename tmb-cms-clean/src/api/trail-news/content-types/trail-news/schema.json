@@ -1,0 +1,76 @@
+{
+  "kind": "collectionType",
+  "collectionName": "trail_news",
+  "info": {
+    "singularName": "trail-news",
+    "pluralName": "trail-news-items",
+    "displayName": "Trail News",
+    "description": "News and updates about trail conditions, closures, and important information"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "date": {
+      "type": "date",
+      "required": true
+    },
+    "category": {
+      "type": "enumeration",
+      "enum": [
+        "Trail Update",
+        "Weather",
+        "Accommodation",
+        "Event",
+        "Alert"
+      ],
+      "required": true
+    },
+    "trail": {
+      "type": "string",
+      "required": false
+    },
+    "summary": {
+      "type": "text",
+      "maxLength": 200,
+      "required": true
+    },
+    "content": {
+      "type": "richtext"
+    },
+    "severity": {
+      "type": "enumeration",
+      "enum": [
+        "info",
+        "warning",
+        "critical"
+      ],
+      "default": "info"
+    },
+    "isActive": {
+      "type": "boolean",
+      "default": true
+    },
+    "expiryDate": {
+      "type": "date",
+      "required": false
+    },
+    "source": {
+      "type": "string",
+      "required": false
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    }
+  }
+}

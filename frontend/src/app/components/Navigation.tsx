@@ -78,12 +78,12 @@ const Navigation = ({ hikes = [] }: NavigationProps) => {
 
   return (
     <>
-      <nav className="sticky top-0 z-50 bg-white/85 backdrop-blur-lg shadow-sm border-b border-gray-200">
+      <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-200 shadow-sm">
         <div className="container mx-auto px-4">
-          <div className="flex justify-between items-center h-16">
+          <div className="flex justify-between items-center h-14">
             {/* Logo */}
-            <Link 
-              href="/" 
+            <Link
+              href="/"
               className="hover:opacity-80 transition-opacity"
             >
               <Image
@@ -94,58 +94,45 @@ const Navigation = ({ hikes = [] }: NavigationProps) => {
                 priority
                 style={{
                   height: 'auto',
-                  maxHeight: '28px',
+                  maxHeight: '24px',
                   width: 'auto'
                 }}
               />
             </Link>
 
             {/* Desktop Navigation and Search */}
-            <div className="hidden md:flex items-center space-x-6">
+            <div className="hidden md:flex items-center gap-4">
               {/* Search Button */}
               <button
                 onClick={() => setIsSearchOpen(true)}
-                className="flex items-center gap-2 px-3 py-2 bg-gray-100 border border-gray-300 rounded-lg text-gray-600 text-sm transition-all hover:bg-white hover:border-green-700 hover:text-gray-900 min-w-[180px]"
+                className="flex items-center gap-2 px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-md text-gray-600 text-sm transition-all hover:bg-white hover:border-gray-300"
               >
                 <Search className="w-4 h-4" />
-                <span>Search hikes...</span>
-                <kbd className="hidden sm:inline-flex items-center gap-1 rounded border bg-white px-1.5 py-0.5 text-xs text-gray-500">
-                  {isMac ? (
-                    <>
-                      <span className="text-xs">⌘</span>K
-                    </>
-                  ) : (
-                    <>
-                      <span className="text-xs">Ctrl</span>K
-                    </>
-                  )}
-                </kbd>
+                <span className="text-sm">Search</span>
               </button>
 
               {/* Navigation Links */}
-              <div className="flex space-x-6">
-                {navItems.map((item) => {
-                  const active = isActive(item.href);
-                  const Icon = item.icon;
-                  
-                  return (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      className={`flex items-center gap-1.5 px-3 py-2 text-sm font-semibold transition-all rounded-md ${
-                        active 
-                          ? 'text-green-700' 
-                          : item.highlight
-                          ? 'text-green-600 hover:text-green-700 hover:bg-green-50'
-                          : 'text-gray-600 hover:text-green-700 hover:bg-gray-100'
-                      } ${item.highlight ? 'ring-1 ring-green-200' : ''}`}
-                    >
-                      {Icon && <Icon className="h-4 w-4" />}
-                      {item.label}
-                    </Link>
-                  );
-                })}
-              </div>
+              {navItems.map((item) => {
+                const active = isActive(item.href);
+                const Icon = item.icon;
+
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className={`flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium transition-colors whitespace-nowrap rounded-md ${
+                      active
+                        ? 'text-green-700'
+                        : item.highlight
+                        ? 'text-green-600 hover:text-green-700 hover:bg-green-50'
+                        : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'
+                    }`}
+                  >
+                    {Icon && <Icon className="h-4 w-4" />}
+                    {item.label}
+                  </Link>
+                );
+              })}
             </div>
 
             {/* Mobile Menu Button */}

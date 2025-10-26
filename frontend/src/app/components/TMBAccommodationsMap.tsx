@@ -12,20 +12,22 @@ interface TMBAccommodationsMapProps {
   distanceMode?: boolean;
   selectedForDistance?: TMBAccommodation[];
   onDistanceSelect?: (accommodation: TMBAccommodation) => void;
+  onAddToItinerary?: (accommodation: TMBAccommodation) => void;
   className?: string;
   height?: string;
 }
 
-export default function TMBAccommodationsMap({ 
-  trailData, 
-  accommodations, 
+export default function TMBAccommodationsMap({
+  trailData,
+  accommodations,
   selectedAccommodation,
   onAccommodationSelect,
   distanceMode = false,
   selectedForDistance = [],
   onDistanceSelect,
-  className = '', 
-  height = '500px' 
+  onAddToItinerary,
+  className = '',
+  height = '500px'
 }: TMBAccommodationsMapProps) {
   const [mapComponents, setMapComponents] = useState<any>(null);
   const [leaflet, setLeaflet] = useState<any>(null);
@@ -81,24 +83,58 @@ export default function TMBAccommodationsMap({
           shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
         });
 
-        // Create accommodation type icons
-        const createAccommodationIcon = (type: string, isSelected: boolean = false) => {
-          const colors = {
-            Refuge: isSelected ? '#059669' : '#10b981',
-            Hotel: isSelected ? '#2563eb' : '#3b82f6', 
-            'B&B': isSelected ? '#7c3aed' : '#8b5cf6',
-            Campsite: isSelected ? '#ea580c' : '#f97316'
+        // Create accommodation icons with stage numbers
+        const createAccommodationIcon = (type: string, stageNumber: number | undefined, isSelected: boolean = false) => {
+          const size = isSelected ? 32 : 28;
+          const fontSize = isSelected ? 14 : 12;
+
+          // Color based on accommodation type instead of stage
+          const typeColors: { [key: string]: string } = {
+            'Refuge': '#2563eb', // blue
+            'Hotel': '#dc2626', // red
+            'Gite': '#16a34a', // green
+            'Camping': '#ea580c', // orange
+            'B&B': '#9333ea' // purple
           };
-          
-          const color = colors[type as keyof typeof colors] || '#6b7280';
-          
-          return new L.Icon({
-            iconUrl: `https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-${isSelected ? 'red' : 'blue'}.png`,
-            shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.1/images/marker-shadow.png',
-            iconSize: isSelected ? [30, 49] : [25, 41],
-            iconAnchor: isSelected ? [15, 49] : [12, 41],
-            popupAnchor: [1, -34],
-            shadowSize: [41, 41]
+
+          const bgColor = typeColors[type] || '#6b7280'; // grey default
+
+          const html = `
+            <div style="
+              position: relative;
+              width: ${size}px;
+              height: ${size}px;
+            ">
+              <div style="
+                width: 100%;
+                height: 100%;
+                background: ${bgColor};
+                border: 3px solid white;
+                border-radius: 50% 50% 50% 0;
+                transform: rotate(-45deg);
+                box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+              ">
+                <span style="
+                  transform: rotate(45deg);
+                  color: white;
+                  font-weight: 700;
+                  font-size: ${fontSize}px;
+                  font-family: 'Inter', system-ui, sans-serif;
+                  text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+                ">${stageNumber || '?'}</span>
+              </div>
+            </div>
+          `;
+
+          return new L.DivIcon({
+            html,
+            className: 'custom-marker-icon',
+            iconSize: [size, size],
+            iconAnchor: [size / 2, size],
+            popupAnchor: [0, -size]
           });
         };
 
@@ -125,18 +161,35 @@ export default function TMBAccommodationsMap({
 
     setTimeout(() => {
       const bounds = leaflet.latLngBounds(processedTrail.positions);
-      
+
       // Include accommodation markers in bounds
       accommodations.forEach(acc => {
         bounds.extend([acc.latitude, acc.longitude]);
       });
-      
-      mapInstance.fitBounds(bounds, { 
+
+      mapInstance.fitBounds(bounds, {
         padding: [20, 20],
         maxZoom: 12
       });
     }, 100);
   }, [mapInstance, processedTrail, accommodations, leaflet]);
+
+  // Re-center map when accommodation is selected
+  useEffect(() => {
+    if (!mapInstance || !leaflet || !selectedAccommodation) return;
+
+    setTimeout(() => {
+      // Smooth pan to the selected accommodation
+      mapInstance.setView(
+        [selectedAccommodation.latitude, selectedAccommodation.longitude],
+        12, // zoom level
+        {
+          animate: true,
+          duration: 0.5 // animation duration in seconds
+        }
+      );
+    }, 100);
+  }, [selectedAccommodation, mapInstance, leaflet]);
 
   if (!processedTrail) {
     return (
@@ -200,11 +253,12 @@ export default function TMBAccommodationsMap({
           const distanceSelectionNumber = selectedForDistance.findIndex(acc => acc.id === accommodation.id) + 1;
           
           return (
-            <Marker 
+            <Marker
               key={accommodation.id}
               position={[accommodation.latitude, accommodation.longitude]}
               icon={createAccommodationIcon(
-                accommodation.type, 
+                accommodation.type,
+                accommodation.stage?.stage_number,
                 isSelected || isSelectedForDistance
               )}
               eventHandlers={{
@@ -218,63 +272,177 @@ export default function TMBAccommodationsMap({
               }}
             >
               <Popup>
-                <div className="min-w-64">
-                  <div className="flex items-start justify-between mb-sm">
-                    <h4 className="font-semibold text-sm">{accommodation.name}</h4>
-                    <div className="flex items-center space-x-1 ml-sm">
-                      <span className={`inline-flex items-center px-2 py-1 rounded text-xs font-medium ${
-                        accommodation.type === 'Refuge' ? 'bg-green-100 text-green-800' :
-                        accommodation.type === 'Hotel' ? 'bg-blue-100 text-blue-800' :
-                        accommodation.type === 'B&B' ? 'bg-purple-100 text-purple-800' :
-                        'bg-orange-100 text-orange-800'
-                      }`}>
+                <div style={{ minWidth: '280px', fontFamily: 'Inter, system-ui, sans-serif' }}>
+                  <div style={{ marginBottom: '0.75rem' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
+                      <h4 style={{
+                        fontSize: '1rem',
+                        fontWeight: 600,
+                        color: 'var(--ds-foreground)',
+                        lineHeight: 1.2,
+                        margin: 0
+                      }}>
+                        {accommodation.name}
+                      </h4>
+                      {accommodation.website && (
+                        <a
+                          href={accommodation.website}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          style={{
+                            display: 'inline-flex',
+                            color: 'hsl(208, 70%, 45%)',
+                            textDecoration: 'none'
+                          }}
+                          title="Visit website"
+                        >
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                            <polyline points="15 3 21 3 21 9"></polyline>
+                            <line x1="10" y1="14" x2="21" y2="3"></line>
+                          </svg>
+                        </a>
+                      )}
+                    </div>
+
+                    {/* Stage Reference - Same as right panel */}
+                    {accommodation.stage && (
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1rem' }}>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ color: 'var(--ds-muted-foreground)', flexShrink: 0 }}>
+                          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                          <circle cx="12" cy="10" r="3"></circle>
+                        </svg>
+                        <span style={{
+                          fontFamily: 'Inter, system-ui, sans-serif',
+                          fontSize: '0.875rem',
+                          color: 'var(--ds-muted-foreground)',
+                          lineHeight: 1.5
+                        }}>
+                          Stage {accommodation.stage.stage_number}: {accommodation.stage.start_location} to {accommodation.stage.end_location}
+                        </span>
+                      </div>
+                    )}
+
+                    <div style={{ display: 'flex', gap: '0.375rem', flexWrap: 'wrap' }}>
+                      <span style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        padding: '0.25rem 0.625rem',
+                        borderRadius: '4px',
+                        fontSize: '0.75rem',
+                        fontWeight: 600,
+                        background: 'hsl(208, 70%, 95%)',
+                        color: 'hsl(208, 70%, 35%)'
+                      }}>
                         {accommodation.type}
                       </span>
+                      {accommodation.location_type && (
+                        <span style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          padding: '0.25rem 0.625rem',
+                          borderRadius: '4px',
+                          fontSize: '0.75rem',
+                          fontWeight: 600,
+                          background: 'hsl(145, 60%, 95%)',
+                          color: 'hsl(145, 60%, 35%)'
+                        }}>
+                          {accommodation.location_type}
+                        </span>
+                      )}
                       {isSelectedForDistance && (
-                        <span className="inline-flex items-center justify-center w-5 h-5 bg-blue-600 text-white text-xs font-bold rounded-full">
+                        <span style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          width: '1.25rem',
+                          height: '1.25rem',
+                          background: 'hsl(208, 70%, 45%)',
+                          color: 'white',
+                          fontSize: '0.75rem',
+                          fontWeight: 700,
+                          borderRadius: '50%'
+                        }}>
                           {distanceSelectionNumber}
                         </span>
                       )}
                     </div>
                   </div>
-                  
-                  <div className="text-xs text-gray-600 space-y-1">
-                    <div>{accommodation.location_type}</div>
-                    {accommodation.altitude && <div>Altitude: {accommodation.altitude}m</div>}
-                    {accommodation.price_range && <div className="text-green-600 font-medium">{accommodation.price_range}</div>}
-                    {accommodation.stage && <div className="bg-gray-100 px-1 py-0.5 rounded">{accommodation.stage.name}</div>}
+
+                  <div style={{ fontSize: '0.875rem', color: 'var(--ds-muted-foreground)', marginBottom: '0.75rem' }}>
+                    {accommodation.altitude && (
+                      <div style={{ marginBottom: '0.25rem' }}>
+                        <strong>Altitude:</strong> {accommodation.altitude}m
+                      </div>
+                    )}
+                    {accommodation.price_range && (
+                      <div style={{
+                        color: 'hsl(145, 60%, 35%)',
+                        fontWeight: 600,
+                        marginBottom: '0.25rem'
+                      }}>
+                        {accommodation.price_range}
+                      </div>
+                    )}
                   </div>
-                  
+
                   {accommodation.notes && (
-                    <p className="text-xs text-gray-700 mt-sm border-t pt-sm">{accommodation.notes}</p>
+                    <p style={{
+                      fontSize: '0.875rem',
+                      color: 'var(--ds-foreground)',
+                      marginTop: '0.75rem',
+                      paddingTop: '0.75rem',
+                      borderTop: '1px solid var(--ds-border)',
+                      lineHeight: 1.5
+                    }}>
+                      {accommodation.notes}
+                    </p>
                   )}
-                  
-                  <div className="mt-sm pt-sm border-t flex space-x-sm text-xs">
-                    {accommodation.website && (
-                      <a 
-                        href={accommodation.website} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="text-blue-600 hover:text-blue-800"
+
+                  {!distanceMode && onAddToItinerary && (
+                    <div style={{ marginTop: '0.75rem', paddingTop: '0.75rem', borderTop: '1px solid var(--ds-border)' }}>
+                      <button
+                        onClick={() => onAddToItinerary(accommodation)}
+                        style={{
+                          width: '100%',
+                          padding: '0.375rem 0.75rem',
+                          background: 'var(--ds-accent)',
+                          color: 'var(--ds-accent-foreground)',
+                          fontSize: '0.75rem',
+                          fontWeight: 600,
+                          borderRadius: '4px',
+                          border: 'none',
+                          cursor: 'pointer',
+                          fontFamily: 'Inter, system-ui, sans-serif',
+                          transition: 'all 0.2s ease'
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.opacity = '0.9';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.opacity = '1';
+                        }}
                       >
-                        Website
-                      </a>
-                    )}
-                    {accommodation.phone && (
-                      <a 
-                        href={`tel:${accommodation.phone}`}
-                        className="text-blue-600 hover:text-blue-800"
-                      >
-                        Call
-                      </a>
-                    )}
-                  </div>
-                  
+                        + Add to Itinerary
+                      </button>
+                    </div>
+                  )}
+
                   {distanceMode && (
-                    <div className="mt-sm pt-sm border-t">
+                    <div style={{ marginTop: '0.75rem', paddingTop: '0.75rem', borderTop: '1px solid var(--ds-border)' }}>
                       <button
                         onClick={() => onDistanceSelect?.(accommodation)}
-                        className="w-full px-2 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700"
+                        style={{
+                          width: '100%',
+                          padding: '0.5rem',
+                          background: 'hsl(208, 70%, 45%)',
+                          color: 'white',
+                          fontSize: '0.875rem',
+                          fontWeight: 600,
+                          borderRadius: '6px',
+                          border: 'none',
+                          cursor: 'pointer'
+                        }}
                       >
                         {isSelectedForDistance ? 'Remove from Distance Calc' : 'Add to Distance Calc'}
                       </button>
@@ -287,24 +455,6 @@ export default function TMBAccommodationsMap({
         })}
       </MapContainer>
 
-      {/* Map legend */}
-      <div className="absolute bottom-2 left-2 bg-white/95 backdrop-blur-sm rounded px-sm py-xs text-xs shadow-sm z-10">
-        <div className="flex items-center space-x-md">
-          <div className="flex items-center">
-            <div className="w-3 h-3 bg-red-500 rounded-full mr-xs"></div>
-            <span>TMB Trail</span>
-          </div>
-          <div className="flex items-center">
-            <div className="w-3 h-3 bg-blue-500 rounded-full mr-xs"></div>
-            <span>Accommodations</span>
-          </div>
-        </div>
-      </div>
-      
-      {/* Accommodation count */}
-      <div className="absolute bottom-2 right-2 bg-white/95 backdrop-blur-sm rounded px-sm py-xs text-xs shadow-sm z-10">
-        {accommodations.length} accommodations
-      </div>
     </div>
   );
 }

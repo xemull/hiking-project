@@ -10,7 +10,7 @@ const nextConfig: NextConfig = {
   // Performance optimizations
   experimental: {
     // Enable optimized package imports
-    optimizePackageImports: ['react', 'react-dom'],
+    optimizePackageImports: ['react', 'react-dom', 'lucide-react'],
   },
 
   // Enable compression

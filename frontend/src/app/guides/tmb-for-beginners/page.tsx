@@ -4,19 +4,18 @@ import Image from 'next/image';
 import { Suspense } from 'react';
 import Navigation from '../../components/Navigation';
 import Footer from '../../components/Footer';
-import { getHikes } from '../../services/api';
-import { QuickNav } from '../../components/QuickNav';
+import { getHikes, getTrailNews } from '../../services/api';
 import { ClientButton } from '../../components/ClientButton';
 import { ItineraryCard } from '../../components/ItineraryCard';
-import type { HikeSummary } from '../../../types';
-import { 
-  Mountain, 
-  Calendar, 
-  MapPin, 
-  Backpack, 
-  Dumbbell, 
-  DollarSign, 
-  HelpCircle, 
+import type { HikeSummary, TrailNews } from '../../../types';
+import {
+  Mountain,
+  Calendar,
+  MapPin,
+  Backpack,
+  Dumbbell,
+  DollarSign,
+  HelpCircle,
   Clock,
   CheckCircle,
   XCircle,
@@ -25,55 +24,77 @@ import {
   TrendingUp,
   AlertTriangle,
   Tent,
-  Train
+  Train,
+  Building2,
+  Home,
+  Info,
+  AlertCircle,
+  Newspaper,
+  Hotel,
+  TreePine
 } from 'lucide-react';
+import { CollapsibleFAQItem } from './CollapsibleFAQItem';
 
-// Mock TMB hero image - replace with actual image path
-const TMB_HERO_IMAGE = '/images/mont-blanc-hero.jpg';
+// TMB hero image
+const TMB_HERO_IMAGE = '/uploads/itineraries/gentle-trekker/DJI_0213-HDR.jpg';
 
 // Itinerary options
 const itineraries = [
   {
-    title: "Classic TMB",
+    title: "The Classic Circuit",
     duration: "11 days",
-    difficulty: "Moderate+",
-    whoFor: "The Traditionalist", // ADD THIS
-    description: "The traditional full circuit following the classic route with cultural stops in charming alpine villages.",
+    difficulty: "Challenging",
+    whoFor: "The Traditionalist",
+    description: "The quintessential Tour du Mont Blanc. An 11-day journey around Mont Blanc following the traditional route with mountain refuges and challenging stages.",
     highlights: [
       "Complete 170km circuit",
-      "All major viewpoints", 
-      "Cultural village stays",
-      "Traditional route experience"
+      "Cumulative ascent higher than Everest",
+      "Traditional mountain refuges",
+      "Crosses 3 countries"
     ],
-    link: "/guides/classic-tmb"
+    link: "/guides/tmb-for-beginners/itineraries/classic-circuit"
   },
   {
-    title: "TMB Highlights", 
-    duration: "7 days",
+    title: "The Gentle Trekker",
+    duration: "12 days",
     difficulty: "Moderate",
-    whoFor: "The Time-Crunched Hiker", // ADD THIS
-    description: "A condensed version hitting the most spectacular sections while skipping some valley walks.",
+    whoFor: "The Comfort-Seeker",
+    description: "A 12-day tour prioritizing scenery and comfort with strategic transport use, shorter stages, and a rest day in Courmayeur.",
     highlights: [
-      "Best viewpoints only",
-      "Skip valley sections", 
-      "Perfect for limited time",
-      "Still covers 3 countries"
+      "Shorter daily stages (4-6 hours)",
+      "Strategic cable car use",
+      "Rest day included",
+      "Comfortable accommodations"
     ],
-    link: "/guides/tmb-highlights"
+    link: "/guides/tmb-for-beginners/itineraries/gentle-trekker"
   },
   {
-    title: "Leisurely TMB",
-    duration: "14 days", 
-    difficulty: "Moderate-",
-    whoFor: "The Scenery-Seeker", // ADD THIS
-    description: "Extended itinerary with rest days, shorter daily distances, and time to explore local culture.",
+    title: "The Western Front",
+    duration: "5 days",
+    difficulty: "Moderate+",
+    whoFor: "The Time-Crunched Hiker",
+    description: "A 5-day half TMB from Chamonix to Courmayeur covering the western section. Perfect for limited time or splitting the TMB into two years.",
     highlights: [
-      "Rest days included",
-      "Shorter daily stages",
-      "Cultural exploration time", 
-      "Less physical demand"
+      "Concentrated high-impact trek",
+      "Covers ~70km of terrain",
+      "Point-to-point journey",
+      "Bus return via Mont Blanc tunnel"
     ],
-    link: "/guides/leisurely-tmb"
+    link: "/guides/tmb-for-beginners/itineraries/western-front"
+  },
+  {
+    title: "The Italian Taster",
+    duration: "4 days",
+    difficulty: "Moderate",
+    whoFor: "The Weekend Warrior",
+    description: "A 4-day loop from Courmayeur showcasing the TMB's most scenic sections. Maximum views in minimum time.",
+    highlights: [
+      "Perfect for a long weekend",
+      "Italian balcony paths",
+      "Crosses into Switzerland & France",
+      "Logistical loop from Courmayeur"
+    ],
+    link: "/guides/tmb-for-beginners/itineraries/italian-taster"
   }
 ];
 
@@ -119,34 +140,34 @@ const budgetOptions = [
 ];
 
 // Component for section containers
-function SectionCard({ 
-  id, 
-  title, 
-  children, 
-  className = "" 
-}: { 
-  id: string; 
-  title: string; 
-  children: React.ReactNode; 
-  className?: string; 
+function SectionCard({
+  id,
+  title,
+  children,
+  className = ""
+}: {
+  id: string;
+  title: string;
+  children: React.ReactNode;
+  className?: string;
 }) {
   return (
-    <section 
-      id={id} 
-      style={{ scrollMarginTop: '5rem', marginBottom: '4rem' }}
+    <section
+      id={id}
+      style={{ scrollMarginTop: '5rem', marginBottom: '2.5rem' }}
       className={className}
     >
       <div style={{
         background: 'white',
         border: `1px solid var(--ds-border)`,
         borderRadius: '12px',
-        padding: '2rem',
+        padding: 'clamp(1.25rem, 3vw, 2rem)',
         boxShadow: 'var(--shadow-card)'
       }}>
         <h2 style={{
           fontSize: 'var(--text-2xl)',
           fontWeight: '600',
-          marginBottom: '1.5rem',
+          marginBottom: 'clamp(1rem, 2vw, 1.5rem)',
           color: 'var(--ds-foreground)',
           borderBottom: `1px solid var(--ds-border)`,
           paddingBottom: '0.75rem'
@@ -163,13 +184,21 @@ function SectionCard({
 
 // Main page component
 export default async function TMBGuidePage() {
-  // Get navigation data with error handling
-let allHikes: HikeSummary[] = [];
+  // Get navigation data and trail news with error handling
+  let allHikes: HikeSummary[] = [];
+  let trailNews: TrailNews[] = [];
+
   try {
-const hikesResult = await getHikes();
-allHikes = hikesResult || [];  } catch (error) {
+    const [hikesResult, newsResult] = await Promise.all([
+      getHikes(),
+      getTrailNews(undefined, 3) // Get max 3 news items (not filtering by trail)
+    ]);
+    allHikes = hikesResult || [];
+    trailNews = newsResult || [];
+  } catch (error) {
     console.error('API not available:', error);
-    allHikes = []; // Fallback to empty array
+    allHikes = [];
+    trailNews = [];
   }
 
   return (
@@ -185,28 +214,32 @@ allHikes = hikesResult || [];  } catch (error) {
       <div style={{
         position: 'relative',
         width: '100%',
-        height: '100vh',
-        minHeight: '600px',
-        background: 'var(--gradient-hero)',
+        height: '60vh',
+        minHeight: '500px',
         display: 'flex',
-        alignItems: 'center',
+        alignItems: 'flex-start',
         justifyContent: 'center',
-        overflow: 'hidden'
+        overflow: 'hidden',
+        paddingTop: 'clamp(2rem, 5vw, 4rem)'
       }}>
         {/* Hero Background Image */}
-        {/* <Image
+        <Image
           src={TMB_HERO_IMAGE}
           alt="Tour du Mont Blanc landscape"
           fill
           sizes="100vw"
-          style={{ objectFit: 'cover', zIndex: 0 }}
+          style={{
+            objectFit: 'cover',
+            objectPosition: 'center 40%',
+            zIndex: 0
+          }}
           priority={true}
-        /> */}
-        
+        />
+
         <div style={{
           position: 'absolute',
           inset: 0,
-          background: 'linear-gradient(135deg, rgba(45, 55, 72, 0.8), rgba(45, 55, 72, 0.6))',
+          background: 'linear-gradient(135deg, rgba(45, 55, 72, 0.6), rgba(45, 55, 72, 0.4))',
           zIndex: 1
         }} />
         
@@ -215,38 +248,47 @@ allHikes = hikesResult || [];  } catch (error) {
           zIndex: 2,
           textAlign: 'center',
           color: 'white',
-          maxWidth: '800px',
+          maxWidth: '1000px',
           padding: '0 1.5rem'
         }}>
           <Mountain style={{
-            width: '4rem',
-            height: '4rem',
-            margin: '0 auto 1.5rem auto',
+            width: '3.5rem',
+            height: '3.5rem',
+            margin: '0 auto 1rem auto',
             filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.3))'
           }} />
-          <h1 className="hero-title">
+          <h1 className="hero-title" style={{
+            fontSize: 'clamp(1.75rem, 4vw, 2.5rem)',
+            lineHeight: '1.2',
+            marginBottom: '1rem',
+            fontWeight: '600'
+          }}>
             Your Tour du Mont Blanc Adventure Starts Here
           </h1>
-          <p className="hero-subtitle">
-            A clear, step-by-step guide to help you confidently plan and enjoy
-  one of the world's most beautiful treks. No expert experience required.
+          <p className="hero-subtitle" style={{
+            fontSize: 'clamp(1rem, 2vw, 1.25rem)',
+            lineHeight: '1.5',
+            marginBottom: '1.5rem',
+            maxWidth: '800px',
+            margin: '0 auto 1.5rem'
+          }}>
+            A clear, step-by-step guide to help you confidently plan and enjoy one of the world's most beautiful treks. No expert experience required.
           </p>
-          <ClientButton targetId="is-tmb-right" className="btn-primary" style={{ marginTop: '1rem' }}>
+          <ClientButton targetId="is-tmb-right" className="btn-primary" style={{ marginTop: '0.5rem' }}>
             Start Planning
           </ClientButton>
         </div>
       </div>
 
       {/* Main Content */}
-      <main className="content-container" style={{ 
-        paddingTop: '3rem', 
-        paddingBottom: '3rem',
+      <main className="content-container" style={{
+        paddingTop: 'clamp(1.5rem, 4vw, 3rem)',
+        paddingBottom: 'clamp(1.5rem, 4vw, 3rem)',
+        paddingLeft: 'clamp(0.75rem, 3vw, 1rem)',
+        paddingRight: 'clamp(0.75rem, 3vw, 1rem)',
         maxWidth: '1200px',
         margin: '0 auto'
       }}>
-        {/* Navigation */}
-        <QuickNav />
-
         {/* Is TMB Right for Me */}
         <SectionCard id="is-tmb-right" title="Is the TMB Right for Me?">
           <div style={{
@@ -354,6 +396,37 @@ allHikes = hikesResult || [];  } catch (error) {
           </div>
         </SectionCard>
 
+        {/* Image Banner after "Is TMB Right for Me?" */}
+        <div className="tmb-image-grid-mobile" style={{
+          margin: 'clamp(1.5rem, 3vw, 2rem) 0',
+          borderRadius: '12px',
+          overflow: 'hidden',
+          height: 'clamp(250px, 50vw, 400px)',
+          position: 'relative',
+          display: 'grid',
+          gridTemplateColumns: 'repeat(2, 1fr)',
+          gap: '0.5rem'
+        }}>
+          <div style={{ position: 'relative', height: '100%' }}>
+            <Image
+              src="/uploads/DJI_0240-HDR.jpg"
+              alt="TMB Mountain Vista"
+              fill
+              className="tmb-section-image"
+              style={{ objectFit: 'cover' }}
+            />
+          </div>
+          <div style={{ position: 'relative', height: '100%' }}>
+            <Image
+              src="/uploads/DJI_0209-HDR.jpg"
+              alt="TMB Alpine Trail"
+              fill
+              className="tmb-section-image"
+              style={{ objectFit: 'cover' }}
+            />
+          </div>
+        </div>
+
         {/* When to Go */}
         <SectionCard id="when-to-go" title="When to Go - Month by Month">
           <div style={{
@@ -460,34 +533,396 @@ allHikes = hikesResult || [];  } catch (error) {
             }}>
               Our Recommendation:
             </h4>
+            <p style={{ color: 'var(--ds-muted-foreground)', marginBottom: '0.5rem' }}>
+              <strong>First-time hikers:</strong> July or August for the most predictable conditions and full refuge operations.
+            </p>
             <p style={{ color: 'var(--ds-muted-foreground)', margin: 0 }}>
-              <strong>First-time hikers:</strong> July or August for the most predictable conditions and full refuge operations. 
-              <strong> Experienced hikers:</strong> Consider June or September for a more peaceful experience.
+              <strong>Experienced hikers:</strong> Consider June or September for a more peaceful experience.
             </p>
           </div>
         </SectionCard>
 
+        {/* Trail News */}
+        {trailNews.length > 0 && (
+          <SectionCard id="trail-news" title="Trail News & Updates">
+            <div style={{
+              marginBottom: '1rem'
+            }}>
+              <span style={{
+                fontSize: 'var(--text-sm)',
+                color: 'var(--ds-muted-foreground)'
+              }}>
+                Last updated: {new Date(Math.max(...trailNews.map(n => new Date(n.date).getTime()))).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+              </span>
+            </div>
+            <div style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '1.5rem'
+            }}>
+              {trailNews.map((news, index) => {
+                const Icon = news.severity === 'critical' ? AlertCircle :
+                            news.severity === 'warning' ? AlertTriangle :
+                            Info;
+                const iconColor = news.severity === 'critical' ? 'hsl(0, 70%, 50%)' :
+                                 news.severity === 'warning' ? 'hsl(38, 90%, 50%)' :
+                                 'hsl(210, 70%, 50%)';
+                const borderColor = news.severity === 'critical' ? 'hsl(0, 70%, 50%)' :
+                                   news.severity === 'warning' ? 'hsl(38, 90%, 50%)' :
+                                   'hsl(210, 70%, 50%)';
+
+                return (
+                  <div
+                    key={news.id}
+                    className="trail-news-item"
+                    style={{
+                      borderLeft: `4px solid ${borderColor}`,
+                      padding: '1rem 0 1rem 1rem',
+                      display: 'grid',
+                      gridTemplateColumns: 'auto auto 1fr auto',
+                      gap: '1rem',
+                      alignItems: 'flex-start',
+                      background: 'transparent',
+                      transition: 'background 0.2s'
+                    }}
+                  >
+                    <div className="trail-news-date" style={{
+                      background: borderColor,
+                      color: 'white',
+                      padding: '0.5rem 0.75rem',
+                      borderRadius: '6px',
+                      textAlign: 'center',
+                      minWidth: '80px',
+                      fontWeight: '600'
+                    }}>
+                      <div style={{ fontSize: 'var(--text-xs)', opacity: 0.9 }}>
+                        {new Date(news.date).toLocaleDateString('en-US', { month: 'short' })}
+                      </div>
+                      <div style={{ fontSize: 'var(--text-xl)', lineHeight: '1' }}>
+                        {new Date(news.date).getDate()}
+                      </div>
+                    </div>
+
+                    <Icon
+                      size={20}
+                      className="trail-news-icon"
+                      style={{
+                        color: iconColor,
+                        flexShrink: 0,
+                        marginTop: '0.25rem'
+                      }}
+                    />
+
+                    <div className="trail-news-content" style={{ flex: 1 }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.5rem' }}>
+                        <h4 style={{
+                          fontWeight: '600',
+                          fontSize: 'var(--text-base)',
+                          color: 'var(--ds-foreground)',
+                          margin: 0
+                        }}>
+                          {news.title}
+                        </h4>
+                      </div>
+                      {news.content ? (
+                        <div
+                          style={{
+                            fontSize: 'var(--text-sm)',
+                            color: 'var(--ds-muted-foreground)',
+                            lineHeight: '1.6',
+                            whiteSpace: 'pre-line'
+                          }}
+                          dangerouslySetInnerHTML={{ __html: news.content }}
+                        />
+                      ) : (
+                        <p style={{
+                          fontSize: 'var(--text-sm)',
+                          color: 'var(--ds-muted-foreground)',
+                          margin: 0,
+                          lineHeight: '1.6'
+                        }}>
+                          {news.summary}
+                        </p>
+                      )}
+                      {news.source && (
+                        <a
+                          href={news.source}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          style={{
+                            fontSize: 'var(--text-xs)',
+                            color: iconColor,
+                            textDecoration: 'none',
+                            display: 'inline-block',
+                            marginTop: '0.5rem'
+                          }}
+                        >
+                          View source →
+                        </a>
+                      )}
+                    </div>
+
+                    <span style={{
+                      background: 'var(--ds-muted)',
+                      color: 'var(--ds-muted-foreground)',
+                      padding: '0.25rem 0.75rem',
+                      borderRadius: '12px',
+                      fontSize: 'var(--text-xs)',
+                      fontWeight: '600',
+                      whiteSpace: 'nowrap'
+                    }}>
+                      {news.category}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+          </SectionCard>
+        )}
+
         {/* Choose Your Itinerary */}
         <SectionCard id="choose-itinerary" title="Choose Your Itinerary">
           <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-            gap: '1.5rem'
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '1rem'
           }}>
             {itineraries.map((itinerary) => (
-              <ItineraryCard 
-                key={itinerary.title} 
-                title={itinerary.title}
-                duration={itinerary.duration}
-                difficulty={itinerary.difficulty}
-                    whoFor={itinerary.whoFor} // ADD THIS
+              <Link
+                key={itinerary.title}
+                href={itinerary.link}
+                className="itinerary-card-mobile"
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '1.5rem',
+                  padding: '1.25rem',
+                  background: 'white',
+                  border: '1px solid var(--ds-border)',
+                  borderRadius: '8px',
+                  textDecoration: 'none',
+                  transition: 'all 0.2s'
+                }}
+              >
+                {/* Duration Badge */}
+                <div className="itinerary-duration-badge" style={{
+                  background: 'var(--ds-accent)',
+                  color: 'black',
+                  padding: '0.75rem 1rem',
+                  borderRadius: '8px',
+                  fontWeight: '700',
+                  fontSize: 'var(--text-base)',
+                  textAlign: 'center',
+                  minWidth: '90px',
+                  flexShrink: 0
+                }}>
+                  {itinerary.duration}
+                </div>
 
-                description={itinerary.description}
-                highlights={itinerary.highlights}
-                link={itinerary.link}
-              />
+                {/* Content */}
+                <div className="itinerary-content-mobile" style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'baseline',
+                    gap: '0.75rem',
+                    marginBottom: '0.5rem',
+                    flexWrap: 'wrap'
+                  }}>
+                    <h3 style={{
+                      fontSize: 'var(--text-lg)',
+                      fontWeight: '600',
+                      color: 'var(--ds-foreground)',
+                      margin: 0
+                    }}>
+                      {itinerary.title}
+                    </h3>
+                    <span style={{
+                      fontSize: 'var(--text-sm)',
+                      color: 'var(--ds-muted-foreground)',
+                      fontStyle: 'italic'
+                    }}>
+                      {itinerary.whoFor}
+                    </span>
+                  </div>
+                  <p style={{
+                    fontSize: 'var(--text-sm)',
+                    color: 'var(--ds-muted-foreground)',
+                    margin: 0,
+                    lineHeight: '1.5'
+                  }}>
+                    {itinerary.description}
+                  </p>
+                </div>
+
+                {/* Arrow */}
+                <div className="itinerary-arrow-mobile" style={{
+                  color: 'var(--ds-primary)',
+                  fontSize: 'var(--text-xl)',
+                  flexShrink: 0
+                }}>
+                  →
+                </div>
+              </Link>
             ))}
           </div>
+        </SectionCard>
+
+        {/* Where to Stay on the TMB */}
+        <SectionCard id="accommodations" title="Where to Stay on the TMB">
+          <p style={{
+            color: 'var(--ds-muted-foreground)',
+            marginBottom: '2rem',
+            fontSize: 'var(--text-base)',
+            lineHeight: '1.6'
+          }}>
+            Your choice of accommodation shapes your TMB experience—from the rustic camaraderie of mountain refuges to the comfort of valley hotels.
+          </p>
+
+          <div className="accommodation-grid-mobile" style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(4, 1fr)',
+            gap: '1.25rem',
+            marginBottom: '2rem'
+          }}>
+            {[
+              {
+                icon: Mountain,
+                type: "Mountain Refuges",
+                price: "€45-70/night",
+                items: [
+                  { type: 'pro', text: "Authentic mountain experience" },
+                  { type: 'pro', text: "On-trail convenience" },
+                  { type: 'pro', text: "Half-board included" },
+                  { type: 'con', text: "Dormitory sleeping" },
+                  { type: 'con', text: "Limited privacy" },
+                  { type: 'con', text: "Must book early" }
+                ]
+              },
+              {
+                icon: Hotel,
+                type: "Hotels",
+                price: "€80-150/night",
+                items: [
+                  { type: 'pro', text: "Private rooms" },
+                  { type: 'pro', text: "Comfortable beds" },
+                  { type: 'pro', text: "More facilities" },
+                  { type: 'con', text: "Often off-trail" },
+                  { type: 'con', text: "Higher cost" },
+                  { type: 'con', text: "Less authentic" }
+                ]
+              },
+              {
+                icon: Home,
+                type: "B&Bs/Guesthouses",
+                price: "€60-90/night",
+                items: [
+                  { type: 'pro', text: "Local hospitality" },
+                  { type: 'pro', text: "Breakfast included" },
+                  { type: 'pro', text: "Good value" },
+                  { type: 'con', text: "Variable locations" },
+                  { type: 'con', text: "Complex booking" },
+                  { type: 'con', text: "Mixed quality" }
+                ]
+              },
+              {
+                icon: TreePine,
+                type: "Camping",
+                price: "€15-30/night",
+                items: [
+                  { type: 'pro', text: "Budget-friendly" },
+                  { type: 'pro', text: "Maximum flexibility" },
+                  { type: 'pro', text: "Outdoor experience" },
+                  { type: 'con', text: "Carry tent/gear" },
+                  { type: 'con', text: "Weather dependent" },
+                  { type: 'con', text: "Fewer facilities" }
+                ]
+              }
+            ].map((accommodation, index) => {
+              const Icon = accommodation.icon;
+              return (
+                <div key={index} style={{
+                  background: 'linear-gradient(135deg, white, var(--ds-off-white))',
+                  border: `1px solid var(--ds-border)`,
+                  borderRadius: '12px',
+                  padding: '1.25rem',
+                  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  textAlign: 'center',
+                  height: '100%'
+                }}>
+                  <Icon size={36} style={{ color: 'var(--ds-primary)', marginBottom: '0.75rem' }} />
+
+                  <h3 style={{
+                    fontWeight: '600',
+                    fontSize: 'var(--text-base)',
+                    color: 'var(--ds-foreground)',
+                    margin: 0,
+                    marginBottom: '0.375rem'
+                  }}>
+                    {accommodation.type}
+                  </h3>
+                  <div style={{
+                    fontSize: 'var(--text-sm)',
+                    color: 'var(--ds-primary)',
+                    fontWeight: '600',
+                    marginBottom: '1rem'
+                  }}>
+                    {accommodation.price}
+                  </div>
+
+                  <ul style={{
+                    listStyle: 'none',
+                    padding: 0,
+                    margin: 0,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '0.375rem',
+                    width: '100%',
+                    textAlign: 'left'
+                  }}>
+                    {accommodation.items.map((item, i) => (
+                      <li key={i} style={{
+                        display: 'flex',
+                        alignItems: 'flex-start',
+                        gap: '0.5rem',
+                        fontSize: 'var(--text-xs)',
+                        color: 'var(--ds-muted-foreground)',
+                        lineHeight: '1.4'
+                      }}>
+                        {item.type === 'pro' ? (
+                          <CheckCircle size={14} style={{ color: 'hsl(140, 40%, 45%)', flexShrink: 0, marginTop: '0.125rem' }} />
+                        ) : (
+                          <XCircle size={14} style={{ color: 'hsl(0, 70%, 50%)', flexShrink: 0, marginTop: '0.125rem' }} />
+                        )}
+                        <span>{item.text}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              );
+            })}
+          </div>
+
+          <Link
+            href="/guides/tmb-for-beginners/accommodations"
+            style={{
+              display: 'block',
+              width: '100%',
+              textAlign: 'center',
+              background: 'var(--ds-primary)',
+              color: 'white',
+              padding: '1rem',
+              borderRadius: '8px',
+              textDecoration: 'none',
+              fontWeight: '600',
+              fontSize: 'var(--text-base)',
+              transition: 'opacity 0.2s'
+            }}
+          >
+            Explore All TMB Accommodations & Build Your Itinerary
+          </Link>
         </SectionCard>
 
         {/* Booking Your Trip */}
@@ -540,20 +975,27 @@ allHikes = hikesResult || [];  } catch (error) {
                     </div>
                   ))}
                 </div>
-                <button style={{
-                  width: '100%',
-                  marginTop: '1rem',
-                  background: 'transparent',
-                  border: `1px solid var(--ds-border)`,
-                  color: 'var(--ds-foreground)',
-                  padding: '0.75rem',
-                  borderRadius: '6px',
-                  cursor: 'pointer',
-                  fontSize: 'var(--text-sm)',
-                  fontWeight: '600'
-                }}>
+                <Link
+                  href="/guides/tmb-for-beginners/accommodations"
+                  style={{
+                    display: 'block',
+                    width: '100%',
+                    marginTop: '1rem',
+                    background: 'transparent',
+                    border: `1px solid var(--ds-border)`,
+                    color: 'var(--ds-foreground)',
+                    padding: '0.75rem',
+                    borderRadius: '6px',
+                    cursor: 'pointer',
+                    fontSize: 'var(--text-sm)',
+                    fontWeight: '600',
+                    textDecoration: 'none',
+                    textAlign: 'center',
+                    transition: 'background 0.2s, border-color 0.2s'
+                  }}
+                >
                   Refuge Booking Guide
-                </button>
+                </Link>
               </div>
             </div>
             
@@ -600,20 +1042,27 @@ allHikes = hikesResult || [];  } catch (error) {
                     </div>
                   ))}
                 </div>
-                <button style={{
-                  width: '100%',
-                  marginTop: '1rem',
-                  background: 'var(--ds-primary)',
-                  border: 'none',
-                  color: 'white',
-                  padding: '0.75rem',
-                  borderRadius: '6px',
-                  cursor: 'pointer',
-                  fontSize: 'var(--text-sm)',
-                  fontWeight: '600'
-                }}>
+                <Link
+                  href="/guides/tmb-for-beginners/tour-companies"
+                  className="tour-companies-link"
+                  style={{
+                    display: 'block',
+                    width: '100%',
+                    marginTop: '1rem',
+                    background: 'var(--ds-primary)',
+                    color: 'white',
+                    padding: '0.75rem',
+                    borderRadius: '6px',
+                    cursor: 'pointer',
+                    fontSize: 'var(--text-sm)',
+                    fontWeight: '600',
+                    textDecoration: 'none',
+                    textAlign: 'center',
+                    transition: 'opacity 0.2s'
+                  }}
+                >
                   Find Tour Companies
-                </button>
+                </Link>
               </div>
             </div>
           </div>
@@ -640,8 +1089,9 @@ allHikes = hikesResult || [];  } catch (error) {
               textAlign: 'center'
             }}>
               {[
-                { time: "6+ months ahead", task: "July/August bookings" },
-                { time: "3-4 months ahead", task: "June/September bookings" },
+                { time: "August previous year", task: "Plan ready" },
+                { time: "September-October previous year", task: "Accommodation booking crunch time" },
+                { time: "3 months ahead", task: "Logistics booked" },
                 { time: "2 months ahead", task: "Equipment preparation" },
                 { time: "1 month ahead", task: "Final training push" }
               ].map((item, index) => (
@@ -772,107 +1222,6 @@ allHikes = hikesResult || [];  } catch (error) {
               </div>
             </div>
           </div>
-<div style={{ marginTop: '2rem', background: 'var(--ds-muted)', borderRadius: '12px', padding: '2rem', textAlign: 'center', border: `1px solid var(--ds-border)` }}>
-  <Backpack size={32} style={{ color: 'var(--ds-primary)', margin: '0 auto 1rem auto' }} />
-  <h3 style={{ fontWeight: '600', fontSize: 'var(--text-xl)', marginBottom: '0.5rem' }}>
-    Get the Ultimate TMB Packing Checklist
-  </h3>
-  <p style={{ color: 'var(--ds-muted-foreground)', maxWidth: '450px', margin: '0 auto 1.5rem auto' }}>
-    Our free, printable PDF checklist has everything you need (and what to leave behind). We'll send it straight to your inbox.
-  </p>
-  <button className="btn-primary" style={{
-    fontSize: 'var(--text-base)',
-    padding: 'var(--space-md) var(--space-2xl)'
-  }}>
-    Download the Free Checklist
-  </button>
-</div>
-        </SectionCard>
-
-        {/* Packing & Gear */}
-        <SectionCard id="packing" title="Packing & Gear Essentials">
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-            gap: '1.5rem'
-          }}>
-            {[
-              {
-                title: "The Big Four",
-                items: [
-                  { name: "Backpack (40-50L)", priority: "Essential" },
-                  { name: "Hiking Boots", priority: "Essential" },
-                  { name: "Rain Jacket", priority: "Essential" },
-                  { name: "Sleeping Bag", priority: "Essential" }
-                ]
-              },
-              {
-                title: "Clothing System", 
-                items: [
-                  { name: "Base Layers (2-3)", priority: "Important" },
-                  { name: "Insulation Layer", priority: "Important" },
-                  { name: "Hiking Pants (2)", priority: "Important" },
-                  { name: "Warm Hat & Gloves", priority: "Essential" }
-                ]
-              },
-              {
-                title: "Extras & Safety",
-                items: [
-                  { name: "First Aid Kit", priority: "Essential" },
-                  { name: "Headlamp", priority: "Essential" },
-                  { name: "Trekking Poles", priority: "Recommended" },
-                  { name: "Maps & Navigation", priority: "Recommended" }
-                ]
-              }
-            ].map((category, index) => (
-              <div key={index} style={{
-                background: 'white',
-                padding: '1.5rem',
-                borderRadius: '8px',
-                border: `1px solid var(--ds-border)`,
-                boxShadow: 'var(--shadow-soft)'
-              }}>
-                <h3 style={{
-                  fontWeight: '600',
-                  fontSize: 'var(--text-lg)',
-                  marginBottom: '1rem',
-                  color: 'var(--ds-foreground)'
-                }}>
-                  {category.title}
-                </h3>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                  {category.items.map((item, itemIndex) => (
-                    <div key={itemIndex} style={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'center',
-                      fontSize: 'var(--text-sm)'
-                    }}>
-                      <span style={{ color: 'var(--ds-muted-foreground)' }}>
-                        {item.name}
-                      </span>
-                      <span style={{
-                        color: item.priority === 'Essential' ? 'var(--ds-primary)' : 
-                               item.priority === 'Important' ? 'hsl(140, 40%, 45%)' : 
-                               'var(--ds-muted-foreground)',
-                        fontWeight: '600'
-                      }}>
-                        {item.priority}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-          <button className="btn-primary" style={{
-            width: '100%',
-            marginTop: '1.5rem',
-            fontSize: 'var(--text-base)',
-            padding: 'var(--space-md) var(--space-2xl)'
-          }}>
-            Download Complete Packing Checklist
-          </button>
         </SectionCard>
 
         {/* On the Trail */}
@@ -903,16 +1252,21 @@ allHikes = hikesResult || [];  } catch (error) {
                 }}>
                   {[
                     "6:30 AM: Wake up, pack, breakfast",
-                    "8:00 AM: Start hiking", 
+                    "8:00 AM: Start hiking",
                     "12:00 PM: Lunch break",
                     "3-5 PM: Arrive at refuge",
                     "7:00 PM: Dinner",
                     "9:00 PM: Quiet time/sleep"
-                  ].map((item, index) => (
-                    <div key={index} style={{ color: 'var(--ds-foreground)' }}>
-                      <strong>{item.split(':')[0]}:</strong> {item.split(':').slice(1).join(':')}
-                    </div>
-                  ))}
+                  ].map((item, index) => {
+                    const timeEndIndex = item.indexOf(': ');
+                    const time = item.substring(0, timeEndIndex);
+                    const activity = item.substring(timeEndIndex + 2);
+                    return (
+                      <div key={index} style={{ color: 'var(--ds-foreground)' }}>
+                        <strong>{time}:</strong> {activity}
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
               
@@ -1029,285 +1383,200 @@ allHikes = hikesResult || [];  } catch (error) {
           </div>
         </SectionCard>
 
-        {/* Budgeting */}
-        <SectionCard id="budgeting" title="Budgeting Your TMB Adventure">
+        {/* FAQs */}
+        <SectionCard id="faqs" title="Frequently Asked Questions">
           <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-            gap: '1.5rem'
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '1rem'
           }}>
-            {budgetOptions.map((option) => (
-              <div key={option.title} style={{
-                padding: '1.5rem',
-                borderLeft: `4px solid ${option.color}`,
-                background: option.featured 
-                  ? 'linear-gradient(135deg, rgba(255, 204, 0, 0.05), white)'
-                  : 'white',
-                borderRadius: '8px',
-                border: option.featured 
-                  ? `1px solid rgba(255, 204, 0, 0.3)`
-                  : `1px solid var(--ds-border)`,
-                boxShadow: 'var(--shadow-soft)',
-                position: 'relative'
-              }}>
-                {option.featured && (
-                  <div style={{
-                    position: 'absolute',
-                    top: '-0.5rem',
-                    left: '50%',
-                    transform: 'translateX(-50%)',
-                    background: 'var(--ds-accent)',
-                    color: 'black',
-                    padding: '0.25rem 1rem',
-                    borderRadius: '12px',
-                    fontSize: 'var(--text-xs)',
-                    fontWeight: '600'
-                  }}>
-                    POPULAR
-                  </div>
-                )}
-                <h3 style={{
-                  fontWeight: '600',
-                  fontSize: 'var(--text-lg)',
-                  marginBottom: '1rem',
-                  color: option.color
-                }}>
-                  {option.title}
-                </h3>
-                <div style={{
-                  fontSize: 'var(--text-3xl)',
-                  fontWeight: '700',
-                  marginBottom: '0.5rem',
-                  color: 'var(--ds-foreground)'
-                }}>
-                  {option.price}
-                </div>
-                <div style={{
-                  fontSize: 'var(--text-sm)',
-                  color: 'var(--ds-muted-foreground)',
-                  marginBottom: '1rem'
-                }}>
-                  {option.description}
-                </div>
-                <ul style={{
-                  listStyle: 'none',
-                  padding: 0,
-                  margin: 0,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '0.5rem',
-                  fontSize: 'var(--text-sm)',
-                  color: 'var(--ds-muted-foreground)'
-                }}>
-                  {option.features.map((feature, index) => (
-                    <li key={index} style={{
-                      display: 'flex',
-                      alignItems: 'flex-start',
-                      gap: '0.5rem'
-                    }}>
-                      <span style={{
-                        color: 'var(--ds-primary)',
-                        fontWeight: 'bold',
-                        fontSize: '1rem',
-                        lineHeight: '1'
-                      }}>
-                        •
-                      </span>
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
-              </div>
+            {[
+              {
+                question: "Do I need to be an experienced hiker?",
+                answer: "While experience helps, the TMB is doable for determined beginners with proper preparation. Regular hiking practice and good fitness are more important than technical skills."
+              },
+              {
+                question: "Can I do the TMB solo?",
+                answer: "Absolutely! The trail is well-marked and refuges are social places where you'll meet other hikers. Many people hike solo and find it rewarding."
+              },
+              {
+                question: "What if the weather is bad?",
+                answer: "Mountain weather changes quickly. Most refuges have rest days available, and there are lower altitude alternatives for many high passes during storms."
+              },
+              {
+                question: "How far in advance should I book?",
+                answer: "For July/August: 6+ months ahead. For June/September: 3-4 months ahead. Last-minute bookings are possible but limit your options."
+              },
+              {
+                question: "What about language barriers?",
+                answer: "English is widely understood in refuges and tourist areas. Learning basic French, Italian, and German phrases enhances the experience but isn't essential."
+              },
+              {
+                question: "Is travel insurance necessary?",
+                answer: "Highly recommended. Mountain rescue can be expensive, and weather delays are common. Ensure your policy covers hiking up to 3,000m altitude."
+              }
+            ].map((faq, index) => (
+              <CollapsibleFAQItem key={index} question={faq.question} answer={faq.answer} />
             ))}
-          </div>
-          
-          <div style={{
-            marginTop: '2rem',
-            background: 'linear-gradient(90deg, rgba(33, 150, 243, 0.1), rgba(255, 204, 0, 0.1))',
-            borderRadius: '8px',
-            padding: '1.5rem',
-            border: '1px solid rgba(33, 150, 243, 0.2)'
-          }}>
-            <h4 style={{
-              fontWeight: '600',
-              marginBottom: '1rem',
-              color: 'var(--ds-foreground)',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.5rem'
-            }}>
-              <DollarSign size={20} style={{ color: 'var(--ds-primary)' }} />
-              Budget Breakdown Tool Coming Soon
-            </h4>
-            <p style={{
-              color: 'var(--ds-muted-foreground)',
-              marginBottom: '1rem'
-            }}>
-              We're building an interactive budget calculator to help you plan your TMB costs based on your specific preferences and travel dates.
-            </p>
-            <button style={{
-              background: 'var(--ds-primary)',
-              color: 'white',
-              border: 'none',
-              padding: '0.75rem 1.5rem',
-              borderRadius: '6px',
-              cursor: 'pointer',
-              fontSize: 'var(--text-sm)',
-              fontWeight: '600'
-            }}>
-              Notify Me When Ready
-            </button>
           </div>
         </SectionCard>
 
-        {/* FAQs */}
-        <SectionCard id="faqs" title="Frequently Asked Questions">
+        {/* Hero Image before Explore More */}
+        <div style={{
+          margin: 'clamp(1.5rem, 3vw, 2rem) 0',
+          borderRadius: '12px',
+          overflow: 'hidden',
+          height: 'clamp(250px, 50vw, 400px)',
+          position: 'relative'
+        }}>
+          <Image
+            src="/uploads/IMG_1615.jpg"
+            alt="Epic Alpine Views"
+            fill
+            className="tmb-section-image"
+            style={{ objectFit: 'cover', objectPosition: 'center' }}
+          />
+        </div>
+
+        {/* Explore More Epic European Treks */}
+        <SectionCard id="alternative-hikes" title="Explore More Epic European Treks">
+          <p style={{
+            color: 'var(--ds-muted-foreground)',
+            marginBottom: '2rem',
+            fontSize: 'var(--text-base)'
+          }}>
+            Completed the TMB and want a similar adventure? Or like the idea but want a quieter, yet equally beautiful trail?
+          </p>
+
           <div style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
             gap: '1.5rem'
           }}>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               {[
                 {
-                  question: "Do I need to be an experienced hiker?",
-                  answer: "While experience helps, the TMB is doable for determined beginners with proper preparation. Regular hiking practice and good fitness are more important than technical skills."
+                  title: "Alta Via 1",
+                  slug: "alta-via-1",
+                  location: "Dolomites, Italy",
+                  duration: "7-10 days",
+                  distance: "~120km",
+                  comparison: ["More dramatic jagged peaks", "Better hut food", "Less crowded than TMB"],
+                  image: "/uploads/placeholder-mountain.jpg"
                 },
                 {
-                  question: "Can I do the TMB solo?",
-                  answer: "Absolutely! The trail is well-marked and refuges are social places where you'll meet other hikers. Many people hike solo and find it rewarding."
+                  title: "Tour of Monte Rosa",
+                  slug: "tour-of-monte-rosa",
+                  location: "Swiss-Italian Alps",
+                  duration: "9-11 days",
+                  distance: "~160km",
+                  comparison: ["Higher altitude passes", "More glaciers", "Similar to TMB but quieter"],
+                  image: "/uploads/placeholder-mountain.jpg"
                 },
                 {
-                  question: "What if the weather is bad?",
-                  answer: "Mountain weather changes quickly. Most refuges have rest days available, and there are lower altitude alternatives for many high passes during storms."
+                  title: "Fisherman's Trail",
+                  slug: "fishermans-trail-rota-vicentina",
+                  location: "Portugal Coast",
+                  duration: "4-5 days",
+                  distance: "~75km",
+                  comparison: ["Coastal instead of alpine", "Much easier terrain", "Better for beginners"],
+                  image: "/uploads/placeholder-mountain.jpg"
                 }
-              ].map((faq, index) => (
-                <div key={index} style={{
-                  border: `1px solid var(--ds-border)`,
-                  borderRadius: '8px',
-                  padding: '1rem'
-                }}>
-                  <h4 style={{
-                    fontWeight: '600',
-                    color: 'var(--ds-foreground)',
-                    marginBottom: '0.5rem'
-                  }}>
-                    {faq.question}
-                  </h4>
-                  <p style={{
-                    fontSize: 'var(--text-sm)',
-                    color: 'var(--ds-muted-foreground)',
-                    margin: 0
-                  }}>
-                    {faq.answer}
-                  </p>
-                </div>
+              ].map((hike, index) => (
+                  <Link
+                    key={index}
+                    href={`/hike/${hike.slug}`}
+                    style={{
+                      display: 'block',
+                      background: 'white',
+                      border: `1px solid var(--ds-border)`,
+                      borderRadius: '12px',
+                      overflow: 'hidden',
+                      boxShadow: 'var(--shadow-card)',
+                      textDecoration: 'none',
+                      transition: 'transform 0.2s, box-shadow 0.2s',
+                      height: '100%'
+                    }}
+                  >
+                    <div style={{
+                      position: 'relative',
+                      width: '100%',
+                      height: '300px',
+                      background: 'var(--ds-muted)'
+                    }}>
+                      <Image
+                        src={hike.image}
+                        alt={hike.title}
+                        fill
+                        sizes="340px"
+                        style={{ objectFit: 'cover' }}
+                      />
+                    </div>
+                    <div style={{ padding: '1.5rem' }}>
+                      <h3 style={{
+                        fontSize: 'var(--text-xl)',
+                        fontWeight: '600',
+                        color: 'var(--ds-foreground)',
+                        marginBottom: '0.5rem'
+                      }}>
+                        {hike.title}
+                      </h3>
+                      <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.5rem',
+                        color: 'var(--ds-muted-foreground)',
+                        fontSize: 'var(--text-sm)',
+                        marginBottom: '0.75rem'
+                      }}>
+                        <MapPin size={14} />
+                        {hike.location}
+                      </div>
+                      <div style={{
+                        fontSize: 'var(--text-sm)',
+                        color: 'var(--ds-muted-foreground)',
+                        marginBottom: '1rem'
+                      }}>
+                        {hike.duration} • {hike.distance}
+                      </div>
+                      <div style={{
+                        borderTop: `1px solid var(--ds-border)`,
+                        paddingTop: '1rem'
+                      }}>
+                        <h4 style={{
+                          fontSize: 'var(--text-sm)',
+                          fontWeight: '600',
+                          color: 'var(--ds-foreground)',
+                          marginBottom: '0.5rem'
+                        }}>
+                          Compared to TMB:
+                        </h4>
+                        <ul style={{
+                          listStyle: 'none',
+                          padding: 0,
+                          margin: 0,
+                          display: 'flex',
+                          flexDirection: 'column',
+                          gap: '0.25rem'
+                        }}>
+                          {hike.comparison.map((point, i) => (
+                            <li key={i} style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '0.5rem',
+                              fontSize: 'var(--text-sm)',
+                              color: 'var(--ds-muted-foreground)'
+                            }}>
+                              <CheckCircle size={14} style={{ color: 'var(--ds-primary)', flexShrink: 0 }} />
+                              {point}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  </Link>
               ))}
-            </div>
-            
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-              {[
-                {
-                  question: "How far in advance should I book?",
-                  answer: "For July/August: 6+ months ahead. For June/September: 3-4 months ahead. Last-minute bookings are possible but limit your options."
-                },
-                {
-                  question: "What about language barriers?",
-                  answer: "English is widely understood in refuges and tourist areas. Learning basic French, Italian, and German phrases enhances the experience but isn't essential."
-                },
-                {
-                  question: "Is travel insurance necessary?",
-                  answer: "Highly recommended. Mountain rescue can be expensive, and weather delays are common. Ensure your policy covers hiking up to 3,000m altitude."
-                }
-              ].map((faq, index) => (
-                <div key={index} style={{
-                  border: `1px solid var(--ds-border)`,
-                  borderRadius: '8px',
-                  padding: '1rem'
-                }}>
-                  <h4 style={{
-                    fontWeight: '600',
-                    color: 'var(--ds-foreground)',
-                    marginBottom: '0.5rem'
-                  }}>
-                    {faq.question}
-                  </h4>
-                  <p style={{
-                    fontSize: 'var(--text-sm)',
-                    color: 'var(--ds-muted-foreground)',
-                    margin: 0
-                  }}>
-                    {faq.answer}
-                  </p>
-                </div>
-              ))}
-            </div>
           </div>
         </SectionCard>
-
-        {/* Call to Action */}
-        <div style={{
-          textAlign: 'center',
-          background: 'linear-gradient(135deg, rgba(33, 150, 243, 0.1), rgba(255, 204, 0, 0.1))',
-          borderRadius: '12px',
-          padding: '3rem',
-          border: '1px solid rgba(33, 150, 243, 0.2)',
-          marginTop: '2rem'
-        }}>
-          <Mountain style={{
-            width: '4rem',
-            height: '4rem',
-            margin: '0 auto 1.5rem auto',
-            color: 'var(--ds-primary)'
-          }} />
-          <h2 style={{
-            fontSize: 'var(--text-3xl)',
-            fontWeight: '700',
-            marginBottom: '1rem',
-            color: 'var(--ds-foreground)'
-          }}>
-            Ready to Start Planning?
-          </h2>
-          <p style={{
-            fontSize: 'var(--text-lg)',
-            color: 'var(--ds-muted-foreground)',
-            marginBottom: '2rem',
-            maxWidth: '600px',
-            margin: '0 auto 2rem auto'
-          }}>
-            You now have the foundation to plan your TMB adventure. The mountains are calling — 
-            take the first step towards the experience of a lifetime.
-          </p>
-          <div style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '1rem',
-            justifyContent: 'center',
-            alignItems: 'center'
-          }}>
-            <button className="btn-primary" style={{
-              fontSize: 'var(--text-base)',
-              padding: 'var(--space-md) var(--space-2xl)'
-            }}>
-              Book Your TMB Now
-            </button>
-            <button style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.5rem',
-              background: 'transparent',
-              border: `1px solid var(--ds-border)`,
-              color: 'var(--ds-foreground)',
-              padding: 'var(--space-md) var(--space-2xl)',
-              borderRadius: '25px',
-              fontSize: 'var(--text-base)',
-              fontWeight: '600',
-              cursor: 'pointer'
-            }}>
-              Download Planning Checklist
-            </button>
-          </div>
-        </div>
       </main>
 
       {/* Footer */}

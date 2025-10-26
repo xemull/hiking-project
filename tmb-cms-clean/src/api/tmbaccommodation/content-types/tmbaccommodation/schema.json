@@ -32,10 +32,10 @@
       ]
     },
     "latitude": {
-      "type": "decimal"
+      "type": "float"
     },
     "longitude": {
-      "type": "decimal"
+      "type": "float"
     },
     "website": {
       "type": "string"

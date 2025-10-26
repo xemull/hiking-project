@@ -28,6 +28,12 @@ app.use(compression({
 app.use(cors({
   origin: [
     'http://localhost:3000',  // Local development
+    'http://localhost:3001',
+    'http://localhost:3002',
+    'http://localhost:3003',
+    'http://localhost:3004',
+    'http://localhost:3005',
+    'http://localhost:3006',
     'https://frontend-service-623946599151.europe-west2.run.app'  // Production frontend
   ],
   credentials: true
@@ -951,5 +957,49 @@ app.get('/api/tmb/accommodations', async (req, res) => {
   } catch (error) {
     console.error('❌ Error fetching real TMB accommodations:', error);
     res.status(500).json({ error: 'Error fetching accommodations' });
+  }
+});
+
+// TMB Trail Data endpoint - fetches GPX data for Tour du Mont Blanc (hike_id = 28)
+app.get('/api/tmb/trail', async (req, res) => {
+  try {
+    const cacheKey = 'tmb-trail-data';
+    const cached = getCachedData(cacheKey);
+
+    if (cached) {
+      console.log('✅ Serving TMB trail data from cache');
+      return res.json(cached.data);
+    }
+
+    console.log('🔄 Fetching TMB trail data from database');
+
+    const TMB_HIKE_ID = 28; // Tour du Mont Blanc hike ID
+    const query = 'SELECT id, name, ST_AsGeoJSON(track) as track FROM trails WHERE id = $1';
+    const { rows } = await pool.query(query, [TMB_HIKE_ID]);
+
+    if (rows.length === 0) {
+      console.error('❌ TMB trail not found in database');
+      return res.status(404).json({ error: 'TMB trail not found' });
+    }
+
+    const trail = rows[0];
+    const trackGeoJSON = JSON.parse(trail.track);
+
+    const trailData = {
+      id: trail.id,
+      name: trail.name,
+      track: trackGeoJSON
+    };
+
+    console.log(`✅ TMB trail data loaded: ${trackGeoJSON.coordinates?.length || 0} coordinates`);
+
+    // Cache for 30 minutes (trail data rarely changes)
+    setCachedData(cacheKey, { data: trailData, timestamp: Date.now() }, 1800000);
+
+    res.json(trailData);
+
+  } catch (error) {
+    console.error('❌ Error fetching TMB trail data:', error);
+    res.status(500).json({ error: 'Error fetching trail data' });
   }
 });
