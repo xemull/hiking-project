@@ -76,7 +76,7 @@ export default async function HikeDetailPage({ params }: { params: Promise<{ slu
     Best_time,
     Description,
     Logistics,
-    Accommodation,
+    Accomodation,
     mainImage,
     countries,
     sceneries,
@@ -314,11 +314,11 @@ export default async function HikeDetailPage({ params }: { params: Promise<{ slu
                 )}
 
                 {/* Accommodation Section */}
-                {Accommodation && (
+                {Accomodation && (
                   <div className="content-section">
                     <h2 className="section-title">Accommodation</h2>
                     <div className="prose-content">
-                      <StrapiRichText content={Accommodation} />
+                      <StrapiRichText content={Accomodation} />
                     </div>
                   </div>
                 )}
