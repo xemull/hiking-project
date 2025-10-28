@@ -336,23 +336,28 @@ app.get('/api/hikes/slug/:slug', async (req, res) => {
     );
     
     const strapiCollection = await strapiRes.json();
-    
+
+    console.log('📥 DEBUG: Strapi returned', strapiCollection.data?.length || 0, 'hikes');
+    if (strapiCollection.data && strapiCollection.data.length > 0) {
+      console.log('📥 DEBUG: First hike keys:', Object.keys(strapiCollection.data[0]));
+    }
+
     if (!strapiCollection.data || strapiCollection.data.length === 0) {
       console.error('Strapi returned no data:', strapiCollection);
       return res.status(404).json({ error: 'No hikes found' });
     }
-    
+
     // Find hike by matching slug
     const matchingHike = strapiCollection.data.find(hike => {
       const hikeSlug = createSlug(hike.title);
       return hikeSlug === slug;
     });
-    
+
     if (!matchingHike) {
       console.log('❌ No hike found with slug:', slug);
       return res.status(404).json({ error: 'Hike not found' });
     }
-    
+
     console.log('✅ Found matching hike:', matchingHike.title, 'with hike_id:', matchingHike.hike_id);
 
     // Get geodata in parallel (don't wait for Strapi to complete first)
@@ -372,6 +377,11 @@ app.get('/api/hikes/slug/:slug', async (req, res) => {
     }
     
     // Combine data
+    console.log('📊 DEBUG: matchingHike keys:', Object.keys(matchingHike));
+    console.log('📊 DEBUG: matchingHike.Description:', matchingHike.Description ? 'EXISTS' : 'NULL');
+    console.log('📊 DEBUG: matchingHike.countries:', matchingHike.countries?.length || 0);
+    console.log('📊 DEBUG: geoData:', geoData ? 'EXISTS' : 'NULL');
+
     const fullHikeData = geoData ?
       { ...geoData, content: matchingHike } :
       {
@@ -382,16 +392,19 @@ app.get('/api/hikes/slug/:slug', async (req, res) => {
         content: matchingHike
       };
 
-    
+    console.log('📊 DEBUG: fullHikeData keys:', Object.keys(fullHikeData));
+    console.log('📊 DEBUG: fullHikeData.content:', fullHikeData.content ? 'EXISTS' : 'NULL');
+
     const timestamp = Date.now();
     const dataWithTimestamp = { data: fullHikeData, timestamp };
-    
+
     // Cache the result
     setCachedData(cacheKey, dataWithTimestamp, CACHE_TTL.HIKE_DETAIL);
-    
+
     res.set('ETag', `"hike-fresh-${timestamp}"`);
-    
+
     console.log('🎉 Successfully found and combined hike data for:', matchingHike.title);
+    console.log('📤 DEBUG: About to send response with keys:', Object.keys(fullHikeData));
     res.json(fullHikeData);
 
   } catch (error) {
@@ -931,11 +944,13 @@ app.get('/api/tmb/accommodations', async (req, res) => {
     console.log('🔄 Fetching real TMB accommodations from Strapi');
     
     const populateParams = [
-      'populate[photos]=true',
-      'populate[stage]=true', 
-      'populate[Accommodation_Service]=true'
+      'populate[photos][populate]=*',
+      'populate[stage]=true',
+      'populate[Accommodation_Service]=true',
+      'pagination[pageSize]=100',
+      'publicationState=live'
     ].join('&');
-    
+
     const strapiResponse = await fetchWithTimeout(
       `${STRAPI_URL}/api/tmbaccommodations?${populateParams}`,
       { timeout: 8000, retries: 2 }
@@ -948,11 +963,22 @@ app.get('/api/tmb/accommodations', async (req, res) => {
     
     const strapiData = await strapiResponse.json();
     console.log(`✅ Found ${strapiData.data.length} real TMB accommodations`);
-    
+
+    // Transform photo URLs to include full Strapi URL
+    const accommodationsWithFullUrls = strapiData.data.map(acc => {
+      if (acc.photos && Array.isArray(acc.photos)) {
+        acc.photos = acc.photos.map(photo => ({
+          ...photo,
+          url: photo.url.startsWith('http') ? photo.url : `${STRAPI_URL}${photo.url}`
+        }));
+      }
+      return acc;
+    });
+
     // Cache for 10 minutes
-    setCachedData(cacheKey, { data: strapiData.data, timestamp: Date.now() }, 600000);
-    
-    res.json(strapiData.data);
+    setCachedData(cacheKey, { data: accommodationsWithFullUrls, timestamp: Date.now() }, 600000);
+
+    res.json(accommodationsWithFullUrls);
     
   } catch (error) {
     console.error('❌ Error fetching real TMB accommodations:', error);
