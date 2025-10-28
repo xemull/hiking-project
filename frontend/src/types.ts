@@ -135,7 +135,7 @@ export interface Hike {
     routeType: string;
     Description: any;
     Logistics: any;
-    Accommodation: any;
+    Accomodation: any;
     mainImage: Media;
     countries: Tag[];
     sceneries: SceneryTag[];
