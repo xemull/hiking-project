@@ -46,6 +46,12 @@
     },
     "estimated_time": {
       "type": "string"
+    },
+    "accommodations": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::tmbaccommodation.tmbaccommodation",
+      "mappedBy": "stage"
     }
   }
 }
