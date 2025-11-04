@@ -947,8 +947,7 @@ app.get('/api/tmb/accommodations', async (req, res) => {
       'populate[photos][populate]=*',
       'populate[stage]=true',
       'populate[Accommodation_Service]=true',
-      'pagination[pageSize]=100',
-      'publicationState=live'
+      'pagination[pageSize]=100'
     ].join('&');
 
     const strapiResponse = await fetchWithTimeout(
