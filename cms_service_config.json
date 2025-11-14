@@ -1,0 +1,117 @@
+{
+  "apiVersion": "serving.knative.dev/v1",
+  "kind": "Service",
+  "metadata": {
+    "annotations": {
+      "run.googleapis.com/client-name": "gcloud",
+      "run.googleapis.com/client-version": "529.0.0",
+      "run.googleapis.com/ingress": "all",
+      "run.googleapis.com/ingress-status": "all",
+      "run.googleapis.com/operation-id": "0da9a5cd-b5b0-4a1a-b28d-be3f28145c1c",
+      "run.googleapis.com/urls": "[\"https://cms-service-623946599151.europe-west2.run.app\",\"https://cms-service-4qmlfzul5q-nw.a.run.app\"]",
+      "serving.knative.dev/creator": "xemull@gmail.com",
+      "serving.knative.dev/lastModifier": "xemull@gmail.com"
+    },
+    "creationTimestamp": "2025-08-03T23:46:36.995792Z",
+    "generation": 82,
+    "labels": {
+      "cloud.googleapis.com/location": "europe-west2",
+      "run.googleapis.com/satisfiesPzs": "true"
+    },
+    "name": "cms-service",
+    "namespace": "623946599151",
+    "resourceVersion": "AAZDjy8rn+I",
+    "selfLink": "/apis/serving.knative.dev/v1/namespaces/623946599151/services/cms-service",
+    "uid": "ad135554-1b96-45e8-8bd4-4db4d2989121"
+  },
+  "spec": {
+    "template": {
+      "metadata": {
+        "annotations": {
+          "autoscaling.knative.dev/maxScale": "20",
+          "run.googleapis.com/client-name": "gcloud",
+          "run.googleapis.com/client-version": "529.0.0"
+        },
+        "labels": {
+          "client.knative.dev/nonce": "cncmfnnxwh",
+          "run.googleapis.com/startupProbeType": "Default"
+        }
+      },
+      "spec": {
+        "containerConcurrency": 80,
+        "containers": [
+          {
+            "env": [
+              {
+                "name": "DATABASE_SCHEMA",
+                "value": "strapi_fresh"
+              }
+            ],
+            "image": "gcr.io/trailhead-mvp/cms:latest",
+            "ports": [
+              {
+                "containerPort": 1337,
+                "name": "http1"
+              }
+            ],
+            "resources": {
+              "limits": {
+                "cpu": "1000m",
+                "memory": "1Gi"
+              }
+            },
+            "startupProbe": {
+              "failureThreshold": 1,
+              "periodSeconds": 240,
+              "tcpSocket": {
+                "port": 1337
+              },
+              "timeoutSeconds": 240
+            }
+          }
+        ],
+        "serviceAccountName": "623946599151-compute@developer.gserviceaccount.com",
+        "timeoutSeconds": 300
+      }
+    },
+    "traffic": [
+      {
+        "percent": 100,
+        "revisionName": "cms-service-fresh1763113238"
+      }
+    ]
+  },
+  "status": {
+    "address": {
+      "url": "https://cms-service-4qmlfzul5q-nw.a.run.app"
+    },
+    "conditions": [
+      {
+        "lastTransitionTime": "2025-11-14T14:55:10.709898Z",
+        "status": "True",
+        "type": "Ready"
+      },
+      {
+        "lastTransitionTime": "2025-11-14T14:55:10.729969Z",
+        "reason": "Retired",
+        "status": "True",
+        "type": "ConfigurationsReady"
+      },
+      {
+        "lastTransitionTime": "2025-11-14T09:44:30.101838Z",
+        "status": "True",
+        "type": "RoutesReady"
+      }
+    ],
+    "latestCreatedRevisionName": "cms-service-00077-vv2",
+    "latestReadyRevisionName": "cms-service-fresh1763113238",
+    "observedGeneration": 82,
+    "traffic": [
+      {
+        "percent": 100,
+        "revisionName": "cms-service-fresh1763113238"
+      }
+    ],
+    "url": "https://cms-service-4qmlfzul5q-nw.a.run.app"
+  }
+}

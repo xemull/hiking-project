@@ -1,0 +1,46 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: cms-service
+spec:
+  template:
+    spec:
+      containers:
+      - image: gcr.io/trailhead-mvp/cms@sha256:c9cbe6b311c70022011c49bf851a69e10b3867683493d58e1843eea8842332e6
+        env:
+        - name: NODE_ENV
+          value: "production"
+        - name: IS_PROXIED
+          value: "true"
+        - name: HOST
+          value: "0.0.0.0"
+        - name: APP_KEYS
+          value: "PwXzoPGLyhnyf5MATJZcXw==,57Mc66jiyWviMsKJBcMvWg==,SykQVz3KjoIMfOtmTaxzaw==,l6ef4colrG7rKxU43hSOHw=="
+        - name: API_TOKEN_SALT
+          value: "yw5aJ720DloDjfvjeQ9AvQ=="
+        - name: ADMIN_JWT_SECRET
+          value: "KDeVCx9kO/j5JPU8RUVqHg=="
+        - name: TRANSFER_TOKEN_SALT
+          value: "weiG2Q8pHZzwnVnZBCAXEA=="
+        - name: ENCRYPTION_KEY
+          value: "3nNkvGkg+VGhFgnImm6Lyg=="
+        - name: JWT_SECRET
+          value: "US0CezDKsLgJ85DWDox6uA=="
+        - name: DATABASE_CLIENT
+          value: "postgres"
+        - name: DATABASE_HOST
+          value: "aws-1-eu-west-1.pooler.supabase.com"
+        - name: DATABASE_PORT
+          value: "6543"
+        - name: DATABASE_NAME
+          value: "postgres"
+        - name: DATABASE_USERNAME
+          value: "postgres.lpkaumowfuovlgjgilrt"
+        - name: DATABASE_PASSWORD
+          value: "ZZH4NxTL@W^D^h"
+        - name: DATABASE_SSL
+          value: "true"
+        - name: DATABASE_SSL_REJECT_UNAUTHORIZED
+          value: "false"
+        - name: STRAPI_ADMIN_BACKEND_URL
+          value: "https://cms-service-623946599151.europe-west2.run.app"

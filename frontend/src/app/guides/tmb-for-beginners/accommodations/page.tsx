@@ -4,6 +4,7 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
 import Navigation from '../../../components/Navigation';
 import Footer from '../../../components/Footer';
+import UniversalHero from '../../../components/UniversalHero';
 import TMBAccommodationsMap from '../../../components/TMBAccommodationsMap';
 import ItineraryBuilder, { type ItineraryBuilderRef } from '../../../components/ItineraryBuilder';
 import { getTMBAccommodations, getTMBTrailData, type TMBAccommodation, type TMBTrailData } from '../../../services/api';
@@ -218,112 +219,9 @@ export default function TMBAccommodationsPage() {
           </div>
         )}
 
-        <div className="min-h-screen" style={{ background: 'var(--ds-off-white)' }}>
+        <div className="min-h-screen" style={{ background: 'var(--ds-off-white)' }}><a id="content-start"></a>
       {/* Hero Header with Image */}
-      <div id="hero-section" style={{
-        position: 'relative',
-        height: '90vh',
-        minHeight: '600px',
-        overflow: 'hidden',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center'
-      }}>
-        {/* Background Image */}
-        <div style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
-          backgroundImage: 'url(/IMG_1633.jpg)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat'
-        }} />
-
-        {/* Overlay */}
-        <div style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
-          background: 'linear-gradient(180deg, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.5) 100%)',
-          zIndex: 1
-        }} />
-
-        {/* Content */}
-        <div className="tmb-accommodations-hero-content" style={{
-          position: 'relative',
-          zIndex: 2,
-          textAlign: 'center',
-          color: 'white',
-          padding: '0 clamp(1rem, 3vw, 2rem)',
-          maxWidth: '1000px',
-          margin: '0 auto',
-          width: '100%',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          gap: '2rem'
-        }}>
-          <h1 style={{
-            fontFamily: 'Inter, system-ui, sans-serif',
-            fontSize: 'clamp(3rem, 8vw, 5rem)',
-            fontWeight: 700,
-            textShadow: '0 2px 20px rgba(0, 0, 0, 0.5)',
-            lineHeight: 1.1,
-            letterSpacing: '-0.02em',
-            margin: 0
-          }}>
-            Tour du Mont Blanc Accommodations
-          </h1>
-          <p style={{
-            fontFamily: 'Inter, system-ui, sans-serif',
-            fontSize: 'clamp(1.125rem, 2vw, 1.5rem)',
-            fontWeight: 400,
-            opacity: 0.95,
-            textShadow: '0 2px 10px rgba(0, 0, 0, 0.5)',
-            lineHeight: 1.5,
-            maxWidth: '700px',
-            margin: 0
-          }}>
-            Plan your perfect multi-day hiking adventure around the Mont Blanc massif
-          </p>
-          <button
-            onClick={() => {
-              const element = document.getElementById('accommodation-types');
-              element?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }}
-            style={{
-              marginTop: '1rem',
-              padding: '1rem 2.5rem',
-              background: 'var(--ds-accent)',
-              color: 'var(--ds-accent-foreground)',
-              border: 'none',
-              borderRadius: '50px',
-              fontSize: '1.125rem',
-              fontWeight: 600,
-              fontFamily: 'Inter, system-ui, sans-serif',
-              cursor: 'pointer',
-              boxShadow: '0 10px 30px rgba(0, 0, 0, 0.3)',
-              transition: 'all 0.3s ease',
-              textTransform: 'none'
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.transform = 'translateY(-2px)';
-              e.currentTarget.style.boxShadow = '0 15px 40px rgba(0, 0, 0, 0.4)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = 'translateY(0)';
-              e.currentTarget.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.3)';
-            }}
-          >
-            Start Planning
-          </button>
-        </div>
-      </div>
+      <UniversalHero title="Tour du Mont Blanc Accommodations" subtitle="Plan your perfect multi-day hiking adventure around the Mont Blanc massif" backgroundSrc="/IMG_1633.jpg" ctas={[{ label: "Start Planning", href: "#content-start", variant: "primary" }]} overlay="gradient" height="standard" />
 
       {/* Intro Section */}
       <div id="intro-section" style={{ background: 'white', borderBottom: '1px solid var(--ds-border)', padding: '4rem 1rem' }}>
@@ -960,28 +858,24 @@ export default function TMBAccommodationsPage() {
                 borderRadius: '12px',
                 overflow: 'hidden',
                 height: '800px',
-                position: 'sticky',
-                top: '2rem',
                 boxShadow: '0 4px 15px rgba(0, 0, 0, 0.08)'
               }}>
-                {trailData && (
-                  <TMBAccommodationsMap
-                    trailData={trailData}
-                    accommodations={filteredAccommodations}
-                    selectedAccommodation={selectedAccommodation}
-                    onAccommodationSelect={setSelectedAccommodation}
-                    onAddToItinerary={(accommodation) => {
-                      if (itineraryBuilderRef.current) {
-                        itineraryBuilderRef.current.addAccommodation(accommodation);
-                        setSelectedAccommodation(accommodation);
-                        setShowAddedNotification(true);
-                        setTimeout(() => setShowAddedNotification(false), 3000);
-                      }
-                    }}
-                    className="w-full"
-                    height="100%"
-                  />
-                )}
+                <TMBAccommodationsMap
+                  trailData={trailData}
+                  accommodations={filteredAccommodations}
+                  selectedAccommodation={selectedAccommodation}
+                  onAccommodationSelect={setSelectedAccommodation}
+                  onAddToItinerary={(accommodation) => {
+                    if (itineraryBuilderRef.current) {
+                      itineraryBuilderRef.current.addAccommodation(accommodation);
+                      setSelectedAccommodation(accommodation);
+                      setShowAddedNotification(true);
+                      setTimeout(() => setShowAddedNotification(false), 3000);
+                    }
+                  }}
+                  className="w-full"
+                  height="100%"
+                />
               </div>
 
               {/* Map Legend */}
@@ -1421,3 +1315,5 @@ export default function TMBAccommodationsPage() {
     </>
   );
 }
+
+

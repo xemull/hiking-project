@@ -1,0 +1,180 @@
+{
+  "apiVersion": "serving.knative.dev/v1",
+  "kind": "Service",
+  "metadata": {
+    "annotations": {
+      "run.googleapis.com/ingress": "all",
+      "run.googleapis.com/ingress-status": "all",
+      "run.googleapis.com/operation-id": "3a5d1817-eeba-4389-9eb5-62b3f87632d5",
+      "run.googleapis.com/urls": "[\"https://cms-service-623946599151.europe-west2.run.app\",\"https://cms-service-4qmlfzul5q-nw.a.run.app\"]",
+      "serving.knative.dev/creator": "xemull@gmail.com",
+      "serving.knative.dev/lastModifier": "xemull@gmail.com"
+    },
+    "creationTimestamp": "2025-08-03T23:46:36.995792Z",
+    "generation": 62,
+    "labels": {
+      "cloud.googleapis.com/location": "europe-west2",
+      "run.googleapis.com/satisfiesPzs": "true"
+    },
+    "name": "cms-service",
+    "namespace": "623946599151",
+    "resourceVersion": "AAZDGWUm5Fk",
+    "selfLink": "/apis/serving.knative.dev/v1/namespaces/623946599151/services/cms-service",
+    "uid": "ad135554-1b96-45e8-8bd4-4db4d2989121"
+  },
+  "spec": {
+    "template": {
+      "metadata": {
+        "annotations": {
+          "autoscaling.knative.dev/maxScale": "20"
+        },
+        "labels": {
+          "run.googleapis.com/startupProbeType": "Default"
+        }
+      },
+      "spec": {
+        "containerConcurrency": 80,
+        "containers": [
+          {
+            "env": [
+              {
+                "name": "NODE_ENV",
+                "value": "production"
+              },
+              {
+                "name": "IS_PROXIED",
+                "value": "true"
+              },
+              {
+                "name": "HOST",
+                "value": "0.0.0.0"
+              },
+              {
+                "name": "APP_KEYS",
+                "value": "PwXzoPGLyhnyf5MATJZcXw==,57Mc66jiyWviMsKJBcMvWg==,SykQVz3KjoIMfOtmTaxzaw==,l6ef4colrG7rKxU43hSOHw=="
+              },
+              {
+                "name": "API_TOKEN_SALT",
+                "value": "yw5aJ720DloDjfvjeQ9AvQ=="
+              },
+              {
+                "name": "ADMIN_JWT_SECRET",
+                "value": "KDeVCx9kO/j5JPU8RUVqHg=="
+              },
+              {
+                "name": "TRANSFER_TOKEN_SALT",
+                "value": "weiG2Q8pHZzwnVnZBCAXEA=="
+              },
+              {
+                "name": "ENCRYPTION_KEY",
+                "value": "3nNkvGkg+VGhFgnImm6Lyg=="
+              },
+              {
+                "name": "JWT_SECRET",
+                "value": "US0CezDKsLgJ85DWDox6uA=="
+              },
+              {
+                "name": "DATABASE_CLIENT",
+                "value": "postgres"
+              },
+              {
+                "name": "DATABASE_HOST",
+                "value": "aws-1-eu-west-1.pooler.supabase.com"
+              },
+              {
+                "name": "DATABASE_PORT",
+                "value": "6543"
+              },
+              {
+                "name": "DATABASE_NAME",
+                "value": "postgres"
+              },
+              {
+                "name": "DATABASE_USERNAME",
+                "value": "postgres.lpkaumowfuovlgjgilrt"
+              },
+              {
+                "name": "DATABASE_PASSWORD",
+                "value": "ZZH4NxTL@W^D^h"
+              },
+              {
+                "name": "DATABASE_SSL",
+                "value": "true"
+              },
+              {
+                "name": "DATABASE_SSL_REJECT_UNAUTHORIZED",
+                "value": "false"
+              },
+              {
+                "name": "STRAPI_ADMIN_BACKEND_URL",
+                "value": "https://cms-service-623946599151.europe-west2.run.app"
+              }
+            ],
+            "image": "gcr.io/trailhead-mvp/cms@sha256:c9cbe6b311c70022011c49bf851a69e10b3867683493d58e1843eea8842332e6",
+            "ports": [
+              {
+                "containerPort": 8080,
+                "name": "http1"
+              }
+            ],
+            "resources": {
+              "limits": {
+                "cpu": "1000m",
+                "memory": "512Mi"
+              }
+            },
+            "startupProbe": {
+              "failureThreshold": 1,
+              "periodSeconds": 240,
+              "tcpSocket": {
+                "port": 8080
+              },
+              "timeoutSeconds": 240
+            }
+          }
+        ],
+        "serviceAccountName": "623946599151-compute@developer.gserviceaccount.com",
+        "timeoutSeconds": 300
+      }
+    },
+    "traffic": [
+      {
+        "latestRevision": true,
+        "percent": 100
+      }
+    ]
+  },
+  "status": {
+    "address": {
+      "url": "https://cms-service-4qmlfzul5q-nw.a.run.app"
+    },
+    "conditions": [
+      {
+        "lastTransitionTime": "2025-11-08T18:23:30.554969Z",
+        "status": "True",
+        "type": "Ready"
+      },
+      {
+        "lastTransitionTime": "2025-11-08T18:23:29.283350Z",
+        "status": "True",
+        "type": "ConfigurationsReady"
+      },
+      {
+        "lastTransitionTime": "2025-11-08T18:23:30.521438Z",
+        "status": "True",
+        "type": "RoutesReady"
+      }
+    ],
+    "latestCreatedRevisionName": "cms-service-00058-m8w",
+    "latestReadyRevisionName": "cms-service-00058-m8w",
+    "observedGeneration": 62,
+    "traffic": [
+      {
+        "latestRevision": true,
+        "percent": 100,
+        "revisionName": "cms-service-00058-m8w"
+      }
+    ],
+    "url": "https://cms-service-4qmlfzul5q-nw.a.run.app"
+  }
+}

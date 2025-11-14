@@ -34,7 +34,9 @@ app.use(cors({
     'http://localhost:3004',
     'http://localhost:3005',
     'http://localhost:3006',
-    'https://frontend-service-623946599151.europe-west2.run.app'  // Production frontend
+    'https://frontend-service-623946599151.europe-west2.run.app',  // Production frontend
+    'https://trailhead.at',  // Custom domain
+    'https://www.trailhead.at'  // Custom domain with www
   ],
   credentials: true
 }));
@@ -52,6 +54,13 @@ const pool = new Pool({
   idleTimeoutMillis: 30000,
   connectionTimeoutMillis: 5000,
   statement_timeout: 10000, // 10 second query timeout
+});
+
+// Handle pool errors to prevent crashes
+pool.on('error', (err, client) => {
+  console.error('❌ Unexpected database pool error:', err.message);
+  console.log('🔄 Pool will automatically recover on next query');
+  // Don't exit - let the pool recover
 });
 
 // Simple in-memory cache
@@ -211,39 +220,46 @@ app.get('/api/hikes', async (req, res) => {
   try {
     const cacheKey = 'hikes-list';
     const cached = getCachedData(cacheKey);
-    
+
     if (cached) {
       console.log('✅ Serving hikes list from cache');
       res.set('ETag', `"hikes-cached-${cached.timestamp}"`);
       return res.json(cached.data);
     }
 
-    console.log('🔄 Fetching fresh hikes list from database');
-    
-    // Optimized query - only get essential fields for list view
-    const query = `
-      SELECT 
-        id, 
-        name,
-        created_at
-      FROM trails   
-      ORDER BY created_at DESC
-      LIMIT 100
-    `;
-    
-    const { rows } = await pool.query(query);
-    
+    console.log('🔄 Fetching fresh hikes list from Strapi');
+
+    // Fetch from Strapi with mainImage populated
+    const populateParams = [
+      'populate[mainImage]=true',
+      'populate[countries]=true',
+      'populate[sceneries]=true',
+      'populate[months]=true',
+      'populate[accommodations]=true'
+    ].join('&');
+
+    const strapiRes = await fetchWithTimeout(
+      `${STRAPI_URL}/api/hikes?${populateParams}`,
+      { timeout: 10000, retries: 2 }
+    );
+
+    const strapiData = await strapiRes.json();
+
+    if (!strapiData.data || strapiData.data.length === 0) {
+      console.error('Strapi returned no data:', strapiData);
+      return res.status(404).json({ error: 'No hikes found' });
+    }
+
     // Create timestamp for ETag
     const timestamp = Date.now();
-    const dataWithTimestamp = { data: rows, timestamp };
-    
+
     // Cache the result
-    setCachedData(cacheKey, dataWithTimestamp, CACHE_TTL.HIKES_LIST);
-    
+    setCachedData(cacheKey, strapiData.data, CACHE_TTL.HIKES_LIST);
+
     // Set ETag
     res.set('ETag', `"hikes-fresh-${timestamp}"`);
-    
-    res.json(rows);
+
+    res.json(strapiData.data);
   } catch (error) {
     console.error('❌ Error in /api/hikes:', error);
     res.status(500).json({ error: 'Error fetching hikes' });

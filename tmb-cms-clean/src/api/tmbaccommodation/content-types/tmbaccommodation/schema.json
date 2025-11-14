@@ -79,8 +79,9 @@
     },
     "stage": {
       "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::tmb-stage.tmb-stage"
+      "relation": "manyToOne",
+      "target": "api::tmb-stage.tmb-stage",
+      "inversedBy": "accommodations"
     },
     "Accommodation_Service": {
       "type": "component",

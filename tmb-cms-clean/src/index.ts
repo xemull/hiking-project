@@ -1,20 +1,45 @@
-// import type { Core } from '@strapi/strapi';
-
 export default {
-  /**
-   * An asynchronous register function that runs before
-   * your application is initialized.
-   *
-   * This gives you an opportunity to extend code.
-   */
-  register(/* { strapi }: { strapi: Core.Strapi } */) {},
+  async bootstrap({ strapi }) {
+    // Set up permissions for TMB stages and accommodations
+    console.log('[BOOTSTRAP] Setting up API permissions...');
 
-  /**
-   * An asynchronous bootstrap function that runs before
-   * your application gets started.
-   *
-   * This gives you an opportunity to set up your data model,
-   * run jobs, or perform some special logic.
-   */
-  bootstrap(/* { strapi }: { strapi: Core.Strapi } */) {},
+    try {
+      const publicRole = await strapi.query('plugin::users-permissions.role').findOne({
+        where: { type: 'public' },
+      });
+
+      if (publicRole) {
+        // Get all permissions for public role
+        const permissions = await strapi.query('plugin::users-permissions.permission').findMany({
+          where: { role: publicRole.id },
+        });
+
+        // Define which endpoints should be enabled
+        const permissionsToEnable = [
+          { controller: 'tmb-stage', action: 'find' },
+          { controller: 'tmb-stage', action: 'findOne' },
+          { controller: 'tmbaccommodation', action: 'find' },
+          { controller: 'tmbaccommodation', action: 'findOne' },
+        ];
+
+        for (const perm of permissionsToEnable) {
+          const existingPermission = permissions.find(
+            p => p.action === `api::${perm.controller}.${perm.controller}.${perm.action}`
+          );
+
+          if (existingPermission && !existingPermission.enabled) {
+            await strapi.query('plugin::users-permissions.permission').update({
+              where: { id: existingPermission.id },
+              data: { enabled: true },
+            });
+            console.log(`[BOOTSTRAP] Enabled: ${perm.controller}.${perm.action}`);
+          }
+        }
+
+        console.log('[BOOTSTRAP] API permissions setup complete');
+      }
+    } catch (error) {
+      console.error('[BOOTSTRAP] Error setting up permissions:', error);
+    }
+  },
 };

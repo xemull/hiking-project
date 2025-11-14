@@ -1,0 +1,312 @@
+{
+  "id": 101,
+  "documentId": "j520jntypuzq6rvxfxw3mbuu",
+  "title": "Cami\u00c3\u00b1o dos Faros (The Lighthouse Way)",
+  "Description": [
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "text": "The Cami\u00c3\u00b1o dos Faros is a spectacular 200 km coastal trail tracing Galicia's treacherous and beautiful 'Costa da Morte' (Coast of Death). Unlike the ancient pilgrimage routes of Spain, this is a modern path conceived by hikers for hikers, ",
+          "type": "text"
+        },
+        {
+          "bold": true,
+          "text": "linking the lighthouses",
+          "type": "text"
+        },
+        {
+          "text": " from Malpica to Finisterre. Its soul lies in its wild, untamed character, constantly hugging the dramatic Atlantic coastline where countless ships have met their end. The trail was developed in 2013 by a group of locals who connected ",
+          "type": "text"
+        },
+        {
+          "bold": true,
+          "text": "existing clifftop fisherman's trails",
+          "type": "text"
+        },
+        {
+          "text": ", quiet country roads, and stretches along wide, empty beaches to create a truly unique coastal hike. \u00c2\u00a0 ",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "text": "What makes this hike unique is its ",
+          "type": "text"
+        },
+        {
+          "bold": true,
+          "text": "relentless proximity to the sea",
+          "type": "text"
+        },
+        {
+          "text": " and its grassroots origins. It largely forgoes inland paths for fishermen's trails carved into cliff edges, scrambles over windswept headlands, and traverses vast, empty beaches. The experience is one of solitude and immersion in the raw power of the ocean, accompanied by the sounds of seabirds and crashing waves, and punctuated by the stoic presence of the lighthouses that give the route its name and purpose. It is a much wilder and more exhilarating experience than the more famous Camino de Santiago and remains relatively undiscovered, meaning hikers often have the ",
+          "type": "text"
+        },
+        {
+          "bold": true,
+          "text": "breathtaking scenery to themselves",
+          "type": "text"
+        },
+        {
+          "text": ". ",
+          "type": "text"
+        }
+      ]
+    }
+  ],
+  "Country": "Spain",
+  "Difficulty": "Moderate",
+  "Best_time": "April to September",
+  "Length": 200,
+  "Elevation_gain": 4500,
+  "Accomodation": [
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "text": "Accommodation is available in the small towns and villages at the end of each stage, ranging from simple pensions to modern hotels.",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "type": "list",
+      "format": "unordered",
+      "children": [
+        {
+          "type": "list-item",
+          "children": [
+            {
+              "text": "Parador Costa da Morte (Mux\u00c3\u00ada): A modern, luxury hotel offering stunning Atlantic views, a pool, and premium amenities, providing a comfortable respite near the end of Stage 6. \u00c2\u00a0 ",
+              "type": "text"
+            }
+          ]
+        },
+        {
+          "type": "list-item",
+          "children": [
+            {
+              "text": "Hotel O Sem\u00c3\u00a1foro (Finisterre): Located within the Cape Finisterre lighthouse complex itself, this hotel offers a unique and symbolic place to stay at the very end of the journey.",
+              "type": "text"
+            }
+          ]
+        },
+        {
+          "type": "list-item",
+          "children": [
+            {
+              "text": "Hotel Mar de Fisterra (Finisterre): A highly-rated hotel set near the beautiful Langosteira beach, ideal for a comfortable and celebratory end to the trek.",
+              "type": "text"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "Logistics": [
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "text": "The Cami\u00c3\u00b1o dos Faros is a linear coastal route running from Malpica to Finisterre in the Galicia region of Spain. The most convenient international airport is A Coru\u00c3\u00b1a (LCG), with Santiago de Compostela (SCQ) also serving as a primary access point. From A Coru\u00c3\u00b1a's central bus station, the Arriva bus company provides services to the trailhead in Malpica, though this may require a connection in the town of Carballo, particularly on weekends. From the trail's terminus in Finisterre, regular and direct bus services connect back to the major hub of Santiago de Compostela, simplifying the return journey. Unlike many alpine treks that begin in well-serviced mountain resorts, this trail's start and end points are authentic fishing villages, requiring an extra logistical step but immediately immersing the hiker in the region's distinct maritime culture.",
+          "type": "text"
+        }
+      ]
+    }
+  ],
+  "Waypoints": "Malpica, Ni\u00c3\u00b1\u00c3\u00b3ns, Ponteceso, Laxe, Arou, Camari\u00c3\u00b1as, Mux\u00c3\u00ada, Finisterre (Fisterra)",
+  "hike_id": 11,
+  "terrainProfile": "Mostly Flat",
+  "continent": "Europe",
+  "routeType": "Point-to-Point",
+  "featured": false,
+  "createdAt": "2025-09-27T19:49:31.840Z",
+  "updatedAt": "2025-11-01T12:23:47.546Z",
+  "publishedAt": "2025-11-01T12:23:48.645Z",
+  "mainImage": {
+    "id": 493,
+    "documentId": "dong3oyachw8ob6b8ttdn3b4",
+    "name": "tino-rischawy-Dab4JzcnXSE-unsplash.jpg",
+    "alternativeText": null,
+    "caption": null,
+    "width": 3334,
+    "height": 2223,
+    "formats": {
+      "large": {
+        "ext": ".jpg",
+        "url": "https://storage.googleapis.com/trailhead-strapi-uploads/large_tino_rischawy_Dab4_Jzcn_XSE_unsplash_3909053478/large_tino_rischawy_Dab4_Jzcn_XSE_unsplash_3909053478.jpg",
+        "hash": "large_tino_rischawy_Dab4_Jzcn_XSE_unsplash_3909053478",
+        "mime": "image/jpeg",
+        "name": "large_tino-rischawy-Dab4JzcnXSE-unsplash.jpg",
+        "path": null,
+        "size": 85.36,
+        "width": 1000,
+        "height": 666,
+        "sizeInBytes": 85358
+      },
+      "small": {
+        "ext": ".jpg",
+        "url": "https://storage.googleapis.com/trailhead-strapi-uploads/small_tino_rischawy_Dab4_Jzcn_XSE_unsplash_3909053478/small_tino_rischawy_Dab4_Jzcn_XSE_unsplash_3909053478.jpg",
+        "hash": "small_tino_rischawy_Dab4_Jzcn_XSE_unsplash_3909053478",
+        "mime": "image/jpeg",
+        "name": "small_tino-rischawy-Dab4JzcnXSE-unsplash.jpg",
+        "path": null,
+        "size": 23.65,
+        "width": 500,
+        "height": 333,
+        "sizeInBytes": 23647
+      },
+      "medium": {
+        "ext": ".jpg",
+        "url": "https://storage.googleapis.com/trailhead-strapi-uploads/medium_tino_rischawy_Dab4_Jzcn_XSE_unsplash_3909053478/medium_tino_rischawy_Dab4_Jzcn_XSE_unsplash_3909053478.jpg",
+        "hash": "medium_tino_rischawy_Dab4_Jzcn_XSE_unsplash_3909053478",
+        "mime": "image/jpeg",
+        "name": "medium_tino-rischawy-Dab4JzcnXSE-unsplash.jpg",
+        "path": null,
+        "size": 50.41,
+        "width": 750,
+        "height": 500,
+        "sizeInBytes": 50407
+      },
+      "thumbnail": {
+        "ext": ".jpg",
+        "url": "https://storage.googleapis.com/trailhead-strapi-uploads/thumbnail_tino_rischawy_Dab4_Jzcn_XSE_unsplash_3909053478/thumbnail_tino_rischawy_Dab4_Jzcn_XSE_unsplash_3909053478.jpg",
+        "hash": "thumbnail_tino_rischawy_Dab4_Jzcn_XSE_unsplash_3909053478",
+        "mime": "image/jpeg",
+        "name": "thumbnail_tino-rischawy-Dab4JzcnXSE-unsplash.jpg",
+        "path": null,
+        "size": 6.17,
+        "width": 234,
+        "height": 156,
+        "sizeInBytes": 6167
+      }
+    },
+    "hash": "tino_rischawy_Dab4_Jzcn_XSE_unsplash_3909053478",
+    "ext": ".jpg",
+    "mime": "image/jpeg",
+    "size": 944.03,
+    "url": "https://storage.googleapis.com/trailhead-strapi-uploads/tino_rischawy_Dab4_Jzcn_XSE_unsplash_3909053478/tino_rischawy_Dab4_Jzcn_XSE_unsplash_3909053478.jpg",
+    "previewUrl": null,
+    "provider": "@strapi-community/strapi-provider-upload-google-cloud-storage",
+    "provider_metadata": null,
+    "createdAt": "2025-11-01T12:23:42.431Z",
+    "updatedAt": "2025-11-01T12:23:42.431Z",
+    "publishedAt": "2025-11-01T12:23:42.433Z"
+  },
+  "countries": [
+    {
+      "id": 2,
+      "documentId": "ycrvtw59j77fznqp74qdj25m",
+      "name": "Spain",
+      "createdAt": "2025-09-27T19:46:11.063Z",
+      "updatedAt": "2025-09-27T19:46:11.063Z",
+      "publishedAt": "2025-09-27T19:46:11.080Z"
+    }
+  ],
+  "sceneries": [
+    {
+      "id": 2,
+      "documentId": "ah0vb08si17uvq88a9ol9l4c",
+      "SceneryType": "Coastal",
+      "createdAt": "2025-09-27T19:46:29.040Z",
+      "updatedAt": "2025-09-27T19:46:33.994Z",
+      "publishedAt": "2025-09-27T19:46:34.007Z"
+    },
+    {
+      "id": 4,
+      "documentId": "k6kgv4o0q1lwlro85bc7qu9r",
+      "SceneryType": "Forest",
+      "createdAt": "2025-09-27T19:46:49.121Z",
+      "updatedAt": "2025-09-27T19:46:49.121Z",
+      "publishedAt": "2025-09-27T19:46:49.132Z"
+    },
+    {
+      "id": 6,
+      "documentId": "ul2bo2msweusvxbbh0mo4qz6",
+      "SceneryType": "River Valley",
+      "createdAt": "2025-09-27T19:46:58.734Z",
+      "updatedAt": "2025-09-27T19:46:58.734Z",
+      "publishedAt": "2025-09-27T19:46:58.745Z"
+    },
+    {
+      "id": 8,
+      "documentId": "zo9hr3t5pcy4s0a2u1ojq0hp",
+      "SceneryType": "Towns",
+      "createdAt": "2025-09-27T19:47:09.320Z",
+      "updatedAt": "2025-09-27T19:47:09.320Z",
+      "publishedAt": "2025-09-27T19:47:09.329Z"
+    },
+    {
+      "id": 10,
+      "documentId": "kc3xna3ufzmyw79w1vs9ychj",
+      "SceneryType": "Lakes",
+      "createdAt": "2025-09-27T19:47:22.862Z",
+      "updatedAt": "2025-09-27T19:47:22.862Z",
+      "publishedAt": "2025-09-27T19:47:22.872Z"
+    }
+  ],
+  "months": [
+    {
+      "id": 2,
+      "documentId": "oquqdeislcyeibu9uvkx08x9",
+      "MonthTag": "April",
+      "createdAt": "2025-09-27T19:48:03.279Z",
+      "updatedAt": "2025-09-27T19:48:03.279Z",
+      "publishedAt": "2025-09-27T19:48:03.293Z"
+    },
+    {
+      "id": 4,
+      "documentId": "erijindqvmtegwq6w2ed8ngs",
+      "MonthTag": "May",
+      "createdAt": "2025-09-27T19:48:09.431Z",
+      "updatedAt": "2025-09-27T19:48:09.431Z",
+      "publishedAt": "2025-09-27T19:48:09.442Z"
+    },
+    {
+      "id": 6,
+      "documentId": "cug1lhpo4k4l5538f7qbr45y",
+      "MonthTag": "June",
+      "createdAt": "2025-09-27T19:48:18.034Z",
+      "updatedAt": "2025-09-27T19:48:18.034Z",
+      "publishedAt": "2025-09-27T19:48:18.043Z"
+    },
+    {
+      "id": 8,
+      "documentId": "ay2t33hyhvz5wkai6jpc0ds3",
+      "MonthTag": "July",
+      "createdAt": "2025-09-27T19:48:27.999Z",
+      "updatedAt": "2025-09-27T19:48:27.999Z",
+      "publishedAt": "2025-09-27T19:48:28.010Z"
+    },
+    {
+      "id": 10,
+      "documentId": "yrl2hmmvq0b9lg21m2o6jroy",
+      "MonthTag": "August",
+      "createdAt": "2025-09-27T19:48:34.828Z",
+      "updatedAt": "2025-09-27T19:48:34.828Z",
+      "publishedAt": "2025-09-27T19:48:34.837Z"
+    },
+    {
+      "id": 12,
+      "documentId": "ka0wclcepr2act0gv2c97k2s",
+      "MonthTag": "September",
+      "createdAt": "2025-09-27T19:48:41.733Z",
+      "updatedAt": "2025-09-27T19:48:41.733Z",
+      "publishedAt": "2025-09-27T19:48:41.743Z"
+    }
+  ],
+  "accommodations": [
+    {
+      "id": 9,
+      "documentId": "xk9my5j0oeprn5cfdal0k3h3",
+      "AccommodationType": "Hotels",
+      "createdAt": "2025-09-27T19:36:50.446Z",
+      "updatedAt": "2025-09-27T19:37:29.420Z",
+      "publishedAt": "2025-09-27T19:37:29.431Z"
+    }
+  ]
+}

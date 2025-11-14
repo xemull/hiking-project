@@ -32,7 +32,7 @@ export default function AccommodationDirectoryPage() {
   const [accommodations, setAccommodations] = useState<TMBAccommodation[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [expandedStages, setExpandedStages] = useState<Set<number>>(new Set([1])); // Expand Stage 1 by default
+  const [expandedStages, setExpandedStages] = useState<Set<number>>(new Set()); // All collapsed by default
   const [filters, setFilters] = useState<Filters>(defaultFilters);
 
   // Dropdown states
@@ -129,7 +129,7 @@ export default function AccommodationDirectoryPage() {
   const filterOptions = {
     types: ['Refuge', 'Hotel', 'B&B', 'Campsite'],
     locationTypes: ['On-trail', 'Near-trail', 'Off-trail'],
-    bookingDifficulty: ['Easy', 'Moderate', 'Hard', 'Very Hard']
+    bookingDifficulty: ['Easy', 'Moderate', 'Hard']
   };
 
   // Helper function to get display label for dropdowns
@@ -157,6 +157,15 @@ export default function AccommodationDirectoryPage() {
   };
 
   const hasActiveFilters = Object.values(filters).some(arr => arr.length > 0);
+
+  // Helper function to handle both relative and absolute URLs
+  const getFullUrl = (url: string) => {
+    if (url.startsWith('http://') || url.startsWith('https://')) {
+      return url;
+    }
+    const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337';
+    return `${baseUrl}${url}`;
+  };
 
   const toggleStage = (stageNumber: number) => {
     setExpandedStages(prev => {
@@ -787,7 +796,7 @@ export default function AccommodationDirectoryPage() {
                                 background: '#e5e7eb'
                               }}>
                                 <img
-                                  src={accommodation.photos[0].url}
+                                  src={getFullUrl(accommodation.photos[0].url)}
                                   alt={accommodation.photos[0].alternativeText || accommodation.name}
                                   style={{
                                     width: '100%',

@@ -1,0 +1,22 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: backend-service
+spec:
+  template:
+    spec:
+      containers:
+      - image: gcr.io/trailhead-mvp/backend@sha256:fd8da485c4f6a32cbf6606ce7576842d322f690276fa40e75eb39b5825fccc4c
+        env:
+        - name: DB_HOST
+          value: "aws-1-eu-west-1.pooler.supabase.com"
+        - name: DB_PORT
+          value: "6543"
+        - name: DB_NAME
+          value: "postgres"
+        - name: DB_USER
+          value: "postgres.lpkaumowfuovlgjgilrt"
+        - name: DB_PASSWORD
+          value: "ZZH4NxTL@W^D^h"
+        - name: STRAPI_URL
+          value: "https://cms-service-623946599151.europe-west2.run.app"

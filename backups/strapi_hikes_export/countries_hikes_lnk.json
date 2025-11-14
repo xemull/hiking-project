@@ -1,0 +1,380 @@
+[
+  {
+    "id": 1,
+    "country_id": 7,
+    "hike_id": 1,
+    "hike_ord": 1.0,
+    "country_ord": 0.0
+  },
+  {
+    "id": 3,
+    "country_id": 3,
+    "hike_id": 3,
+    "hike_ord": 1.0,
+    "country_ord": 0.0
+  },
+  {
+    "id": 5,
+    "country_id": 3,
+    "hike_id": 5,
+    "hike_ord": 2.0,
+    "country_ord": 1.0
+  },
+  {
+    "id": 11,
+    "country_id": 9,
+    "hike_id": 44,
+    "hike_ord": 1.0,
+    "country_ord": 1.0
+  },
+  {
+    "id": 18,
+    "country_id": 1,
+    "hike_id": 30,
+    "hike_ord": 1.0,
+    "country_ord": 1.0
+  },
+  {
+    "id": 20,
+    "country_id": 1,
+    "hike_id": 18,
+    "hike_ord": 2.0,
+    "country_ord": 1.0
+  },
+  {
+    "id": 21,
+    "country_id": 3,
+    "hike_id": 18,
+    "hike_ord": 3.0,
+    "country_ord": 2.0
+  },
+  {
+    "id": 22,
+    "country_id": 5,
+    "hike_id": 18,
+    "hike_ord": 1.0,
+    "country_ord": 3.0
+  },
+  {
+    "id": 26,
+    "country_id": 5,
+    "hike_id": 32,
+    "hike_ord": 2.0,
+    "country_ord": 1.0
+  },
+  {
+    "id": 27,
+    "country_id": 3,
+    "hike_id": 32,
+    "hike_ord": 4.0,
+    "country_ord": 2.0
+  },
+  {
+    "id": 30,
+    "country_id": 11,
+    "hike_id": 26,
+    "hike_ord": 1.0,
+    "country_ord": 1.0
+  },
+  {
+    "id": 31,
+    "country_id": 1,
+    "hike_id": 26,
+    "hike_ord": 3.0,
+    "country_ord": 2.0
+  },
+  {
+    "id": 32,
+    "country_id": 7,
+    "hike_id": 26,
+    "hike_ord": 2.0,
+    "country_ord": 3.0
+  },
+  {
+    "id": 39,
+    "country_id": 9,
+    "hike_id": 34,
+    "hike_ord": 2.0,
+    "country_ord": 1.0
+  },
+  {
+    "id": 41,
+    "country_id": 13,
+    "hike_id": 42,
+    "hike_ord": 1.0,
+    "country_ord": 1.0
+  },
+  {
+    "id": 44,
+    "country_id": 15,
+    "hike_id": 14,
+    "hike_ord": 1.0,
+    "country_ord": 1.0
+  },
+  {
+    "id": 47,
+    "country_id": 15,
+    "hike_id": 16,
+    "hike_ord": 2.0,
+    "country_ord": 1.0
+  },
+  {
+    "id": 50,
+    "country_id": 17,
+    "hike_id": 22,
+    "hike_ord": 1.0,
+    "country_ord": 1.0
+  },
+  {
+    "id": 52,
+    "country_id": 19,
+    "hike_id": 36,
+    "hike_ord": 1.0,
+    "country_ord": 1.0
+  },
+  {
+    "id": 56,
+    "country_id": 1,
+    "hike_id": 40,
+    "hike_ord": 4.0,
+    "country_ord": 1.0
+  },
+  {
+    "id": 57,
+    "country_id": 7,
+    "hike_id": 40,
+    "hike_ord": 3.0,
+    "country_ord": 2.0
+  },
+  {
+    "id": 64,
+    "country_id": 21,
+    "hike_id": 28,
+    "hike_ord": 1.0,
+    "country_ord": 1.0
+  },
+  {
+    "id": 68,
+    "country_id": 23,
+    "hike_id": 24,
+    "hike_ord": 1.0,
+    "country_ord": 1.0
+  },
+  {
+    "id": 69,
+    "country_id": 25,
+    "hike_id": 24,
+    "hike_ord": 1.0,
+    "country_ord": 2.0
+  },
+  {
+    "id": 70,
+    "country_id": 27,
+    "hike_id": 24,
+    "hike_ord": 1.0,
+    "country_ord": 3.0
+  },
+  {
+    "id": 77,
+    "country_id": 1,
+    "hike_id": 20,
+    "hike_ord": 5.0,
+    "country_ord": 1.0
+  },
+  {
+    "id": 78,
+    "country_id": 5,
+    "hike_id": 20,
+    "hike_ord": 3.0,
+    "country_ord": 2.0
+  },
+  {
+    "id": 100,
+    "country_id": 4,
+    "hike_id": 92,
+    "hike_ord": 1.0,
+    "country_ord": 1.0
+  },
+  {
+    "id": 101,
+    "country_id": 4,
+    "hike_id": 93,
+    "hike_ord": 2.0,
+    "country_ord": 1.0
+  },
+  {
+    "id": 102,
+    "country_id": 2,
+    "hike_id": 94,
+    "hike_ord": 4.0,
+    "country_ord": 1.0
+  },
+  {
+    "id": 103,
+    "country_id": 8,
+    "hike_id": 94,
+    "hike_ord": 3.0,
+    "country_ord": 2.0
+  },
+  {
+    "id": 104,
+    "country_id": 8,
+    "hike_id": 95,
+    "hike_ord": 1.0,
+    "country_ord": 1.0
+  },
+  {
+    "id": 105,
+    "country_id": 14,
+    "hike_id": 96,
+    "hike_ord": 1.0,
+    "country_ord": 1.0
+  },
+  {
+    "id": 106,
+    "country_id": 18,
+    "hike_id": 97,
+    "hike_ord": 1.0,
+    "country_ord": 1.0
+  },
+  {
+    "id": 107,
+    "country_id": 2,
+    "hike_id": 98,
+    "hike_ord": 1.0,
+    "country_ord": 1.0
+  },
+  {
+    "id": 108,
+    "country_id": 12,
+    "hike_id": 99,
+    "hike_ord": 1.0,
+    "country_ord": 1.0
+  },
+  {
+    "id": 109,
+    "country_id": 2,
+    "hike_id": 99,
+    "hike_ord": 3.0,
+    "country_ord": 2.0
+  },
+  {
+    "id": 110,
+    "country_id": 8,
+    "hike_id": 99,
+    "hike_ord": 2.0,
+    "country_ord": 3.0
+  },
+  {
+    "id": 111,
+    "country_id": 10,
+    "hike_id": 100,
+    "hike_ord": 2.0,
+    "country_ord": 1.0
+  },
+  {
+    "id": 112,
+    "country_id": 22,
+    "hike_id": 101,
+    "hike_ord": 1.0,
+    "country_ord": 1.0
+  },
+  {
+    "id": 113,
+    "country_id": 20,
+    "hike_id": 102,
+    "hike_ord": 1.0,
+    "country_ord": 1.0
+  },
+  {
+    "id": 114,
+    "country_id": 24,
+    "hike_id": 103,
+    "hike_ord": 1.0,
+    "country_ord": 1.0
+  },
+  {
+    "id": 115,
+    "country_id": 26,
+    "hike_id": 103,
+    "hike_ord": 1.0,
+    "country_ord": 2.0
+  },
+  {
+    "id": 116,
+    "country_id": 28,
+    "hike_id": 103,
+    "hike_ord": 1.0,
+    "country_ord": 3.0
+  },
+  {
+    "id": 117,
+    "country_id": 10,
+    "hike_id": 104,
+    "hike_ord": 1.0,
+    "country_ord": 1.0
+  },
+  {
+    "id": 118,
+    "country_id": 16,
+    "hike_id": 105,
+    "hike_ord": 2.0,
+    "country_ord": 1.0
+  },
+  {
+    "id": 119,
+    "country_id": 2,
+    "hike_id": 106,
+    "hike_ord": 2.0,
+    "country_ord": 1.0
+  },
+  {
+    "id": 120,
+    "country_id": 4,
+    "hike_id": 106,
+    "hike_ord": 3.0,
+    "country_ord": 2.0
+  },
+  {
+    "id": 121,
+    "country_id": 6,
+    "hike_id": 106,
+    "hike_ord": 1.0,
+    "country_ord": 3.0
+  },
+  {
+    "id": 122,
+    "country_id": 6,
+    "hike_id": 107,
+    "hike_ord": 2.0,
+    "country_ord": 1.0
+  },
+  {
+    "id": 123,
+    "country_id": 4,
+    "hike_id": 107,
+    "hike_ord": 4.0,
+    "country_ord": 2.0
+  },
+  {
+    "id": 124,
+    "country_id": 2,
+    "hike_id": 108,
+    "hike_ord": 5.0,
+    "country_ord": 1.0
+  },
+  {
+    "id": 125,
+    "country_id": 6,
+    "hike_id": 108,
+    "hike_ord": 3.0,
+    "country_ord": 2.0
+  },
+  {
+    "id": 126,
+    "country_id": 16,
+    "hike_id": 109,
+    "hike_ord": 1.0,
+    "country_ord": 1.0
+  }
+]

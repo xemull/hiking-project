@@ -3,7 +3,7 @@ import { Suspense } from 'react';
 import type { HikeSummary } from '../types';
 import FeaturedHikeSummary from './components/FeaturedHikeSummary';
 import ClientFilters from './components/ClientFilters';
-import HeroSection from './components/HeroSection';
+import UniversalHero from './components/UniversalHero';
 import Navigation from './components/Navigation';
 import { getHikes, getFeaturedHike } from './services/api';
 import Footer from './components/Footer';
@@ -156,7 +156,7 @@ export default async function HomePage() {
     <>
       <Navigation hikes={hikesForNav} />
       <main style={sectionStyles.main}>
-        <HeroSection />
+        <UniversalHero title="Path Unfolding." subtitle="The world's most rewarding trails. Memories that last a lifetime." backgroundSrc="/IMG_1682.webp" ctas={[{ label: "Explore the trails", href: "#featured-hikes", variant: "primary" }, { label: "Find my perfect hike", href: "/quiz", variant: "secondary" }]} overlay="gradient" height="standard" />
         
         <section id="featured-hikes">
           {/* Featured section loads independently */}
@@ -174,3 +174,5 @@ export default async function HomePage() {
     </>
   );
 }
+
+

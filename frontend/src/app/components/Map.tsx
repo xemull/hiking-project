@@ -2,6 +2,8 @@
 
 'use client';
 
+import 'leaflet/dist/leaflet.css';
+
 import { useEffect, useState, useMemo } from 'react';
 
 interface TrackData {

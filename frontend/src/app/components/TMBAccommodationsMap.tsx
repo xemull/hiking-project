@@ -5,7 +5,7 @@ import { useEffect, useState, useMemo } from 'react';
 import { TMBAccommodation, TMBTrailData } from '../services/api';
 
 interface TMBAccommodationsMapProps {
-  trailData: TMBTrailData;
+  trailData: TMBTrailData | null;
   accommodations: TMBAccommodation[];
   selectedAccommodation?: TMBAccommodation | null;
   onAccommodationSelect?: (accommodation: TMBAccommodation | null) => void;
@@ -36,12 +36,32 @@ export default function TMBAccommodationsMap({
   // Process trail data for map
   const processedTrail = useMemo(() => {
     if (!trailData?.track?.coordinates || trailData.track.coordinates.length === 0) {
+      // If no trail data, calculate center from accommodations
+      if (accommodations.length > 0) {
+        const lats = accommodations.map(acc => acc.latitude);
+        const lngs = accommodations.map(acc => acc.longitude);
+        const minLat = Math.min(...lats);
+        const maxLat = Math.max(...lats);
+        const minLng = Math.min(...lngs);
+        const maxLng = Math.max(...lngs);
+
+        return {
+          positions: null,
+          center: [(minLat + maxLat) / 2, (minLng + maxLng) / 2] as [number, number],
+          bounds: {
+            minLat: minLat - 0.1,
+            maxLat: maxLat + 0.1,
+            minLng: minLng - 0.1,
+            maxLng: maxLng + 0.1
+          }
+        };
+      }
       return null;
     }
 
     // Convert GeoJSON [lon, lat] to Leaflet [lat, lon] format
     const positions = trailData.track.coordinates.map(coord => [coord[1], coord[0]] as [number, number]);
-    
+
     // Calculate bounds
     const lats = positions.map(pos => pos[0]);
     const lngs = positions.map(pos => pos[1]);
@@ -49,11 +69,11 @@ export default function TMBAccommodationsMap({
     const maxLat = Math.max(...lats);
     const minLng = Math.min(...lngs);
     const maxLng = Math.max(...lngs);
-    
+
     // Add padding to bounds
     const latPadding = (maxLat - minLat) * 0.1;
     const lngPadding = (maxLng - minLng) * 0.1;
-    
+
     return {
       positions,
       center: [(minLat + maxLat) / 2, (minLng + maxLng) / 2] as [number, number],
@@ -64,7 +84,7 @@ export default function TMBAccommodationsMap({
         maxLng: maxLng + lngPadding
       }
     };
-  }, [trailData]);
+  }, [trailData, accommodations]);
 
   // Dynamically import react-leaflet and leaflet
   useEffect(() => {
@@ -236,15 +256,17 @@ export default function TMBAccommodationsMap({
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
         
-        {/* Trail polyline */}
-        <Polyline 
-          positions={processedTrail.positions}
-          color="#ef4444"
-          weight={3}
-          opacity={0.8}
-          lineCap="round"
-          lineJoin="round"
-        />
+        {/* Trail polyline - only show if trail data exists */}
+        {processedTrail.positions && (
+          <Polyline
+            positions={processedTrail.positions}
+            color="#ef4444"
+            weight={3}
+            opacity={0.8}
+            lineCap="round"
+            lineJoin="round"
+          />
+        )}
         
         {/* Accommodation markers */}
         {accommodations.map(accommodation => {

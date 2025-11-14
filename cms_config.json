@@ -1,0 +1,125 @@
+{
+  "apiVersion": "serving.knative.dev/v1",
+  "kind": "Service",
+  "metadata": {
+    "annotations": {
+      "run.googleapis.com/build-enable-automatic-updates": "false",
+      "run.googleapis.com/build-id": "9011fea3-febe-435e-9bb5-1902f0c07249",
+      "run.googleapis.com/build-image-uri": "europe-west2-docker.pkg.dev/trailhead-mvp/cloud-run-source-deploy/cms-service",
+      "run.googleapis.com/build-name": "projects/623946599151/locations/europe-west2/builds/9011fea3-febe-435e-9bb5-1902f0c07249",
+      "run.googleapis.com/build-source-location": "gs://run-sources-trailhead-mvp-europe-west2/services/cms-service/1762035592.315439-a1f46a6058c04393b5cb8b56f68429e5.zip#1762035592613752",
+      "run.googleapis.com/client-name": "gcloud",
+      "run.googleapis.com/client-version": "529.0.0",
+      "run.googleapis.com/ingress": "all",
+      "run.googleapis.com/ingress-status": "all",
+      "run.googleapis.com/operation-id": "458fc106-510b-44f3-a481-8900069f646c",
+      "run.googleapis.com/urls": "[\"https://cms-service-623946599151.europe-west2.run.app\",\"https://cms-service-4qmlfzul5q-nw.a.run.app\"]",
+      "serving.knative.dev/creator": "xemull@gmail.com",
+      "serving.knative.dev/lastModifier": "xemull@gmail.com"
+    },
+    "creationTimestamp": "2025-08-03T23:46:36.995792Z",
+    "generation": 61,
+    "labels": {
+      "cloud.googleapis.com/location": "europe-west2",
+      "run.googleapis.com/satisfiesPzs": "true"
+    },
+    "name": "cms-service",
+    "namespace": "623946599151",
+    "resourceVersion": "AAZDEMCYGAY",
+    "selfLink": "/apis/serving.knative.dev/v1/namespaces/623946599151/services/cms-service",
+    "uid": "ad135554-1b96-45e8-8bd4-4db4d2989121"
+  },
+  "spec": {
+    "template": {
+      "metadata": {
+        "annotations": {
+          "autoscaling.knative.dev/maxScale": "10",
+          "run.googleapis.com/client-name": "gcloud",
+          "run.googleapis.com/client-version": "529.0.0",
+          "run.googleapis.com/cloudsql-instances": "trailhead-mvp:europe-west2:hiking-project-db-233ae46e,trailhead-mvp:europe-west2:trailhead-new-db,trailhead-mvp:europe-west2:strapi-db"
+        },
+        "labels": {
+          "client.knative.dev/nonce": "ftusasbflh",
+          "run.googleapis.com/startupProbeType": "Default"
+        }
+      },
+      "spec": {
+        "containerConcurrency": 80,
+        "containers": [
+          {
+            "env": [
+              {
+                "name": "CACHE_BUST",
+                "value": "1762554364"
+              }
+            ],
+            "image": "europe-west2-docker.pkg.dev/trailhead-mvp/cloud-run-source-deploy/cms-service@sha256:3ff547b94c26a844d61be4414e5a2515be0b31e89bf89a2bf6222f97168239e2",
+            "name": "strapi-cms-1",
+            "ports": [
+              {
+                "containerPort": 1337,
+                "name": "http1"
+              }
+            ],
+            "resources": {
+              "limits": {
+                "cpu": "1000m",
+                "memory": "1Gi"
+              }
+            },
+            "startupProbe": {
+              "failureThreshold": 1,
+              "periodSeconds": 240,
+              "tcpSocket": {
+                "port": 1337
+              },
+              "timeoutSeconds": 240
+            }
+          }
+        ],
+        "serviceAccountName": "strapi-storage@trailhead-mvp.iam.gserviceaccount.com",
+        "timeoutSeconds": 300
+      }
+    },
+    "traffic": [
+      {
+        "percent": 100,
+        "revisionName": "cms-service-00054-22t"
+      }
+    ]
+  },
+  "status": {
+    "address": {
+      "url": "https://cms-service-4qmlfzul5q-nw.a.run.app"
+    },
+    "conditions": [
+      {
+        "lastTransitionTime": "2025-11-07T22:26:58.207927Z",
+        "status": "True",
+        "type": "Ready"
+      },
+      {
+        "lastTransitionTime": "2025-11-08T08:04:49.961045Z",
+        "message": "The user-provided container failed to start and listen on the port defined provided by the PORT=1337 environment variable within the allocated timeout. This can happen when the container port is misconfigured or if the timeout is too short. The health check timeout can be extended. Logs for this revision might contain more information.\n\nLogs URL: https://console.cloud.google.com/logs/viewer?project=trailhead-mvp&resource=cloud_run_revision/service_name/cms-service/revision_name/cms-service-00057-6sw&advancedFilter=resource.type%3D%22cloud_run_revision%22%0Aresource.labels.service_name%3D%22cms-service%22%0Aresource.labels.revision_name%3D%22cms-service-00057-6sw%22 \nFor more troubleshooting guidance, see https://cloud.google.com/run/docs/troubleshooting#container-failed-to-start",
+        "reason": "Retired",
+        "status": "True",
+        "type": "ConfigurationsReady"
+      },
+      {
+        "lastTransitionTime": "2025-11-07T22:26:57.878301Z",
+        "status": "True",
+        "type": "RoutesReady"
+      }
+    ],
+    "latestCreatedRevisionName": "cms-service-00057-6sw",
+    "latestReadyRevisionName": "cms-service-00054-22t",
+    "observedGeneration": 61,
+    "traffic": [
+      {
+        "percent": 100,
+        "revisionName": "cms-service-00054-22t"
+      }
+    ],
+    "url": "https://cms-service-4qmlfzul5q-nw.a.run.app"
+  }
+}

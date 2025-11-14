@@ -1,0 +1,777 @@
+[
+  {
+    "insertId": "-m6whssd25uw",
+    "logName": "projects/trailhead-mvp/logs/cloudaudit.googleapis.com%2Fsystem_event",
+    "protoPayload": {
+      "@type": "type.googleapis.com/google.cloud.audit.AuditLog",
+      "methodName": "/Services.ReplaceService",
+      "resourceName": "namespaces/trailhead-mvp/services/cms-service",
+      "response": {
+        "@type": "type.googleapis.com/google.cloud.run.v1.Service",
+        "apiVersion": "serving.knative.dev/v1",
+        "kind": "Service",
+        "metadata": {
+          "annotations": {
+            "run.googleapis.com/ingress": "all",
+            "run.googleapis.com/ingress-status": "all",
+            "run.googleapis.com/operation-id": "3a5d1817-eeba-4389-9eb5-62b3f87632d5",
+            "run.googleapis.com/urls": "[\"https://cms-service-623946599151.europe-west2.run.app\",\"https://cms-service-4qmlfzul5q-nw.a.run.app\"]",
+            "serving.knative.dev/creator": "xemull@gmail.com",
+            "serving.knative.dev/lastModifier": "xemull@gmail.com"
+          },
+          "creationTimestamp": "2025-08-03T23:46:36.995792Z",
+          "generation": 62,
+          "labels": {
+            "cloud.googleapis.com/location": "europe-west2",
+            "run.googleapis.com/satisfiesPzs": "true"
+          },
+          "name": "cms-service",
+          "namespace": "623946599151",
+          "resourceVersion": "AAZDGWUm5Fk",
+          "selfLink": "/apis/serving.knative.dev/v1/namespaces/623946599151/services/cms-service",
+          "uid": "ad135554-1b96-45e8-8bd4-4db4d2989121"
+        },
+        "spec": {
+          "template": {
+            "metadata": {
+              "annotations": {
+                "autoscaling.knative.dev/maxScale": "20"
+              },
+              "labels": {
+                "run.googleapis.com/startupProbeType": "Default"
+              }
+            },
+            "spec": {
+              "containerConcurrency": 80,
+              "containers": [
+                {
+                  "env": [
+                    {
+                      "name": "NODE_ENV",
+                      "value": "production"
+                    },
+                    {
+                      "name": "IS_PROXIED",
+                      "value": "true"
+                    },
+                    {
+                      "name": "HOST",
+                      "value": "0.0.0.0"
+                    },
+                    {
+                      "name": "APP_KEYS",
+                      "value": "PwXzoPGLyhnyf5MATJZcXw==,57Mc66jiyWviMsKJBcMvWg==,SykQVz3KjoIMfOtmTaxzaw==,l6ef4colrG7rKxU43hSOHw=="
+                    },
+                    {
+                      "name": "API_TOKEN_SALT",
+                      "value": "yw5aJ720DloDjfvjeQ9AvQ=="
+                    },
+                    {
+                      "name": "ADMIN_JWT_SECRET",
+                      "value": "KDeVCx9kO/j5JPU8RUVqHg=="
+                    },
+                    {
+                      "name": "TRANSFER_TOKEN_SALT",
+                      "value": "weiG2Q8pHZzwnVnZBCAXEA=="
+                    },
+                    {
+                      "name": "ENCRYPTION_KEY",
+                      "value": "3nNkvGkg+VGhFgnImm6Lyg=="
+                    },
+                    {
+                      "name": "JWT_SECRET",
+                      "value": "US0CezDKsLgJ85DWDox6uA=="
+                    },
+                    {
+                      "name": "DATABASE_CLIENT",
+                      "value": "postgres"
+                    },
+                    {
+                      "name": "DATABASE_HOST",
+                      "value": "aws-1-eu-west-1.pooler.supabase.com"
+                    },
+                    {
+                      "name": "DATABASE_PORT",
+                      "value": "6543"
+                    },
+                    {
+                      "name": "DATABASE_NAME",
+                      "value": "postgres"
+                    },
+                    {
+                      "name": "DATABASE_USERNAME",
+                      "value": "postgres.lpkaumowfuovlgjgilrt"
+                    },
+                    {
+                      "name": "DATABASE_PASSWORD",
+                      "value": "ZZH4NxTL@W^D^h"
+                    },
+                    {
+                      "name": "DATABASE_SSL",
+                      "value": "true"
+                    },
+                    {
+                      "name": "DATABASE_SSL_REJECT_UNAUTHORIZED",
+                      "value": "false"
+                    },
+                    {
+                      "name": "STRAPI_ADMIN_BACKEND_URL",
+                      "value": "https://cms-service-623946599151.europe-west2.run.app"
+                    }
+                  ],
+                  "image": "gcr.io/trailhead-mvp/cms@sha256:c9cbe6b311c70022011c49bf851a69e10b3867683493d58e1843eea8842332e6",
+                  "ports": [
+                    {
+                      "containerPort": 8080,
+                      "name": "http1"
+                    }
+                  ],
+                  "resources": {
+                    "limits": {
+                      "cpu": "1000m",
+                      "memory": "512Mi"
+                    }
+                  },
+                  "startupProbe": {
+                    "failureThreshold": 1,
+                    "periodSeconds": 240,
+                    "tcpSocket": {
+                      "port": 8080
+                    },
+                    "timeoutSeconds": 240
+                  }
+                }
+              ],
+              "serviceAccountName": "623946599151-compute@developer.gserviceaccount.com",
+              "timeoutSeconds": 300
+            }
+          },
+          "traffic": [
+            {
+              "latestRevision": true,
+              "percent": 100
+            }
+          ]
+        },
+        "status": {
+          "address": {
+            "url": "https://cms-service-4qmlfzul5q-nw.a.run.app"
+          },
+          "conditions": [
+            {
+              "lastTransitionTime": "2025-11-08T18:23:30.554969Z",
+              "status": "True",
+              "type": "Ready"
+            },
+            {
+              "lastTransitionTime": "2025-11-08T18:23:29.283350Z",
+              "status": "True",
+              "type": "ConfigurationsReady"
+            },
+            {
+              "lastTransitionTime": "2025-11-08T18:23:30.521438Z",
+              "status": "True",
+              "type": "RoutesReady"
+            }
+          ],
+          "latestCreatedRevisionName": "cms-service-00058-m8w",
+          "latestReadyRevisionName": "cms-service-00058-m8w",
+          "observedGeneration": 62,
+          "traffic": [
+            {
+              "latestRevision": true,
+              "percent": 100,
+              "revisionName": "cms-service-00058-m8w"
+            }
+          ],
+          "url": "https://cms-service-4qmlfzul5q-nw.a.run.app"
+        }
+      },
+      "serviceName": "run.googleapis.com",
+      "status": {
+        "message": "Ready condition status changed to True for Service cms-service."
+      }
+    },
+    "receiveTimestamp": "2025-11-08T18:23:30.767031513Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "timestamp": "2025-11-08T18:23:30.566363Z"
+  },
+  {
+    "insertId": "-jp3j3jd1u8k",
+    "logName": "projects/trailhead-mvp/logs/cloudaudit.googleapis.com%2Fsystem_event",
+    "protoPayload": {
+      "@type": "type.googleapis.com/google.cloud.audit.AuditLog",
+      "methodName": "/Services.ReplaceService",
+      "resourceName": "namespaces/trailhead-mvp/revisions/cms-service-00058-m8w",
+      "response": {
+        "@type": "type.googleapis.com/google.cloud.run.v1.Revision",
+        "apiVersion": "serving.knative.dev/v1",
+        "kind": "Revision",
+        "metadata": {
+          "annotations": {
+            "autoscaling.knative.dev/maxScale": "20",
+            "run.googleapis.com/ingress": "all",
+            "run.googleapis.com/operation-id": "3a5d1817-eeba-4389-9eb5-62b3f87632d5",
+            "serving.knative.dev/creator": "xemull@gmail.com"
+          },
+          "creationTimestamp": "2025-11-08T18:22:21.861631Z",
+          "generation": 1,
+          "labels": {
+            "cloud.googleapis.com/location": "europe-west2",
+            "run.googleapis.com/satisfiesPzs": "true",
+            "run.googleapis.com/startupProbeType": "Default",
+            "serving.knative.dev/configuration": "cms-service",
+            "serving.knative.dev/configurationGeneration": "58",
+            "serving.knative.dev/route": "cms-service",
+            "serving.knative.dev/service": "cms-service",
+            "serving.knative.dev/serviceUid": "ad135554-1b96-45e8-8bd4-4db4d2989121"
+          },
+          "name": "cms-service-00058-m8w",
+          "namespace": "623946599151",
+          "ownerReferences": [
+            {
+              "apiVersion": "serving.knative.dev/v1",
+              "blockOwnerDeletion": true,
+              "controller": true,
+              "kind": "Configuration",
+              "name": "cms-service",
+              "uid": "b4dedfce-7da0-44b8-bee1-2d3a9c98e37f"
+            }
+          ],
+          "resourceVersion": "AAZDGWUS8eQ",
+          "selfLink": "/apis/serving.knative.dev/v1/namespaces/623946599151/revisions/cms-service-00058-m8w",
+          "uid": "a4b573ea-8ab0-4ee0-94ab-47bd9f78f41f"
+        },
+        "spec": {
+          "containerConcurrency": 80,
+          "containers": [
+            {
+              "env": [
+                {
+                  "name": "NODE_ENV",
+                  "value": "production"
+                },
+                {
+                  "name": "IS_PROXIED",
+                  "value": "true"
+                },
+                {
+                  "name": "HOST",
+                  "value": "0.0.0.0"
+                },
+                {
+                  "name": "APP_KEYS",
+                  "value": "PwXzoPGLyhnyf5MATJZcXw==,57Mc66jiyWviMsKJBcMvWg==,SykQVz3KjoIMfOtmTaxzaw==,l6ef4colrG7rKxU43hSOHw=="
+                },
+                {
+                  "name": "API_TOKEN_SALT",
+                  "value": "yw5aJ720DloDjfvjeQ9AvQ=="
+                },
+                {
+                  "name": "ADMIN_JWT_SECRET",
+                  "value": "KDeVCx9kO/j5JPU8RUVqHg=="
+                },
+                {
+                  "name": "TRANSFER_TOKEN_SALT",
+                  "value": "weiG2Q8pHZzwnVnZBCAXEA=="
+                },
+                {
+                  "name": "ENCRYPTION_KEY",
+                  "value": "3nNkvGkg+VGhFgnImm6Lyg=="
+                },
+                {
+                  "name": "JWT_SECRET",
+                  "value": "US0CezDKsLgJ85DWDox6uA=="
+                },
+                {
+                  "name": "DATABASE_CLIENT",
+                  "value": "postgres"
+                },
+                {
+                  "name": "DATABASE_HOST",
+                  "value": "aws-1-eu-west-1.pooler.supabase.com"
+                },
+                {
+                  "name": "DATABASE_PORT",
+                  "value": "6543"
+                },
+                {
+                  "name": "DATABASE_NAME",
+                  "value": "postgres"
+                },
+                {
+                  "name": "DATABASE_USERNAME",
+                  "value": "postgres.lpkaumowfuovlgjgilrt"
+                },
+                {
+                  "name": "DATABASE_PASSWORD",
+                  "value": "ZZH4NxTL@W^D^h"
+                },
+                {
+                  "name": "DATABASE_SSL",
+                  "value": "true"
+                },
+                {
+                  "name": "DATABASE_SSL_REJECT_UNAUTHORIZED",
+                  "value": "false"
+                },
+                {
+                  "name": "STRAPI_ADMIN_BACKEND_URL",
+                  "value": "https://cms-service-623946599151.europe-west2.run.app"
+                }
+              ],
+              "image": "gcr.io/trailhead-mvp/cms@sha256:c9cbe6b311c70022011c49bf851a69e10b3867683493d58e1843eea8842332e6",
+              "name": "cms-1",
+              "ports": [
+                {
+                  "containerPort": 8080,
+                  "name": "http1"
+                }
+              ],
+              "resources": {
+                "limits": {
+                  "cpu": "1000m",
+                  "memory": "512Mi"
+                }
+              },
+              "startupProbe": {
+                "failureThreshold": 1,
+                "periodSeconds": 240,
+                "tcpSocket": {
+                  "port": 8080
+                },
+                "timeoutSeconds": 240
+              }
+            }
+          ],
+          "serviceAccountName": "623946599151-compute@developer.gserviceaccount.com",
+          "timeoutSeconds": 300
+        },
+        "status": {
+          "conditions": [
+            {
+              "lastTransitionTime": "2025-11-08T18:23:29.247716Z",
+              "message": "Deploying revision succeeded in 1m7.38s.",
+              "status": "True",
+              "type": "Ready"
+            },
+            {
+              "lastTransitionTime": "2025-11-08T18:23:29.193841Z",
+              "message": "Containers became healthy in 26.88s.",
+              "status": "True",
+              "type": "ContainerHealthy"
+            },
+            {
+              "lastTransitionTime": "2025-11-08T18:22:58.941863Z",
+              "message": "Container image import completed in 35.22s.",
+              "status": "True",
+              "type": "ContainerReady"
+            },
+            {
+              "lastTransitionTime": "2025-11-08T18:23:01.923310Z",
+              "message": "Provisioning imported containers completed in 2.98s. Checking container health. This will wait for up to 4m for the configured startup probe, including an initial delay of 0s.",
+              "status": "True",
+              "type": "ResourcesAvailable"
+            }
+          ],
+          "containerStatuses": [
+            {
+              "imageDigest": "gcr.io/trailhead-mvp/cms@sha256:c9cbe6b311c70022011c49bf851a69e10b3867683493d58e1843eea8842332e6",
+              "name": "cms-1"
+            }
+          ],
+          "imageDigest": "gcr.io/trailhead-mvp/cms@sha256:c9cbe6b311c70022011c49bf851a69e10b3867683493d58e1843eea8842332e6",
+          "logUrl": "https://console.cloud.google.com/logs/viewer?project=trailhead-mvp&resource=cloud_run_revision/service_name/cms-service/revision_name/cms-service-00058-m8w&advancedFilter=resource.type%3D%22cloud_run_revision%22%0Aresource.labels.service_name%3D%22cms-service%22%0Aresource.labels.revision_name%3D%22cms-service-00058-m8w%22",
+          "observedGeneration": 1
+        }
+      },
+      "serviceName": "run.googleapis.com",
+      "status": {
+        "message": "Ready condition status changed to True for Revision cms-service-00058-m8w with message: Deploying revision succeeded in 1m7.38s."
+      }
+    },
+    "receiveTimestamp": "2025-11-08T18:23:29.845224925Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-00058-m8w",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "timestamp": "2025-11-08T18:23:29.257769Z"
+  },
+  {
+    "insertId": "690f8aa10003c13f9635aac9",
+    "labels": {
+      "instanceId": "0014778296c1dcea328842dc562430b337701cc4534724d2c77c70905d7d8371136d17bb19d57eae57d2e8220f7d73de20f9392e0bc619ed02e7294fb47130c3c2fa67306b8b8d54793547fac6"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2025-11-08T18:23:29.340316902Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-00058-m8w",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "[2025-11-08 18:23:29.246] \u001b[32minfo\u001b[39m: Strapi started successfully",
+    "timestamp": "2025-11-08T18:23:29.246079Z"
+  },
+  {
+    "insertId": "690f8aa10003bf9f69e1850d",
+    "labels": {
+      "instanceId": "0014778296c1dcea328842dc562430b337701cc4534724d2c77c70905d7d8371136d17bb19d57eae57d2e8220f7d73de20f9392e0bc619ed02e7294fb47130c3c2fa67306b8b8d54793547fac6"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2025-11-08T18:23:29.340316902Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-00058-m8w",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "https://cms-service-623946599151.europe-west2.run.app",
+    "timestamp": "2025-11-08T18:23:29.245663Z"
+  },
+  {
+    "insertId": "690f8aa10003bf78d493757f",
+    "labels": {
+      "instanceId": "0014778296c1dcea328842dc562430b337701cc4534724d2c77c70905d7d8371136d17bb19d57eae57d2e8220f7d73de20f9392e0bc619ed02e7294fb47130c3c2fa67306b8b8d54793547fac6"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2025-11-08T18:23:29.340316902Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-00058-m8w",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "To access the server ??, go to:",
+    "timestamp": "2025-11-08T18:23:29.245624Z"
+  },
+  {
+    "insertId": "690f8aa10003bf2dd8e2ad31",
+    "labels": {
+      "instanceId": "0014778296c1dcea328842dc562430b337701cc4534724d2c77c70905d7d8371136d17bb19d57eae57d2e8220f7d73de20f9392e0bc619ed02e7294fb47130c3c2fa67306b8b8d54793547fac6"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2025-11-08T18:23:29.340316902Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-00058-m8w",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "https://cms-service-623946599151.europe-west2.run.app",
+    "timestamp": "2025-11-08T18:23:29.245549Z"
+  },
+  {
+    "insertId": "690f8aa10003bf26f76683d8",
+    "labels": {
+      "instanceId": "0014778296c1dcea328842dc562430b337701cc4534724d2c77c70905d7d8371136d17bb19d57eae57d2e8220f7d73de20f9392e0bc619ed02e7294fb47130c3c2fa67306b8b8d54793547fac6"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2025-11-08T18:23:29.340316902Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-00058-m8w",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "To manage your project ?, go to the administration panel at:",
+    "timestamp": "2025-11-08T18:23:29.245542Z"
+  },
+  {
+    "insertId": "690f8aa10003beb3222831a9",
+    "labels": {
+      "instanceId": "0014778296c1dcea328842dc562430b337701cc4534724d2c77c70905d7d8371136d17bb19d57eae57d2e8220f7d73de20f9392e0bc619ed02e7294fb47130c3c2fa67306b8b8d54793547fac6"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2025-11-08T18:23:29.340316902Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-00058-m8w",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "Welcome back!",
+    "timestamp": "2025-11-08T18:23:29.245427Z"
+  },
+  {
+    "insertId": "690f8aa10003be56eb01ac73",
+    "labels": {
+      "instanceId": "0014778296c1dcea328842dc562430b337701cc4534724d2c77c70905d7d8371136d17bb19d57eae57d2e8220f7d73de20f9392e0bc619ed02e7294fb47130c3c2fa67306b8b8d54793547fac6"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2025-11-08T18:23:29.340316902Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-00058-m8w",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": " Actions available",
+    "timestamp": "2025-11-08T18:23:29.245334Z"
+  },
+  {
+    "insertId": "690f8aa10003be2cf35a2a27",
+    "labels": {
+      "instanceId": "0014778296c1dcea328842dc562430b337701cc4534724d2c77c70905d7d8371136d17bb19d57eae57d2e8220f7d73de20f9392e0bc619ed02e7294fb47130c3c2fa67306b8b8d54793547fac6"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2025-11-08T18:23:29.340316902Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-00058-m8w",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "?????????????????????????????????????????????????????????????????????????",
+    "timestamp": "2025-11-08T18:23:29.245292Z"
+  },
+  {
+    "insertId": "690f8aa10003be27094901e0",
+    "labels": {
+      "instanceId": "0014778296c1dcea328842dc562430b337701cc4534724d2c77c70905d7d8371136d17bb19d57eae57d2e8220f7d73de20f9392e0bc619ed02e7294fb47130c3c2fa67306b8b8d54793547fac6"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2025-11-08T18:23:29.340316902Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-00058-m8w",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "? Database schema    ? public                                           ?",
+    "timestamp": "2025-11-08T18:23:29.245287Z"
+  },
+  {
+    "insertId": "690f8aa10003be22a608ecd9",
+    "labels": {
+      "instanceId": "0014778296c1dcea328842dc562430b337701cc4534724d2c77c70905d7d8371136d17bb19d57eae57d2e8220f7d73de20f9392e0bc619ed02e7294fb47130c3c2fa67306b8b8d54793547fac6"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2025-11-08T18:23:29.340316902Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-00058-m8w",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "? Database name      ? postgres                                         ?",
+    "timestamp": "2025-11-08T18:23:29.245282Z"
+  },
+  {
+    "insertId": "690f8aa10003be1eccd928af",
+    "labels": {
+      "instanceId": "0014778296c1dcea328842dc562430b337701cc4534724d2c77c70905d7d8371136d17bb19d57eae57d2e8220f7d73de20f9392e0bc619ed02e7294fb47130c3c2fa67306b8b8d54793547fac6"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2025-11-08T18:23:29.340316902Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-00058-m8w",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "? Database           ? postgres                                         ?",
+    "timestamp": "2025-11-08T18:23:29.245278Z"
+  },
+  {
+    "insertId": "690f8aa10003be1a84ba691a",
+    "labels": {
+      "instanceId": "0014778296c1dcea328842dc562430b337701cc4534724d2c77c70905d7d8371136d17bb19d57eae57d2e8220f7d73de20f9392e0bc619ed02e7294fb47130c3c2fa67306b8b8d54793547fac6"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2025-11-08T18:23:29.340316902Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-00058-m8w",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "? Edition            ? Community                                        ?",
+    "timestamp": "2025-11-08T18:23:29.245274Z"
+  },
+  {
+    "insertId": "690f8aa10003be15b7fe3ac6",
+    "labels": {
+      "instanceId": "0014778296c1dcea328842dc562430b337701cc4534724d2c77c70905d7d8371136d17bb19d57eae57d2e8220f7d73de20f9392e0bc619ed02e7294fb47130c3c2fa67306b8b8d54793547fac6"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2025-11-08T18:23:29.340316902Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-00058-m8w",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "? Version            ? 5.24.1 (node v18.20.8)                           ?",
+    "timestamp": "2025-11-08T18:23:29.245269Z"
+  },
+  {
+    "insertId": "690f8aa10003be1008cbc8ec",
+    "labels": {
+      "instanceId": "0014778296c1dcea328842dc562430b337701cc4534724d2c77c70905d7d8371136d17bb19d57eae57d2e8220f7d73de20f9392e0bc619ed02e7294fb47130c3c2fa67306b8b8d54793547fac6"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2025-11-08T18:23:29.340316902Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-00058-m8w",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "? Process PID        ? 14                                               ?",
+    "timestamp": "2025-11-08T18:23:29.245264Z"
+  },
+  {
+    "insertId": "690f8aa10003be0ce00ebc69",
+    "labels": {
+      "instanceId": "0014778296c1dcea328842dc562430b337701cc4534724d2c77c70905d7d8371136d17bb19d57eae57d2e8220f7d73de20f9392e0bc619ed02e7294fb47130c3c2fa67306b8b8d54793547fac6"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2025-11-08T18:23:29.340316902Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-00058-m8w",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "? Environment        ? production                                       ?",
+    "timestamp": "2025-11-08T18:23:29.245260Z"
+  },
+  {
+    "insertId": "690f8aa10003be0675d3d78b",
+    "labels": {
+      "instanceId": "0014778296c1dcea328842dc562430b337701cc4534724d2c77c70905d7d8371136d17bb19d57eae57d2e8220f7d73de20f9392e0bc619ed02e7294fb47130c3c2fa67306b8b8d54793547fac6"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2025-11-08T18:23:29.340316902Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-00058-m8w",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "? Launched in        ? 10642 ms                                         ?",
+    "timestamp": "2025-11-08T18:23:29.245254Z"
+  },
+  {
+    "insertId": "690f8aa10003be007443eb54",
+    "labels": {
+      "instanceId": "0014778296c1dcea328842dc562430b337701cc4534724d2c77c70905d7d8371136d17bb19d57eae57d2e8220f7d73de20f9392e0bc619ed02e7294fb47130c3c2fa67306b8b8d54793547fac6"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2025-11-08T18:23:29.340316902Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-00058-m8w",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "? Time               ? Sat Nov 08 2025 18:23:29 GMT+0000 (Coordinated ? ?",
+    "timestamp": "2025-11-08T18:23:29.245248Z"
+  },
+  {
+    "insertId": "690f8aa10003bdef72ca78c2",
+    "labels": {
+      "instanceId": "0014778296c1dcea328842dc562430b337701cc4534724d2c77c70905d7d8371136d17bb19d57eae57d2e8220f7d73de20f9392e0bc619ed02e7294fb47130c3c2fa67306b8b8d54793547fac6"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2025-11-08T18:23:29.340316902Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-00058-m8w",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "?????????????????????????????????????????????????????????????????????????",
+    "timestamp": "2025-11-08T18:23:29.245231Z"
+  }
+]

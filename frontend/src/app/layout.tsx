@@ -37,59 +37,32 @@ export default function RootLayout({
     <html lang="en" className={`${inter.variable} light`}>
       <head>
         <meta name="color-scheme" content="light" />
-       <link rel="dns-prefetch" href="//fonts.googleapis.com" />
-       <link rel="dns-prefetch" href="//fonts.gstatic.com" />
        <link rel="dns-prefetch" href="//www.googletagmanager.com" />   
-        {/* Preload critical Inter font weights */}
-        <link
-          rel="preload"
-          href="https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiJ-Ek-_EeA.woff2"
-          as="font"
-          type="font/woff2"
-          crossOrigin=""
-        />
-        <link
-          rel="preload"
-          href="https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuDyfAZ9hiA.woff2"
-          as="font"
-          type="font/woff2"
-          crossOrigin=""
-        />
-        <link
-    rel="preload"
-    href="https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiJ-Ek-_EeA.woff2"
-    as="font"
-    type="font/woff2"
-    crossOrigin=""
-  />
-  <link
-    rel="preload"
-    href="https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuDyfAZ9hiA.woff2"
-    as="font"
-    type="font/woff2"
-    crossOrigin=""
-  />
-  
-  {/* Preload critical hero background image - NEW */}
-  <link
-    rel="preload"
-    href="/IMG_1682.webp"
-    as="image"
-    type="image/webp"
-  />  
+       {/* Preconnect to image hosts to speed up LCP */}
+       <link rel="preconnect" href="https://cms-service-623946599151.europe-west2.run.app" crossOrigin="" />
+       <link rel="preconnect" href="https://storage.googleapis.com" crossOrigin="" />
+
       </head>      
       <body className={`${inter.className} antialiased`}>
-        {/* Google Analytics */}
+        {/* Google Analytics – defer to reduce TBT */}
         <Script
           src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
-          strategy="afterInteractive"
+          strategy="lazyOnload"
         />
-        <Script id="google-analytics" strategy="afterInteractive">
+        <Script id="google-analytics" strategy="lazyOnload">
           {`
             window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', '${GA_MEASUREMENT_ID}');
+            function gtag(){dataLayer.push(arguments);} 
+            const initGA = () => {
+              gtag('js', new Date());
+              gtag('config', '${GA_MEASUREMENT_ID}', { anonymize_ip: true, transport_type: 'beacon' });
+            };
+            if ('requestIdleCallback' in window) {
+              // @ts-ignore
+              window.requestIdleCallback(initGA);
+            } else {
+              setTimeout(initGA, 0);
+            }
           `}
         </Script>
         {children}

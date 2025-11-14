@@ -1,0 +1,11 @@
+import psycopg2, json
+conn = psycopg2.connect(host="aws-1-eu-west-1.pooler.supabase.com", port=6543, user="postgres.lpkaumowfuovlgjgilrt", password="ZZH4NxTL@W^D^h", dbname="postgres", sslmode="require")
+cur = conn.cursor()
+cur.execute("SELECT value FROM strapi_core_store_settings WHERE key = 'plugin_content_manager_configuration_content_types::api::hike.hike'")
+(value,) = cur.fetchone()
+data = json.loads(value)
+print('has accommodation key?', 'accommodation' in data['metadatas'])
+print('has Accomodation key?', 'Accomodation' in data['metadatas'])
+print(json.dumps({k:v for k,v in data['metadatas'].items() if k.lower().startswith('accom')}, indent=2))
+cur.close()
+conn.close()

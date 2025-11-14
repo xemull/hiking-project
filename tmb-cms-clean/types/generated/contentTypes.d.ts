@@ -500,11 +500,11 @@ export interface ApiHikeHike extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
+    accommodation: Schema.Attribute.Blocks;
     accommodations: Schema.Attribute.Relation<
       'manyToMany',
       'api::accommodation.accommodation'
     >;
-    Accomodation: Schema.Attribute.Blocks;
     Best_time: Schema.Attribute.String;
     Blogs: Schema.Attribute.Component<'hike.blog', true>;
     Books: Schema.Attribute.Component<'hike.books', true>;
@@ -612,6 +612,10 @@ export interface ApiTmbStageTmbStage extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
+    accommodations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::tmbaccommodation.tmbaccommodation'
+    >;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -689,7 +693,7 @@ export interface ApiTmbaccommodationTmbaccommodation
     >;
     price_range: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
-    stage: Schema.Attribute.Relation<'oneToOne', 'api::tmb-stage.tmb-stage'>;
+    stage: Schema.Attribute.Relation<'manyToOne', 'api::tmb-stage.tmb-stage'>;
     type: Schema.Attribute.Enumeration<['Refuge', 'Hotel', 'B&B', 'Campsite']>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &

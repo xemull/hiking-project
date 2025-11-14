@@ -1,0 +1,86 @@
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0* Host cms-service-623946599151.europe-west2.run.app:443 was resolved.
+* IPv6: 2600:1901:81d4:200::, 2600:1900:4241:200::, 2600:1900:4240:200::, 2600:1900:4244:200::, 2600:1900:4242:200::, 2600:1900:4243:200::, 2600:1900:4245:200::, 2600:1901:81d5:200::
+* IPv4: 34.143.72.2, 34.143.74.2, 34.143.76.2, 34.143.73.2, 34.143.78.2, 34.143.79.2, 34.143.77.2, 34.143.75.2
+*   Trying [2600:1901:81d4:200::]:443...
+* connect to 2600:1901:81d4:200:: port 443 from :: port 53506 failed: Network unreachable
+*   Trying [2600:1900:4241:200::]:443...
+* connect to 2600:1900:4241:200:: port 443 from :: port 53507 failed: Network unreachable
+*   Trying [2600:1900:4240:200::]:443...
+* connect to 2600:1900:4240:200:: port 443 from :: port 53508 failed: Network unreachable
+*   Trying [2600:1900:4244:200::]:443...
+* connect to 2600:1900:4244:200:: port 443 from :: port 53509 failed: Network unreachable
+*   Trying [2600:1900:4242:200::]:443...
+* connect to 2600:1900:4242:200:: port 443 from :: port 53510 failed: Network unreachable
+*   Trying [2600:1900:4243:200::]:443...
+* connect to 2600:1900:4243:200:: port 443 from :: port 53511 failed: Network unreachable
+*   Trying [2600:1900:4245:200::]:443...
+* connect to 2600:1900:4245:200:: port 443 from :: port 53512 failed: Network unreachable
+*   Trying [2600:1901:81d5:200::]:443...
+* connect to 2600:1901:81d5:200:: port 443 from :: port 53513 failed: Network unreachable
+*   Trying 34.143.72.2:443...
+* schannel: disabled automatic use of client certificate
+* ALPN: curl offers http/1.1
+* ALPN: server accepted http/1.1
+* Connected to cms-service-623946599151.europe-west2.run.app (34.143.72.2) port 443
+* using HTTP/1.x
+> GET /api/tmbaccommodations/141?populate=stage HTTP/1.1
+> Host: cms-service-623946599151.europe-west2.run.app
+> User-Agent: curl/8.14.1
+> Accept: */*
+> 
+* Request completely sent off
+* schannel: remote party requests renegotiation
+* schannel: renegotiating SSL/TLS connection
+* schannel: SSL/TLS connection renegotiated
+< HTTP/1.1 200 OK
+< content-security-policy: connect-src 'self' https:;img-src 'self' data: blob: https://market-assets.strapi.io https://storage.googleapis.com;media-src 'self' data: blob: https://storage.googleapis.com;default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline'
+< referrer-policy: no-referrer
+< strict-transport-security: max-age=31536000; includeSubDomains
+< x-content-type-options: nosniff
+< x-dns-prefetch-control: off
+< x-download-options: noopen
+< x-frame-options: SAMEORIGIN
+< x-permitted-cross-domain-policies: none
+< vary: Origin
+< access-control-allow-origin: 
+< access-control-allow-credentials: true
+< content-type: text/html; charset=utf-8
+< x-powered-by: Strapi <strapi.io>
+< date: Sat, 08 Nov 2025 22:52:01 GMT
+< server: Google Frontend
+< Alt-Svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+< Transfer-Encoding: chunked
+< 
+{ [1064 bytes data]
+100  1052    0  1052    0     0   6001      0 --:--:-- --:--:-- --:--:--  6080<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/><meta name="robots" content="noindex"/><meta name="referrer" content="same-origin"/><title>Strapi Admin</title><style>
+  html,
+  body,
+  #strapi {
+    height: 100%;
+  }
+  body {
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+  }
+</style></head><body><div id="strapi"></div><noscript><div class="strapi--root"><div class="strapi--no-js"><style type="text/css">
+.strapi--root {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  background: #fff;
+}
+
+.strapi--no-js {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  font-family: helvetica, arial, sans-serif;
+}
+</style><h1>JavaScript disabled</h1><p>Please <a href="https://www.enable-javascript.com/">enable JavaScript</a> in your browser and reload the page to proceed.</p></div></div></noscript><script type="module" src="/strapi-CxXMFgi9.js"></script></body></html>
+* Connection #0 to host cms-service-623946599151.europe-west2.run.app left intact

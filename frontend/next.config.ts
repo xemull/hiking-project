@@ -35,6 +35,13 @@ const nextConfig: NextConfig = {
         port: '',
         pathname: '/uploads/**',
       },
+      // Google Cloud Storage
+      {
+        protocol: 'https',
+        hostname: 'storage.googleapis.com',
+        port: '',
+        pathname: '/trailhead-strapi-uploads/**',
+      },
     ],
   },
 

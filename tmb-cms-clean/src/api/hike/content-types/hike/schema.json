@@ -37,7 +37,7 @@
     "Elevation_gain": {
       "type": "decimal"
     },
-    "Accomodation": {
+    "accommodation": {
       "type": "blocks"
     },
     "Logistics": {

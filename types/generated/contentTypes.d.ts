@@ -504,7 +504,7 @@ export interface ApiHikeHike extends Struct.CollectionTypeSchema {
       'manyToMany',
       'api::accommodation.accommodation'
     >;
-    Accomodation: Schema.Attribute.Blocks;
+    accommodation: Schema.Attribute.Blocks;
     Best_time: Schema.Attribute.String;
     Blogs: Schema.Attribute.Component<'hike.blog', true>;
     Books: Schema.Attribute.Component<'hike.books', true>;

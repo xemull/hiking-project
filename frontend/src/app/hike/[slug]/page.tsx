@@ -10,9 +10,8 @@ import DynamicElevationProfile from '../../components/DynamicElevationProfile';
 import TagBadge from '../../components/TagBadge';
 import StatCard from '../../components/StatCard';
 import BookCard from '../../components/BookCard';
-import VideoEmbed from '../../components/VideoEmbed';
-import CommentsSection from '../../components/CommentsSection';
 import Navigation from '../../components/Navigation';
+import VideoEmbed from '../../components/VideoEmbed';
 import BlogList from '../../components/BlogList';
 import { MapPin, Route, TrendingUp, Mountain, AlertTriangle } from 'lucide-react';
 import InlineBackButton from '../../components/InlineBackButton';
@@ -76,7 +75,7 @@ export default async function HikeDetailPage({ params }: { params: Promise<{ slu
     Best_time,
     Description,
     Logistics,
-    Accomodation,
+    accommodation,
     mainImage,
     countries,
     sceneries,
@@ -87,17 +86,30 @@ export default async function HikeDetailPage({ params }: { params: Promise<{ slu
     Blogs
   } = content;
 
-  // Get hero image URL - prefer largest available format
+  // Get hero image URL - prefer optimized sized variants first for faster LCP
   const heroImageUrl = mainImage ? (() => {
     const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337';
 
-    // Try to get the largest available image format
+    // Helper function to handle both relative and absolute URLs
+    const getFullUrl = (url: string) => {
+      // If URL already starts with http:// or https://, it's absolute - return as-is
+      if (url.startsWith('http://') || url.startsWith('https://')) {
+        return url;
+      }
+      // Otherwise it's relative, prepend baseUrl
+      return `${baseUrl}${url}`;
+    };
+
+    // Prefer sized variants (large → medium) to reduce bytes and decode time
     if (mainImage.formats?.large?.url) {
-      return `${baseUrl}${mainImage.formats.large.url}`;
-    } else if (mainImage.formats?.medium?.url) {
-      return `${baseUrl}${mainImage.formats.medium.url}`;
-    } else if (mainImage.url) {
-      return `${baseUrl}${mainImage.url}`;
+      return getFullUrl(mainImage.formats.large.url);
+    }
+    if (mainImage.formats?.medium?.url) {
+      return getFullUrl(mainImage.formats.medium.url);
+    }
+    // Fallback to original
+    if (mainImage.url) {
+      return getFullUrl(mainImage.url);
     }
     return null;
   })() : null;
@@ -156,9 +168,11 @@ export default async function HikeDetailPage({ params }: { params: Promise<{ slu
             src={heroImageUrl}
             alt={`${title} hero image`}
             fill
-            sizes="100vw"
+            sizes="(max-width: 480px) 100vw, (max-width: 768px) 90vw, 750px"
+            quality={75}
             style={{ objectFit: 'cover', zIndex: 0 }}
             priority={true}
+            fetchPriority="high"
           />
         )}
         
@@ -314,11 +328,11 @@ export default async function HikeDetailPage({ params }: { params: Promise<{ slu
                 )}
 
                 {/* Accommodation Section */}
-                {Accomodation && (
+                {accommodation && (
                   <div className="content-section">
                     <h2 className="section-title">Accommodation</h2>
                     <div className="prose-content">
-                      <StrapiRichText content={Accomodation} />
+                      <StrapiRichText content={accommodation} />
                     </div>
                   </div>
                 )}
@@ -362,13 +376,7 @@ export default async function HikeDetailPage({ params }: { params: Promise<{ slu
               </div>
             </div>
 
-            {/* Comments Section - Full Width */}
-            <div className="content-section">
-              <CommentsSection 
-                hikeId={slug} 
-                hikeTitle={content.title}
-              />
-            </div>
+            {/* Comments Section temporarily disabled */}
 
           </div>
         </div>

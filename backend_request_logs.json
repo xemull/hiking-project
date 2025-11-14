@@ -1,0 +1,142 @@
+[
+  {
+    "httpRequest": {
+      "latency": "0.008800262s",
+      "protocol": "HTTP/1.1",
+      "remoteIp": "81.108.185.209",
+      "requestMethod": "GET",
+      "requestSize": "313",
+      "requestUrl": "https://backend-service-623946599151.europe-west2.run.app/api/tmb/accommodations",
+      "responseSize": "246950",
+      "serverIp": "34.143.74.2",
+      "status": 200,
+      "userAgent": "curl/8.14.1"
+    },
+    "insertId": "690f0f32000488f8ef5245ff",
+    "labels": {
+      "instanceId": "0014778296a79131305cd865da136a84bc2e01b7b9fbfd99a53af6a6284dab052c7168f2f51058aa50bd7638d2b6d755796d6df4a31119d7e882a981f42c4349f7c4e1bac112d3f1f5754acaea53"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Frequests",
+    "receiveTimestamp": "2025-11-08T09:36:50.618415028Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "backend-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "backend-service-00032-znz",
+        "service_name": "backend-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "spanId": "1858f427e173e696",
+    "timestamp": "2025-11-08T09:36:50.287179Z",
+    "trace": "projects/trailhead-mvp/traces/3f54a7404c3cb9c49de6aa68553be729"
+  },
+  {
+    "httpRequest": {
+      "latency": "0.010102433s",
+      "protocol": "HTTP/1.1",
+      "remoteIp": "81.108.185.209",
+      "requestMethod": "HEAD",
+      "requestSize": "339",
+      "requestUrl": "https://backend-service-623946599151.europe-west2.run.app/api/tmb/accommodations",
+      "responseSize": "268",
+      "serverIp": "34.143.74.2",
+      "status": 200,
+      "userAgent": "curl/8.14.1"
+    },
+    "insertId": "690f0f2f00045200ae75921d",
+    "labels": {
+      "instanceId": "0014778296a79131305cd865da136a84bc2e01b7b9fbfd99a53af6a6284dab052c7168f2f51058aa50bd7638d2b6d755796d6df4a31119d7e882a981f42c4349f7c4e1bac112d3f1f5754acaea53"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Frequests",
+    "receiveTimestamp": "2025-11-08T09:36:47.285396768Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "backend-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "backend-service-00032-znz",
+        "service_name": "backend-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "spanId": "146336863e1a551e",
+    "timestamp": "2025-11-08T09:36:47.271950Z",
+    "trace": "projects/trailhead-mvp/traces/55b7d8da0fa8406e106532a3edab7d5c",
+    "traceSampled": true
+  },
+  {
+    "httpRequest": {
+      "latency": "0.029235314s",
+      "protocol": "HTTP/1.1",
+      "referer": "https://trailhead.at/",
+      "remoteIp": "81.108.185.209",
+      "requestMethod": "GET",
+      "requestSize": "815",
+      "requestUrl": "https://backend-service-623946599151.europe-west2.run.app/api/tmb/accommodations",
+      "responseSize": "26282",
+      "serverIp": "34.143.74.2",
+      "status": 200,
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+    },
+    "insertId": "690f0f09000a6c8aa95679c1",
+    "labels": {
+      "instanceId": "0014778296a79131305cd865da136a84bc2e01b7b9fbfd99a53af6a6284dab052c7168f2f51058aa50bd7638d2b6d755796d6df4a31119d7e882a981f42c4349f7c4e1bac112d3f1f5754acaea53"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Frequests",
+    "receiveTimestamp": "2025-11-08T09:36:09.688056894Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "backend-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "backend-service-00032-znz",
+        "service_name": "backend-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "spanId": "de0beb0e02b1d7ba",
+    "timestamp": "2025-11-08T09:36:09.644905Z",
+    "trace": "projects/trailhead-mvp/traces/d24dd729faccc3ff90887bffd039d769",
+    "traceSampled": true
+  },
+  {
+    "httpRequest": {
+      "latency": "0.790696530s",
+      "protocol": "HTTP/1.1",
+      "remoteIp": "81.108.185.209",
+      "requestMethod": "GET",
+      "requestSize": "314",
+      "requestUrl": "https://backend-service-623946599151.europe-west2.run.app/api/tmb/accommodations",
+      "responseSize": "246950",
+      "serverIp": "34.143.72.2",
+      "status": 200,
+      "userAgent": "curl/8.14.1"
+    },
+    "insertId": "690f0e3a000c2f5dccd23400",
+    "labels": {
+      "instanceId": "0014778296a79131305cd865da136a84bc2e01b7b9fbfd99a53af6a6284dab052c7168f2f51058aa50bd7638d2b6d755796d6df4a31119d7e882a981f42c4349f7c4e1bac112d3f1f5754acaea53"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Frequests",
+    "receiveTimestamp": "2025-11-08T09:32:42.803405434Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "backend-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "backend-service-00032-znz",
+        "service_name": "backend-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "spanId": "50a33dc5f435323e",
+    "timestamp": "2025-11-08T09:32:41.999437Z",
+    "trace": "projects/trailhead-mvp/traces/eeadc6f4cb2d610108253723299676f7",
+    "traceSampled": true
+  }
+]

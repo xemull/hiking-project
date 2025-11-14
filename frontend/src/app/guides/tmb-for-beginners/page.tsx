@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Suspense } from 'react';
 import Navigation from '../../components/Navigation';
+import UniversalHero from '../../components/UniversalHero';
 import Footer from '../../components/Footer';
 import { getHikes, getTrailNews } from '../../services/api';
 import { ClientButton } from '../../components/ClientButton';
@@ -210,75 +211,7 @@ export default async function TMBGuidePage() {
       {/* Navigation */}
       <Navigation hikes={allHikes || []} />
       
-      {/* Hero Section */}
-      <div style={{
-        position: 'relative',
-        width: '100%',
-        height: '60vh',
-        minHeight: '500px',
-        display: 'flex',
-        alignItems: 'flex-start',
-        justifyContent: 'center',
-        overflow: 'hidden',
-        paddingTop: 'clamp(2rem, 5vw, 4rem)'
-      }}>
-        {/* Hero Background Image */}
-        <Image
-          src={TMB_HERO_IMAGE}
-          alt="Tour du Mont Blanc landscape"
-          fill
-          sizes="100vw"
-          style={{
-            objectFit: 'cover',
-            objectPosition: 'center 40%',
-            zIndex: 0
-          }}
-          priority={true}
-        />
-
-        <div style={{
-          position: 'absolute',
-          inset: 0,
-          background: 'linear-gradient(135deg, rgba(45, 55, 72, 0.6), rgba(45, 55, 72, 0.4))',
-          zIndex: 1
-        }} />
-        
-        <div style={{
-          position: 'relative',
-          zIndex: 2,
-          textAlign: 'center',
-          color: 'white',
-          maxWidth: '1000px',
-          padding: '0 1.5rem'
-        }}>
-          <Mountain style={{
-            width: '3.5rem',
-            height: '3.5rem',
-            margin: '0 auto 1rem auto',
-            filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.3))'
-          }} />
-          <h1 className="hero-title" style={{
-            fontSize: 'clamp(1.75rem, 4vw, 2.5rem)',
-            lineHeight: '1.2',
-            marginBottom: '1rem',
-            fontWeight: '600'
-          }}>
-            Your Tour du Mont Blanc Adventure Starts Here
-          </h1>
-          <p className="hero-subtitle" style={{
-            fontSize: 'clamp(1rem, 2vw, 1.25rem)',
-            lineHeight: '1.5',
-            marginBottom: '1.5rem',
-            maxWidth: '800px',
-            margin: '0 auto 1.5rem'
-          }}>
-            A clear, step-by-step guide to help you confidently plan and enjoy one of the world's most beautiful treks. No expert experience required.
-          </p>
-          <ClientButton targetId="is-tmb-right" className="btn-primary" style={{ marginTop: '0.5rem' }}>
-            Start Planning
-          </ClientButton>
-        </div>
-      </div>
+      <UniversalHero title="Your Tour du Mont Blanc Adventure Starts Here" subtitle="A clear, step-by-step guide to help you confidently plan and enjoy one of the world's most beautiful treks. No expert experience required." backgroundSrc="/uploads/itineraries/gentle-trekker/DJI_0213-HDR.jpg" ctas={[{ label: "Start Planning", href: "#is-tmb-right", variant: "primary" }]} overlay="gradient" height="standard" />
 
       {/* Main Content */}
       <main className="content-container" style={{
@@ -1461,7 +1394,7 @@ export default async function TMBGuidePage() {
                   duration: "7-10 days",
                   distance: "~120km",
                   comparison: ["More dramatic jagged peaks", "Better hut food", "Less crowded than TMB"],
-                  image: "/uploads/placeholder-mountain.jpg"
+                  image: "/IMG_1696.jpg"
                 },
                 {
                   title: "Tour of Monte Rosa",
@@ -1470,7 +1403,7 @@ export default async function TMBGuidePage() {
                   duration: "9-11 days",
                   distance: "~160km",
                   comparison: ["Higher altitude passes", "More glaciers", "Similar to TMB but quieter"],
-                  image: "/uploads/placeholder-mountain.jpg"
+                  image: "/IMG_1420.jpg"
                 },
                 {
                   title: "Fisherman's Trail",
@@ -1479,7 +1412,7 @@ export default async function TMBGuidePage() {
                   duration: "4-5 days",
                   distance: "~75km",
                   comparison: ["Coastal instead of alpine", "Much easier terrain", "Better for beginners"],
-                  image: "/uploads/placeholder-mountain.jpg"
+                  image: "/IMG_1436.jpg"
                 }
               ].map((hike, index) => (
                   <Link
@@ -1584,3 +1517,4 @@ export default async function TMBGuidePage() {
     </div>
   );
 }
+

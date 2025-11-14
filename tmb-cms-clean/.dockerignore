@@ -12,4 +12,3 @@ coverage
 .build
 dist
 .strapi-updater.json
-public/uploads/large_*

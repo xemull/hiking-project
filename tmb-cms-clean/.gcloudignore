@@ -1,0 +1,12 @@
+.gcloudignore
+.git
+.gitignore
+node_modules/
+.cache/
+.tmp/
+dist/
+build/
+nul
+*/nul
+public/uploads/
+.env

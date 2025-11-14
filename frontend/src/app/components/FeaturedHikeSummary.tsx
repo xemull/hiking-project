@@ -23,8 +23,19 @@ export default function FeaturedHikeSummary({ hike }: { hike: HikeSummary }) {
     return () => window.removeEventListener('resize', checkScreenSize);
   }, []);
 
+  // Helper function to handle both relative and absolute URLs
+  const getFullUrl = (url: string) => {
+    // If URL already starts with http:// or https://, it's absolute - return as-is
+    if (url.startsWith('http://') || url.startsWith('https://')) {
+      return url;
+    }
+    // Otherwise it's relative, prepend baseUrl
+    const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337';
+    return `${baseUrl}${url}`;
+  };
+
   const imageUrl = mainImage?.url
-    ? `${process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337'}${mainImage.url}`
+    ? getFullUrl(mainImage.url)
     : '/placeholder-image.jpg';
   
   const countryNames = countries?.map(country => country.name) || [];

@@ -1,8 +1,4 @@
-/* Add Google Fonts import at the top */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-
 @import "tailwindcss";
-@import 'leaflet/dist/leaflet.css';
 
 :root {
   /* Keep original for compatibility */
@@ -517,6 +513,12 @@ body {
   .tmb-map-container {
     position: static !important;
     height: 500px !important;
+    z-index: 1 !important;
+  }
+
+  /* Stack map grid vertically on mobile */
+  .tmb-map-grid {
+    grid-template-columns: 1fr !important;
   }
 
   /* Reduce padding on accommodation directory cards */
@@ -534,6 +536,9 @@ body {
   .tmb-accommodations-hero-content h1 {
     padding-left: 0.5rem !important;
     padding-right: 0.5rem !important;
+    font-size: clamp(1.5rem, 4.5vw, 2.5rem) !important;
+    line-height: 1.1 !important;
+    hyphens: none !important;
   }
 
   /* Itinerary builder mobile fixes */

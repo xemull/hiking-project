@@ -18,17 +18,29 @@ export default function HikeCard({ hike }: { hike: HikeSummary }) {
         : `${countryNames.slice(0, -1).join(', ')} & ${countryNames[countryNames.length - 1]}`
     : '';
     
-  // Get image URL - prefer medium/large format for better quality
+  // Get image URL - use Strapi's optimized formats for faster loading
   const imageUrl = mainImage ? (() => {
     const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337';
 
-    // For card images, medium is usually sufficient and loads faster
-    if (mainImage.formats?.medium?.url) {
-      return `${baseUrl}${mainImage.formats.medium.url}`;
-    } else if (mainImage.formats?.large?.url) {
-      return `${baseUrl}${mainImage.formats.large.url}`;
+    // Helper function to handle both relative and absolute URLs
+    const getFullUrl = (url: string) => {
+      // If URL already starts with http:// or https://, it's absolute - return as-is
+      if (url.startsWith('http://') || url.startsWith('https://')) {
+        return url;
+      }
+      // Otherwise it's relative, prepend baseUrl
+      return `${baseUrl}${url}`;
+    };
+
+    // For cards, prefer large format (typically ~800px, ~1MB) for good balance of quality and performance
+    // Falls back to medium (~500px), then original as last resort
+    if (mainImage.formats?.large?.url) {
+      return getFullUrl(mainImage.formats.large.url);
+    } else if (mainImage.formats?.medium?.url) {
+      return getFullUrl(mainImage.formats.medium.url);
     } else if (mainImage.url) {
-      return `${baseUrl}${mainImage.url}`;
+      // Fallback to original only if no resized formats exist
+      return getFullUrl(mainImage.url);
     }
     return null;
   })() : null;

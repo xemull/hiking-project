@@ -1,0 +1,2437 @@
+[
+  {
+    "insertId": "691746520009d5ec32a67fa4",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2025-11-14T15:10:10.978912095Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "[2025-11-14 15:10:10.645] \u001b[32mhttp\u001b[39m: GET /admin/guided-tour-meta (150 ms) 200",
+    "timestamp": "2025-11-14T15:10:10.644588Z"
+  },
+  {
+    "insertId": "691746520007a05e5eef1a52",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2025-11-14T15:10:10.646800801Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "[2025-11-14 15:10:10.500] \u001b[32mhttp\u001b[39m: GET /admin/license-limit-information (6 ms) 200",
+    "timestamp": "2025-11-14T15:10:10.499806Z"
+  },
+  {
+    "httpRequest": {
+      "latency": "0.154255751s",
+      "protocol": "HTTP/1.1",
+      "referer": "https://cms-service-623946599151.europe-west2.run.app/admin",
+      "remoteIp": "81.108.185.209",
+      "requestMethod": "GET",
+      "requestSize": "1580",
+      "requestUrl": "https://cms-service-623946599151.europe-west2.run.app/admin/guided-tour-meta",
+      "responseSize": "71498",
+      "serverIp": "34.143.78.2",
+      "status": 200,
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+    },
+    "insertId": "691746520009e00a172c4267",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Frequests",
+    "receiveTimestamp": "2025-11-14T15:10:10.984219101Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "spanId": "8dbf7ee1ac190c5f",
+    "timestamp": "2025-11-14T15:10:10.491827Z",
+    "trace": "projects/trailhead-mvp/traces/7bea89307beec681051c592350873c48"
+  },
+  {
+    "httpRequest": {
+      "latency": "0.008657664s",
+      "protocol": "HTTP/1.1",
+      "referer": "https://cms-service-623946599151.europe-west2.run.app/admin",
+      "remoteIp": "81.108.185.209",
+      "requestMethod": "GET",
+      "requestSize": "1589",
+      "requestUrl": "https://cms-service-623946599151.europe-west2.run.app/admin/license-limit-information",
+      "responseSize": "1926",
+      "serverIp": "34.143.78.2",
+      "status": 200,
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+    },
+    "insertId": "691746520007a596fdc2071c",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Frequests",
+    "receiveTimestamp": "2025-11-14T15:10:10.651419910Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "spanId": "e82034ff58538ce5",
+    "timestamp": "2025-11-14T15:10:10.491435Z",
+    "trace": "projects/trailhead-mvp/traces/722a053ce0ed0b19051c592350873697"
+  },
+  {
+    "insertId": "6917465200066dc019c1b258",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2025-11-14T15:10:10.646800801Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "[2025-11-14 15:10:10.421] \u001b[32mhttp\u001b[39m: GET /admin/telemetry-properties (183 ms) 200",
+    "timestamp": "2025-11-14T15:10:10.421312Z"
+  },
+  {
+    "insertId": "69174652000668c20d96bc7a",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2025-11-14T15:10:10.646800801Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "[2025-11-14 15:10:10.420] \u001b[32mhttp\u001b[39m: GET /admin/information (180 ms) 200",
+    "timestamp": "2025-11-14T15:10:10.420034Z"
+  },
+  {
+    "insertId": "69174652000550bc9ae80c95",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2025-11-14T15:10:10.646800801Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "[2025-11-14 15:10:10.348] \u001b[32mhttp\u001b[39m: GET /admin/users/me/permissions (186 ms) 200",
+    "timestamp": "2025-11-14T15:10:10.348348Z"
+  },
+  {
+    "insertId": "691746520004c31b0f0016e1",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2025-11-14T15:10:10.646800801Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "[2025-11-14 15:10:10.312] \u001b[32mhttp\u001b[39m: GET /admin/users/me (149 ms) 200",
+    "timestamp": "2025-11-14T15:10:10.312091Z"
+  },
+  {
+    "httpRequest": {
+      "latency": "0.195136186s",
+      "protocol": "HTTP/1.1",
+      "referer": "https://cms-service-623946599151.europe-west2.run.app/admin",
+      "remoteIp": "81.108.185.209",
+      "requestMethod": "GET",
+      "requestSize": "1576",
+      "requestUrl": "https://cms-service-623946599151.europe-west2.run.app/admin/information",
+      "responseSize": "1408",
+      "serverIp": "34.143.78.2",
+      "status": 200,
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+    },
+    "insertId": "6917465200068e6ebd7f76a2",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Frequests",
+    "receiveTimestamp": "2025-11-14T15:10:10.651419910Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "spanId": "1b8ca37b9a9925b5",
+    "timestamp": "2025-11-14T15:10:10.233087Z",
+    "trace": "projects/trailhead-mvp/traces/32a5226a44650389051c59235087326d"
+  },
+  {
+    "httpRequest": {
+      "latency": "0.194951812s",
+      "protocol": "HTTP/1.1",
+      "referer": "https://cms-service-623946599151.europe-west2.run.app/admin",
+      "remoteIp": "81.108.185.209",
+      "requestMethod": "GET",
+      "requestSize": "1584",
+      "requestUrl": "https://cms-service-623946599151.europe-west2.run.app/admin/telemetry-properties",
+      "responseSize": "1048",
+      "serverIp": "34.143.78.2",
+      "status": 200,
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+    },
+    "insertId": "6917465200068e861077f035",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Frequests",
+    "receiveTimestamp": "2025-11-14T15:10:10.651419910Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "spanId": "30aa01eccdf69dc5",
+    "timestamp": "2025-11-14T15:10:10.233033Z",
+    "trace": "projects/trailhead-mvp/traces/3ccd6cab5189c026051c592350873cbc"
+  },
+  {
+    "insertId": "691746520002fe899cc2eadb",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2025-11-14T15:10:10.313212522Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "[2025-11-14 15:10:10.196] \u001b[32mhttp\u001b[39m: GET /admin/init (40 ms) 200",
+    "timestamp": "2025-11-14T15:10:10.196233Z"
+  },
+  {
+    "httpRequest": {
+      "latency": "0.190408380s",
+      "protocol": "HTTP/1.1",
+      "referer": "https://cms-service-623946599151.europe-west2.run.app/admin",
+      "remoteIp": "81.108.185.209",
+      "requestMethod": "GET",
+      "requestSize": "1584",
+      "requestUrl": "https://cms-service-623946599151.europe-west2.run.app/admin/users/me/permissions",
+      "responseSize": "18173",
+      "serverIp": "34.143.78.2",
+      "status": 200,
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+    },
+    "insertId": "691746520005590a4a2cde45",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Frequests",
+    "receiveTimestamp": "2025-11-14T15:10:10.651419910Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "spanId": "8fb5556079c1273f",
+    "timestamp": "2025-11-14T15:10:10.158811Z",
+    "trace": "projects/trailhead-mvp/traces/ba1c0fd942048d59051c59235087334b"
+  },
+  {
+    "httpRequest": {
+      "latency": "0.152862546s",
+      "protocol": "HTTP/1.1",
+      "referer": "https://cms-service-623946599151.europe-west2.run.app/admin",
+      "remoteIp": "81.108.185.209",
+      "requestMethod": "GET",
+      "requestSize": "1573",
+      "requestUrl": "https://cms-service-623946599151.europe-west2.run.app/admin/users/me",
+      "responseSize": "1349",
+      "serverIp": "34.143.78.2",
+      "status": 200,
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+    },
+    "insertId": "691746520004c6965621c3c7",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Frequests",
+    "receiveTimestamp": "2025-11-14T15:10:10.320067207Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "spanId": "5221f0554284b631",
+    "timestamp": "2025-11-14T15:10:10.158657Z",
+    "trace": "projects/trailhead-mvp/traces/23636ae07b0b4061051c5923508738fc"
+  },
+  {
+    "httpRequest": {
+      "latency": "0.042434612s",
+      "protocol": "HTTP/1.1",
+      "referer": "https://cms-service-623946599151.europe-west2.run.app/admin",
+      "remoteIp": "81.108.185.209",
+      "requestMethod": "GET",
+      "requestSize": "1569",
+      "requestUrl": "https://cms-service-623946599151.europe-west2.run.app/admin/init",
+      "responseSize": "978",
+      "serverIp": "34.143.78.2",
+      "status": 200,
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+    },
+    "insertId": "691746520003021e7febf1a6",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Frequests",
+    "receiveTimestamp": "2025-11-14T15:10:10.320067207Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "spanId": "c4e1344a8356af2b",
+    "timestamp": "2025-11-14T15:10:10.153143Z",
+    "trace": "projects/trailhead-mvp/traces/af0cc41d7ab37a09051c592350873c35"
+  },
+  {
+    "insertId": "69174651000f413820dcd9f8",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2025-11-14T15:10:10.313212522Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "[2025-11-14 15:10:10.000] \u001b[32mhttp\u001b[39m: GET /admin/project-type (3 ms) 200",
+    "timestamp": "2025-11-14T15:10:09.999736Z"
+  },
+  {
+    "httpRequest": {
+      "latency": "0.005959399s",
+      "protocol": "HTTP/1.1",
+      "referer": "https://cms-service-623946599151.europe-west2.run.app/admin",
+      "remoteIp": "81.108.185.209",
+      "requestMethod": "GET",
+      "requestSize": "1609",
+      "requestUrl": "https://cms-service-623946599151.europe-west2.run.app/admin/project-type",
+      "responseSize": "948",
+      "serverIp": "34.143.78.2",
+      "status": 200,
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+    },
+    "insertId": "69174652000003f379476ffc",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Frequests",
+    "receiveTimestamp": "2025-11-14T15:10:10.320067207Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "spanId": "6b35b5c976682bdf",
+    "timestamp": "2025-11-14T15:10:09.993778Z",
+    "trace": "projects/trailhead-mvp/traces/54d06d7333a35e29051c592350873350"
+  },
+  {
+    "insertId": "691746510004bf2b98c85ba5",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2025-11-14T15:10:09.313231924Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "[2025-11-14 15:10:09.311] \u001b[32mhttp\u001b[39m: GET /admin (8 ms) 200",
+    "timestamp": "2025-11-14T15:10:09.311083Z"
+  },
+  {
+    "httpRequest": {
+      "latency": "0.014026617s",
+      "protocol": "HTTP/1.1",
+      "remoteIp": "81.108.185.209",
+      "requestMethod": "GET",
+      "requestSize": "1425",
+      "requestUrl": "https://cms-service-623946599151.europe-west2.run.app/admin",
+      "responseSize": "1926",
+      "serverIp": "34.143.78.2",
+      "status": 200,
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+    },
+    "insertId": "691746510004cd79f3c13a32",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Frequests",
+    "receiveTimestamp": "2025-11-14T15:10:09.317742407Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "spanId": "80c1fa083a542fd5",
+    "timestamp": "2025-11-14T15:10:09.294388Z",
+    "trace": "projects/trailhead-mvp/traces/19e407330a555a140eb0380581e79bf9",
+    "traceSampled": true
+  },
+  {
+    "insertId": "691746220003043fc1fa12c5",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2025-11-14T15:09:22.239212597Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "[2025-11-14 15:09:22.198] \u001b[32mhttp\u001b[39m: GET /content-manager/homepage/count-documents (919 ms) 200",
+    "timestamp": "2025-11-14T15:09:22.197695Z"
+  },
+  {
+    "insertId": "691746220002fb797565b328",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2025-11-14T15:09:22.239212597Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "[2025-11-14 15:09:22.195] \u001b[32mhttp\u001b[39m: GET /admin/homepage/key-statistics (910 ms) 200",
+    "timestamp": "2025-11-14T15:09:22.195449Z"
+  },
+  {
+    "insertId": "691746220002bb2049258173",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2025-11-14T15:09:22.239212597Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "[2025-11-14 15:09:22.179] \u001b[32mhttp\u001b[39m: GET /content-manager/homepage/recent-documents?action=publish (898 ms) 200",
+    "timestamp": "2025-11-14T15:09:22.178976Z"
+  },
+  {
+    "insertId": "6917462200024a43e3861114",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2025-11-14T15:09:22.239212597Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "[2025-11-14 15:09:22.150] \u001b[32mhttp\u001b[39m: GET /content-manager/homepage/recent-documents?action=update (870 ms) 200",
+    "timestamp": "2025-11-14T15:09:22.150083Z"
+  },
+  {
+    "httpRequest": {
+      "latency": "0.914699129s",
+      "protocol": "HTTP/1.1",
+      "referer": "https://cms-service-623946599151.europe-west2.run.app/",
+      "remoteIp": "81.108.185.209",
+      "requestMethod": "GET",
+      "requestSize": "1833",
+      "requestUrl": "https://cms-service-623946599151.europe-west2.run.app/admin/homepage/key-statistics",
+      "responseSize": "977",
+      "serverIp": "34.143.77.2",
+      "status": 200,
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+    },
+    "insertId": "691746220002fe8965987196",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Frequests",
+    "receiveTimestamp": "2025-11-14T15:09:22.246653945Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "spanId": "612443fcc08a5233",
+    "timestamp": "2025-11-14T15:09:21.280600Z",
+    "trace": "projects/trailhead-mvp/traces/c17aacff3fec9b93e3e79f4467c4146a"
+  },
+  {
+    "httpRequest": {
+      "latency": "0.901427298s",
+      "protocol": "HTTP/1.1",
+      "referer": "https://cms-service-623946599151.europe-west2.run.app/",
+      "remoteIp": "81.108.185.209",
+      "requestMethod": "GET",
+      "requestSize": "1574",
+      "requestUrl": "https://cms-service-623946599151.europe-west2.run.app/content-manager/homepage/recent-documents?action=publish",
+      "responseSize": "884",
+      "serverIp": "34.143.77.2",
+      "status": 200,
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+    },
+    "insertId": "691746220002be155115837d",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Frequests",
+    "receiveTimestamp": "2025-11-14T15:09:22.246653945Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "spanId": "65b2e55ec014b60f",
+    "timestamp": "2025-11-14T15:09:21.276930Z",
+    "trace": "projects/trailhead-mvp/traces/21b3c6748189feabe3e79f4467c415bd"
+  },
+  {
+    "httpRequest": {
+      "latency": "0.873170806s",
+      "protocol": "HTTP/1.1",
+      "referer": "https://cms-service-623946599151.europe-west2.run.app/",
+      "remoteIp": "81.108.185.209",
+      "requestMethod": "GET",
+      "requestSize": "1573",
+      "requestUrl": "https://cms-service-623946599151.europe-west2.run.app/content-manager/homepage/recent-documents?action=update",
+      "responseSize": "884",
+      "serverIp": "34.143.77.2",
+      "status": 200,
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+    },
+    "insertId": "6917462200024d6a23d45320",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Frequests",
+    "receiveTimestamp": "2025-11-14T15:09:22.246653945Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "spanId": "f1a27fec1000b127",
+    "timestamp": "2025-11-14T15:09:21.276512Z",
+    "trace": "projects/trailhead-mvp/traces/93a7a9158d98a48be3e79f4467c4149c"
+  },
+  {
+    "httpRequest": {
+      "latency": "0.921197513s",
+      "protocol": "HTTP/1.1",
+      "referer": "https://cms-service-623946599151.europe-west2.run.app/",
+      "remoteIp": "81.108.185.209",
+      "requestMethod": "GET",
+      "requestSize": "1559",
+      "requestUrl": "https://cms-service-623946599151.europe-west2.run.app/content-manager/homepage/count-documents",
+      "responseSize": "920",
+      "serverIp": "34.143.77.2",
+      "status": 200,
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+    },
+    "insertId": "69174622000306d9198cc0f2",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Frequests",
+    "receiveTimestamp": "2025-11-14T15:09:22.246653945Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "spanId": "a40f5935ef3de22a",
+    "timestamp": "2025-11-14T15:09:21.275580Z",
+    "trace": "projects/trailhead-mvp/traces/45f1f5dce937498de3e79f4467c416de"
+  },
+  {
+    "insertId": "6917462100039d484bd41b8f",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2025-11-14T15:09:21.572611244Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "[2025-11-14 15:09:21.237] \u001b[32mhttp\u001b[39m: GET /Widgets-CRfg8ECk.js (4 ms) 200",
+    "timestamp": "2025-11-14T15:09:21.236872Z"
+  },
+  {
+    "insertId": "6917462100039a776e6f20d3",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2025-11-14T15:09:21.241507759Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "[2025-11-14 15:09:21.236] \u001b[32mhttp\u001b[39m: GET /Widgets-Cvd9NONO.js (4 ms) 200",
+    "timestamp": "2025-11-14T15:09:21.236151Z"
+  },
+  {
+    "httpRequest": {
+      "latency": "0.013297953s",
+      "protocol": "HTTP/1.1",
+      "remoteIp": "81.108.185.209",
+      "requestMethod": "GET",
+      "requestSize": "1235",
+      "requestUrl": "https://cms-service-623946599151.europe-west2.run.app/Widgets-Cvd9NONO.js",
+      "responseSize": "7075",
+      "serverIp": "34.143.77.2",
+      "status": 200,
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+    },
+    "insertId": "691746210003b6ebbc320ab3",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Frequests",
+    "receiveTimestamp": "2025-11-14T15:09:21.580548060Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "spanId": "d8937ec3f94192ca",
+    "timestamp": "2025-11-14T15:09:21.228934Z",
+    "trace": "projects/trailhead-mvp/traces/e57792a0bd297429e3e79f4467c41c03"
+  },
+  {
+    "httpRequest": {
+      "latency": "0.013164735s",
+      "protocol": "HTTP/1.1",
+      "remoteIp": "81.108.185.209",
+      "requestMethod": "GET",
+      "requestSize": "1235",
+      "requestUrl": "https://cms-service-623946599151.europe-west2.run.app/Widgets-CRfg8ECk.js",
+      "responseSize": "5054",
+      "serverIp": "34.143.77.2",
+      "status": 200,
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+    },
+    "insertId": "691746210003b633a0c7bb5c",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Frequests",
+    "receiveTimestamp": "2025-11-14T15:09:21.246431405Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "spanId": "3c937df18bc58f3e",
+    "timestamp": "2025-11-14T15:09:21.228355Z",
+    "trace": "projects/trailhead-mvp/traces/5cace94c66dc59f6e3e79f4467c41d24",
+    "traceSampled": true
+  },
+  {
+    "insertId": "6917460e000568c249d36f9d",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2025-11-14T15:09:02.384870423Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "[2025-11-14 15:09:02.355] \u001b[32mhttp\u001b[39m: GET /admin/guided-tour-meta (144 ms) 200",
+    "timestamp": "2025-11-14T15:09:02.354498Z"
+  },
+  {
+    "insertId": "6917460e00034a8ca4b2642b",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2025-11-14T15:09:02.384870423Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "[2025-11-14 15:09:02.216] \u001b[32mhttp\u001b[39m: GET /admin/license-limit-information (4 ms) 200",
+    "timestamp": "2025-11-14T15:09:02.215692Z"
+  },
+  {
+    "httpRequest": {
+      "latency": "0.008913249s",
+      "protocol": "HTTP/1.1",
+      "referer": "https://cms-service-623946599151.europe-west2.run.app/admin",
+      "remoteIp": "81.108.185.209",
+      "requestMethod": "GET",
+      "requestSize": "1839",
+      "requestUrl": "https://cms-service-623946599151.europe-west2.run.app/admin/license-limit-information",
+      "responseSize": "1926",
+      "serverIp": "34.143.77.2",
+      "status": 200,
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+    },
+    "insertId": "6917460e000352e2cd6775c0",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Frequests",
+    "receiveTimestamp": "2025-11-14T15:09:02.385370184Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "spanId": "fd3dc517e9beb919",
+    "timestamp": "2025-11-14T15:09:02.207518Z",
+    "trace": "projects/trailhead-mvp/traces/83af8d170173e3d37152720ce466f0be"
+  },
+  {
+    "httpRequest": {
+      "latency": "0.148810724s",
+      "protocol": "HTTP/1.1",
+      "referer": "https://cms-service-623946599151.europe-west2.run.app/admin",
+      "remoteIp": "81.108.185.209",
+      "requestMethod": "GET",
+      "requestSize": "1830",
+      "requestUrl": "https://cms-service-623946599151.europe-west2.run.app/admin/guided-tour-meta",
+      "responseSize": "71498",
+      "serverIp": "34.143.77.2",
+      "status": 200,
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+    },
+    "insertId": "6917460e0005730e88d52eae",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Frequests",
+    "receiveTimestamp": "2025-11-14T15:09:02.385370184Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "spanId": "174cb0066653d920",
+    "timestamp": "2025-11-14T15:09:02.207154Z",
+    "trace": "projects/trailhead-mvp/traces/6ac3998c7d014cc47152720ce466fcb3"
+  },
+  {
+    "insertId": "6917460e00020d88bea65b77",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2025-11-14T15:09:02.384870423Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "[2025-11-14 15:09:02.135] \u001b[32mhttp\u001b[39m: GET /admin/telemetry-properties (170 ms) 200",
+    "timestamp": "2025-11-14T15:09:02.134536Z"
+  },
+  {
+    "insertId": "6917460e000209a05818f3ce",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2025-11-14T15:09:02.384870423Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "[2025-11-14 15:09:02.134] \u001b[32mhttp\u001b[39m: GET /admin/information (105 ms) 200",
+    "timestamp": "2025-11-14T15:09:02.133536Z"
+  },
+  {
+    "insertId": "6917460e0000c52a900df16a",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2025-11-14T15:09:02.384870423Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "[2025-11-14 15:09:02.051] \u001b[32mhttp\u001b[39m: GET /admin/users/me/permissions (162 ms) 200",
+    "timestamp": "2025-11-14T15:09:02.050474Z"
+  },
+  {
+    "insertId": "6917460d000f3ae44a3b7172",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2025-11-14T15:09:02.050309263Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "[2025-11-14 15:09:01.999] \u001b[32mhttp\u001b[39m: GET /admin/users/me (113 ms) 200",
+    "timestamp": "2025-11-14T15:09:01.998116Z"
+  },
+  {
+    "httpRequest": {
+      "latency": "0.173229450s",
+      "protocol": "HTTP/1.1",
+      "referer": "https://cms-service-623946599151.europe-west2.run.app/admin",
+      "remoteIp": "81.108.185.209",
+      "requestMethod": "GET",
+      "requestSize": "1825",
+      "requestUrl": "https://cms-service-623946599151.europe-west2.run.app/admin/information",
+      "responseSize": "1408",
+      "serverIp": "34.143.77.2",
+      "status": 200,
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+    },
+    "insertId": "6917460e000210aec27fba7e",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Frequests",
+    "receiveTimestamp": "2025-11-14T15:09:02.385370184Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "spanId": "ba52967848ad44cd",
+    "timestamp": "2025-11-14T15:09:01.960650Z",
+    "trace": "projects/trailhead-mvp/traces/adca4397250790867152720ce466fd0d"
+  },
+  {
+    "httpRequest": {
+      "latency": "0.173777617s",
+      "protocol": "HTTP/1.1",
+      "referer": "https://cms-service-623946599151.europe-west2.run.app/admin",
+      "remoteIp": "81.108.185.209",
+      "requestMethod": "GET",
+      "requestSize": "1834",
+      "requestUrl": "https://cms-service-623946599151.europe-west2.run.app/admin/telemetry-properties",
+      "responseSize": "1048",
+      "serverIp": "34.143.77.2",
+      "status": 200,
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+    },
+    "insertId": "6917460e000210b567ed2393",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Frequests",
+    "receiveTimestamp": "2025-11-14T15:09:02.385370184Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "spanId": "42822555f4f183b2",
+    "timestamp": "2025-11-14T15:09:01.960375Z",
+    "trace": "projects/trailhead-mvp/traces/2c1fe461c19a03577152720ce466f523"
+  },
+  {
+    "insertId": "6917460d000e0c6c8d9bccf9",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2025-11-14T15:09:02.050309263Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "[2025-11-14 15:09:01.922] \u001b[32mhttp\u001b[39m: GET /admin/init (42 ms) 200",
+    "timestamp": "2025-11-14T15:09:01.920684Z"
+  },
+  {
+    "httpRequest": {
+      "latency": "0.167375508s",
+      "protocol": "HTTP/1.1",
+      "referer": "https://cms-service-623946599151.europe-west2.run.app/admin",
+      "remoteIp": "81.108.185.209",
+      "requestMethod": "GET",
+      "requestSize": "1835",
+      "requestUrl": "https://cms-service-623946599151.europe-west2.run.app/admin/users/me/permissions",
+      "responseSize": "18173",
+      "serverIp": "34.143.77.2",
+      "status": 200,
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+    },
+    "insertId": "6917460e0000c9091f84d459",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Frequests",
+    "receiveTimestamp": "2025-11-14T15:09:02.385370184Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "spanId": "76944e2a0a302f82",
+    "timestamp": "2025-11-14T15:09:01.882652Z",
+    "trace": "projects/trailhead-mvp/traces/c37b29e77c2175e87152720ce466fe84"
+  },
+  {
+    "httpRequest": {
+      "latency": "0.115018176s",
+      "protocol": "HTTP/1.1",
+      "referer": "https://cms-service-623946599151.europe-west2.run.app/admin",
+      "remoteIp": "81.108.185.209",
+      "requestMethod": "GET",
+      "requestSize": "1822",
+      "requestUrl": "https://cms-service-623946599151.europe-west2.run.app/admin/users/me",
+      "responseSize": "1349",
+      "serverIp": "34.143.77.2",
+      "status": 200,
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+    },
+    "insertId": "6917460d000f3dec995bc0ad",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Frequests",
+    "receiveTimestamp": "2025-11-14T15:09:02.053854853Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "spanId": "26ab1ddf36ce2687",
+    "timestamp": "2025-11-14T15:09:01.882328Z",
+    "trace": "projects/trailhead-mvp/traces/2ac5abf0d2b9e6767152720ce466fa79"
+  },
+  {
+    "httpRequest": {
+      "latency": "0.044489222s",
+      "protocol": "HTTP/1.1",
+      "referer": "https://cms-service-623946599151.europe-west2.run.app/admin",
+      "remoteIp": "81.108.185.209",
+      "requestMethod": "GET",
+      "requestSize": "1817",
+      "requestUrl": "https://cms-service-623946599151.europe-west2.run.app/admin/init",
+      "responseSize": "978",
+      "serverIp": "34.143.77.2",
+      "status": 200,
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+    },
+    "insertId": "6917460d000e0fa08547d942",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Frequests",
+    "receiveTimestamp": "2025-11-14T15:09:02.053854853Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "spanId": "6b1f46ce4603e11a",
+    "timestamp": "2025-11-14T15:09:01.875729Z",
+    "trace": "projects/trailhead-mvp/traces/3f63fa12f8ab3c047152720ce466f642"
+  },
+  {
+    "insertId": "6917460d000ac41a3a427476",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2025-11-14T15:09:01.718199199Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "[2025-11-14 15:09:01.707] \u001b[32mhttp\u001b[39m: GET /admin/project-type (2 ms) 200",
+    "timestamp": "2025-11-14T15:09:01.705562Z"
+  },
+  {
+    "httpRequest": {
+      "latency": "0.004554305s",
+      "protocol": "HTTP/1.1",
+      "referer": "https://cms-service-623946599151.europe-west2.run.app/admin",
+      "remoteIp": "81.108.185.209",
+      "requestMethod": "GET",
+      "requestSize": "1860",
+      "requestUrl": "https://cms-service-623946599151.europe-west2.run.app/admin/project-type",
+      "responseSize": "948",
+      "serverIp": "34.143.77.2",
+      "status": 200,
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+    },
+    "insertId": "6917460d000ac6ff5453895a",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Frequests",
+    "receiveTimestamp": "2025-11-14T15:09:01.722680465Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "spanId": "114e5879e94e9fbf",
+    "timestamp": "2025-11-14T15:09:01.700116Z",
+    "trace": "projects/trailhead-mvp/traces/b8decc97aa69092a7152720ce466f27a"
+  },
+  {
+    "insertId": "6917460d0001330fc0493ed0",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2025-11-14T15:09:01.385528118Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "[2025-11-14 15:09:01.079] \u001b[32mhttp\u001b[39m: GET /admin (3 ms) 200",
+    "timestamp": "2025-11-14T15:09:01.078607Z"
+  },
+  {
+    "httpRequest": {
+      "latency": "0.005800993s",
+      "protocol": "HTTP/1.1",
+      "remoteIp": "81.108.185.209",
+      "requestMethod": "GET",
+      "requestSize": "1661",
+      "requestUrl": "https://cms-service-623946599151.europe-west2.run.app/admin",
+      "responseSize": "1926",
+      "serverIp": "34.143.77.2",
+      "status": 200,
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+    },
+    "insertId": "6917460d0001389afaf9835c",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Frequests",
+    "receiveTimestamp": "2025-11-14T15:09:01.387470624Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "spanId": "4ea5f0afab419190",
+    "timestamp": "2025-11-14T15:09:01.072991Z",
+    "trace": "projects/trailhead-mvp/traces/efba949176aa05167152720ce466f40a"
+  },
+  {
+    "insertId": "69174609000948a1596ffac3",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2025-11-14T15:08:57.721659267Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "[2025-11-14 15:08:57.609] \u001b[32mhttp\u001b[39m: GET  (3 ms) 500",
+    "timestamp": "2025-11-14T15:08:57.608417Z"
+  },
+  {
+    "errorGroups": [
+      {
+        "id": "COWosrud_pDE1AE"
+      }
+    ],
+    "insertId": "691746090009489a056b7bb5",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2025-11-14T15:08:57.721659267Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "ERROR",
+    "textPayload": "AssertionError [ERR_ASSERTION]: pathname required\n    at send (/app/node_modules/koa-send/index.js:52:3)\n    at serve (/app/node_modules/koa-static/index.js:44:24)\n    at /app/node_modules/@strapi/admin/dist/server/server/src/routes/serve-admin-panel.js:55:15\n    at dispatch (/app/node_modules/koa-compose/index.js:42:32)\n    at serveAdminMiddleware (/app/node_modules/@strapi/admin/dist/server/server/src/routes/serve-admin-panel.js:13:15)\n    at dispatch (/app/node_modules/koa-compose/index.js:42:32)\n    at returnBodyMiddleware (/app/node_modules/@strapi/core/dist/services/server/compose-endpoint.js:46:26)\n    at dispatch (/app/node_modules/koa-compose/index.js:42:32)\n    at policiesMiddleware (/app/node_modules/@strapi/core/dist/services/server/policy.js:21:15)\n    at dispatch (/app/node_modules/koa-compose/index.js:42:32)",
+    "timestamp": "2025-11-14T15:08:57.608410Z"
+  },
+  {
+    "insertId": "691746090009477c7f03b11c",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2025-11-14T15:08:57.721659267Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "[2025-11-14 15:08:57.609] \u001b[31merror\u001b[39m: pathname required",
+    "timestamp": "2025-11-14T15:08:57.608124Z"
+  },
+  {
+    "httpRequest": {
+      "latency": "0.005584074s",
+      "protocol": "HTTP/1.1",
+      "remoteIp": "81.108.185.209",
+      "requestMethod": "GET",
+      "requestSize": "1338",
+      "requestUrl": "https://cms-service-623946599151.europe-west2.run.app/",
+      "responseSize": "942",
+      "serverIp": "34.143.77.2",
+      "status": 500,
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+    },
+    "insertId": "6917460900094cf7bcf791ba",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Frequests",
+    "receiveTimestamp": "2025-11-14T15:08:57.722268550Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "ERROR",
+    "spanId": "adcc0a612f706fbd",
+    "timestamp": "2025-11-14T15:08:57.602769Z",
+    "trace": "projects/trailhead-mvp/traces/c5b11d4168767962bd6d1b0425c27946"
+  },
+  {
+    "insertId": "691746090005e2680d7814cc",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2025-11-14T15:08:57.721659267Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "[2025-11-14 15:08:57.386] \u001b[32mhttp\u001b[39m: GET  (1 ms) 500",
+    "timestamp": "2025-11-14T15:08:57.385640Z"
+  },
+  {
+    "errorGroups": [
+      {
+        "id": "COWosrud_pDE1AE"
+      }
+    ],
+    "insertId": "691746090005e263c1ae02f8",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2025-11-14T15:08:57.721659267Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "ERROR",
+    "textPayload": "AssertionError [ERR_ASSERTION]: pathname required\n    at send (/app/node_modules/koa-send/index.js:52:3)\n    at serve (/app/node_modules/koa-static/index.js:44:24)\n    at /app/node_modules/@strapi/admin/dist/server/server/src/routes/serve-admin-panel.js:55:15\n    at dispatch (/app/node_modules/koa-compose/index.js:42:32)\n    at serveAdminMiddleware (/app/node_modules/@strapi/admin/dist/server/server/src/routes/serve-admin-panel.js:13:15)\n    at dispatch (/app/node_modules/koa-compose/index.js:42:32)\n    at returnBodyMiddleware (/app/node_modules/@strapi/core/dist/services/server/compose-endpoint.js:46:26)\n    at dispatch (/app/node_modules/koa-compose/index.js:42:32)\n    at policiesMiddleware (/app/node_modules/@strapi/core/dist/services/server/policy.js:21:15)\n    at dispatch (/app/node_modules/koa-compose/index.js:42:32)",
+    "timestamp": "2025-11-14T15:08:57.385635Z"
+  },
+  {
+    "insertId": "691746090005e1586c9db285",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2025-11-14T15:08:57.387396546Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "[2025-11-14 15:08:57.386] \u001b[31merror\u001b[39m: pathname required",
+    "timestamp": "2025-11-14T15:08:57.385368Z"
+  },
+  {
+    "httpRequest": {
+      "latency": "0.003963970s",
+      "protocol": "HTTP/1.1",
+      "remoteIp": "81.108.185.209",
+      "requestMethod": "GET",
+      "requestSize": "1136",
+      "requestUrl": "https://cms-service-623946599151.europe-west2.run.app/",
+      "responseSize": "942",
+      "serverIp": "34.143.77.2",
+      "status": 500,
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+    },
+    "insertId": "691746090005e54b61d8533c",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Frequests",
+    "receiveTimestamp": "2025-11-14T15:08:57.389210634Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "ERROR",
+    "spanId": "e19b32c270ac9ad8",
+    "timestamp": "2025-11-14T15:08:57.375728Z",
+    "trace": "projects/trailhead-mvp/traces/c1078dea3eafb143bd6d1b0425c2747d",
+    "traceSampled": true
+  },
+  {
+    "insertId": "691745da0008623c5d2a8667",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2025-11-14T15:08:10.732145824Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "[2025-11-14 15:08:10.550] \u001b[32mhttp\u001b[39m: GET api:api/content-manager/collection-types/api::accommodation.accommodation?page=1&pageSize=10&sort=AccommodationType%3AASC (149 ms) 200",
+    "timestamp": "2025-11-14T15:08:10.549436Z"
+  },
+  {
+    "insertId": "691745da0007b63a94ec67d6",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2025-11-14T15:08:10.732145824Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "[2025-11-14 15:08:10.506] \u001b[32mhttp\u001b[39m: GET /content-manager/content-types/api::accommodation.accommodation/configuration (110 ms) 200",
+    "timestamp": "2025-11-14T15:08:10.505402Z"
+  },
+  {
+    "httpRequest": {
+      "latency": "0.151441177s",
+      "protocol": "HTTP/1.1",
+      "referer": "https://cms-service-623946599151.europe-west2.run.app/content-manager/collection-types/api::accommodation.accommodation?page=1&pageSize=10&sort=AccommodationType:ASC",
+      "remoteIp": "81.108.185.209",
+      "requestMethod": "GET",
+      "requestSize": "1493",
+      "requestUrl": "https://cms-service-623946599151.europe-west2.run.app/content-manager/collection-types/api::accommodation.accommodation?page=1&pageSize=10&sort=AccommodationType%3AASC",
+      "responseSize": "949",
+      "serverIp": "34.143.72.2",
+      "status": 200,
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+    },
+    "insertId": "691745da0008652b00877f58",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Frequests",
+    "receiveTimestamp": "2025-11-14T15:08:10.734197588Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "spanId": "cc7e501ad65cc589",
+    "timestamp": "2025-11-14T15:08:10.397465Z",
+    "trace": "projects/trailhead-mvp/traces/a8a0fa77dcbbddb1e56ad349e8bbc253"
+  },
+  {
+    "httpRequest": {
+      "latency": "0.112732834s",
+      "protocol": "HTTP/1.1",
+      "referer": "https://cms-service-623946599151.europe-west2.run.app/content-manager/collection-types/api::accommodation.accommodation?page=1&pageSize=10&sort=AccommodationType:ASC",
+      "remoteIp": "81.108.185.209",
+      "requestMethod": "GET",
+      "requestSize": "1456",
+      "requestUrl": "https://cms-service-623946599151.europe-west2.run.app/content-manager/content-types/api::accommodation.accommodation/configuration",
+      "responseSize": "2627",
+      "serverIp": "34.143.72.2",
+      "status": 200,
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+    },
+    "insertId": "691745da0007ba0b157b9e7d",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Frequests",
+    "receiveTimestamp": "2025-11-14T15:08:10.734197588Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "spanId": "8f028413c9ab1550",
+    "timestamp": "2025-11-14T15:08:10.392355Z",
+    "trace": "projects/trailhead-mvp/traces/95d460d3a4c6bd0ee56ad349e8bbc2d0"
+  },
+  {
+    "insertId": "691745da0003daadf0187a9c",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2025-11-14T15:08:10.398320301Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "[2025-11-14 15:08:10.253] \u001b[32mhttp\u001b[39m: GET /content-manager/content-types-settings (305 ms) 200",
+    "timestamp": "2025-11-14T15:08:10.252589Z"
+  },
+  {
+    "insertId": "691745da0000f63870e6776d",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2025-11-14T15:08:10.068209179Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "[2025-11-14 15:08:10.064] \u001b[32mhttp\u001b[39m: GET /content-manager/init (112 ms) 200",
+    "timestamp": "2025-11-14T15:08:10.063032Z"
+  },
+  {
+    "httpRequest": {
+      "latency": "0.117818316s",
+      "protocol": "HTTP/1.1",
+      "referer": "https://cms-service-623946599151.europe-west2.run.app/content-manager",
+      "remoteIp": "81.108.185.209",
+      "requestMethod": "GET",
+      "requestSize": "1303",
+      "requestUrl": "https://cms-service-623946599151.europe-west2.run.app/content-manager/init",
+      "responseSize": "42481",
+      "serverIp": "34.143.72.2",
+      "status": 200,
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+    },
+    "insertId": "691745da0000fdd340026597",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Frequests",
+    "receiveTimestamp": "2025-11-14T15:08:10.069498481Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "spanId": "0eaf1b743ea02e67",
+    "timestamp": "2025-11-14T15:08:09.945630Z",
+    "trace": "projects/trailhead-mvp/traces/da4a5b7115baf544e56ad349e8bbc6ee"
+  },
+  {
+    "httpRequest": {
+      "latency": "0.307354547s",
+      "protocol": "HTTP/1.1",
+      "referer": "https://cms-service-623946599151.europe-west2.run.app/content-manager",
+      "remoteIp": "81.108.185.209",
+      "requestMethod": "GET",
+      "requestSize": "1322",
+      "requestUrl": "https://cms-service-623946599151.europe-west2.run.app/content-manager/content-types-settings",
+      "responseSize": "5708",
+      "serverIp": "34.143.72.2",
+      "status": 200,
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+    },
+    "insertId": "691745da0003de33242de608",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Frequests",
+    "receiveTimestamp": "2025-11-14T15:08:10.401091724Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "spanId": "0fa4408dea74044e",
+    "timestamp": "2025-11-14T15:08:09.944857Z",
+    "trace": "projects/trailhead-mvp/traces/e6508d9993302d6ce56ad349e8bbc6d5",
+    "traceSampled": true
+  },
+  {
+    "insertId": "691745b90009ba7d02f6bd71",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2025-11-14T15:07:37.817269480Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "[2025-11-14 15:07:37.637] \u001b[32mhttp\u001b[39m: GET /admin/guided-tour-meta (147 ms) 200",
+    "timestamp": "2025-11-14T15:07:37.637565Z"
+  },
+  {
+    "insertId": "691745b90007995e43057465",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2025-11-14T15:07:37.817269480Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "[2025-11-14 15:07:37.498] \u001b[32mhttp\u001b[39m: GET /admin/license-limit-information (5 ms) 200",
+    "timestamp": "2025-11-14T15:07:37.498014Z"
+  },
+  {
+    "httpRequest": {
+      "latency": "0.015638424s",
+      "protocol": "HTTP/1.1",
+      "referer": "https://cms-service-623946599151.europe-west2.run.app/admin",
+      "remoteIp": "81.108.185.209",
+      "requestMethod": "GET",
+      "requestSize": "1840",
+      "requestUrl": "https://cms-service-623946599151.europe-west2.run.app/admin/license-limit-information",
+      "responseSize": "1926",
+      "serverIp": "34.143.72.2",
+      "status": 200,
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+    },
+    "insertId": "691745b90007b1f627ac749f",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Frequests",
+    "receiveTimestamp": "2025-11-14T15:07:37.818688661Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "spanId": "746e4bdfeb439331",
+    "timestamp": "2025-11-14T15:07:37.487203Z",
+    "trace": "projects/trailhead-mvp/traces/46175fee5e56c2b332f965af6152bd79"
+  },
+  {
+    "httpRequest": {
+      "latency": "0.151764937s",
+      "protocol": "HTTP/1.1",
+      "referer": "https://cms-service-623946599151.europe-west2.run.app/admin",
+      "remoteIp": "81.108.185.209",
+      "requestMethod": "GET",
+      "requestSize": "1830",
+      "requestUrl": "https://cms-service-623946599151.europe-west2.run.app/admin/guided-tour-meta",
+      "responseSize": "71498",
+      "serverIp": "34.143.72.2",
+      "status": 200,
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+    },
+    "insertId": "691745b90009c480ef45a632",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Frequests",
+    "receiveTimestamp": "2025-11-14T15:07:37.818688661Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "spanId": "4fbb356fcfbf38a4",
+    "timestamp": "2025-11-14T15:07:37.486868Z",
+    "trace": "projects/trailhead-mvp/traces/98e53e9b77ea778b32f965af6152bf97"
+  },
+  {
+    "insertId": "691745b900060165e98337f8",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2025-11-14T15:07:37.486912948Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "[2025-11-14 15:07:37.394] \u001b[32mhttp\u001b[39m: GET /admin/telemetry-properties (170 ms) 200",
+    "timestamp": "2025-11-14T15:07:37.393573Z"
+  },
+  {
+    "insertId": "691745b90005fbc14390b016",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2025-11-14T15:07:37.486912948Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "[2025-11-14 15:07:37.392] \u001b[32mhttp\u001b[39m: GET /admin/information (169 ms) 200",
+    "timestamp": "2025-11-14T15:07:37.392129Z"
+  },
+  {
+    "insertId": "691745b900049a3c20184ad6",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2025-11-14T15:07:37.486912948Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "[2025-11-14 15:07:37.302] \u001b[32mhttp\u001b[39m: GET /admin/users/me/permissions (243 ms) 200",
+    "timestamp": "2025-11-14T15:07:37.301628Z"
+  },
+  {
+    "insertId": "691745b9000358007b399e18",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2025-11-14T15:07:37.486912948Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "[2025-11-14 15:07:37.219] \u001b[32mhttp\u001b[39m: GET /admin/users/me (166 ms) 200",
+    "timestamp": "2025-11-14T15:07:37.219136Z"
+  },
+  {
+    "httpRequest": {
+      "latency": "0.189363545s",
+      "protocol": "HTTP/1.1",
+      "referer": "https://cms-service-623946599151.europe-west2.run.app/admin",
+      "remoteIp": "81.108.185.209",
+      "requestMethod": "GET",
+      "requestSize": "1835",
+      "requestUrl": "https://cms-service-623946599151.europe-west2.run.app/admin/telemetry-properties",
+      "responseSize": "1048",
+      "serverIp": "34.143.72.2",
+      "status": 200,
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+    },
+    "insertId": "691745b900060539de92f070",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Frequests",
+    "receiveTimestamp": "2025-11-14T15:07:37.486184447Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "spanId": "e9846c3f359adb99",
+    "timestamp": "2025-11-14T15:07:37.203518Z",
+    "trace": "projects/trailhead-mvp/traces/5b16db0613413e2da94a21109432c39a"
+  },
+  {
+    "httpRequest": {
+      "latency": "0.192701449s",
+      "protocol": "HTTP/1.1",
+      "referer": "https://cms-service-623946599151.europe-west2.run.app/admin",
+      "remoteIp": "81.108.185.209",
+      "requestMethod": "GET",
+      "requestSize": "1826",
+      "requestUrl": "https://cms-service-623946599151.europe-west2.run.app/admin/information",
+      "responseSize": "1408",
+      "serverIp": "34.143.72.2",
+      "status": 200,
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+    },
+    "insertId": "691745b90005feee0a6a6620",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Frequests",
+    "receiveTimestamp": "2025-11-14T15:07:37.486184447Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "spanId": "fab21e1d48925f6d",
+    "timestamp": "2025-11-14T15:07:37.198764Z",
+    "trace": "projects/trailhead-mvp/traces/7b68db325e003125a94a21109432cadc"
+  },
+  {
+    "insertId": "691745b900026f299f2cd513",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2025-11-14T15:07:37.486912948Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "[2025-11-14 15:07:37.160] \u001b[32mhttp\u001b[39m: GET /admin/init (109 ms) 200",
+    "timestamp": "2025-11-14T15:07:37.159529Z"
+  },
+  {
+    "httpRequest": {
+      "latency": "0.250054970s",
+      "protocol": "HTTP/1.1",
+      "referer": "https://cms-service-623946599151.europe-west2.run.app/admin",
+      "remoteIp": "81.108.185.209",
+      "requestMethod": "GET",
+      "requestSize": "1833",
+      "requestUrl": "https://cms-service-623946599151.europe-west2.run.app/admin/users/me/permissions",
+      "responseSize": "18173",
+      "serverIp": "34.143.72.2",
+      "status": 200,
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+    },
+    "insertId": "691745b90004a35c6fbe5a7a",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Frequests",
+    "receiveTimestamp": "2025-11-14T15:07:37.486184447Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "spanId": "fd4631cf1137ac33",
+    "timestamp": "2025-11-14T15:07:37.052869Z",
+    "trace": "projects/trailhead-mvp/traces/c306ad383bd01b4ba94a21109432cf0a"
+  },
+  {
+    "httpRequest": {
+      "latency": "0.170418467s",
+      "protocol": "HTTP/1.1",
+      "referer": "https://cms-service-623946599151.europe-west2.run.app/admin",
+      "remoteIp": "81.108.185.209",
+      "requestMethod": "GET",
+      "requestSize": "1822",
+      "requestUrl": "https://cms-service-623946599151.europe-west2.run.app/admin/users/me",
+      "responseSize": "1349",
+      "serverIp": "34.143.72.2",
+      "status": 200,
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+    },
+    "insertId": "691745b900035b03008fe5d8",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Frequests",
+    "receiveTimestamp": "2025-11-14T15:07:37.486184447Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "spanId": "6f918958fd8a3730",
+    "timestamp": "2025-11-14T15:07:37.048467Z",
+    "trace": "projects/trailhead-mvp/traces/ac4dfe56e048d14ca94a21109432cc20"
+  },
+  {
+    "httpRequest": {
+      "latency": "0.114822737s",
+      "protocol": "HTTP/1.1",
+      "referer": "https://cms-service-623946599151.europe-west2.run.app/admin",
+      "remoteIp": "81.108.185.209",
+      "requestMethod": "GET",
+      "requestSize": "1818",
+      "requestUrl": "https://cms-service-623946599151.europe-west2.run.app/admin/init",
+      "responseSize": "978",
+      "serverIp": "34.143.72.2",
+      "status": 200,
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+    },
+    "insertId": "691745b9000272dedbd2a1bb",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Frequests",
+    "receiveTimestamp": "2025-11-14T15:07:37.486184447Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "spanId": "f51f633ce7b4ae54",
+    "timestamp": "2025-11-14T15:07:37.044094Z",
+    "trace": "projects/trailhead-mvp/traces/27507c11618af86da94a21109432c703"
+  },
+  {
+    "insertId": "691745b8000d77e089194068",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2025-11-14T15:07:37.151087735Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "[2025-11-14 15:07:36.883] \u001b[32mhttp\u001b[39m: GET /admin/project-type (4 ms) 200",
+    "timestamp": "2025-11-14T15:07:36.882656Z"
+  },
+  {
+    "httpRequest": {
+      "latency": "0.006922847s",
+      "protocol": "HTTP/1.1",
+      "referer": "https://cms-service-623946599151.europe-west2.run.app/admin",
+      "remoteIp": "81.108.185.209",
+      "requestMethod": "GET",
+      "requestSize": "1860",
+      "requestUrl": "https://cms-service-623946599151.europe-west2.run.app/admin/project-type",
+      "responseSize": "948",
+      "serverIp": "34.143.72.2",
+      "status": 200,
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+    },
+    "insertId": "691745b8000d7b07baa5521e",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Frequests",
+    "receiveTimestamp": "2025-11-14T15:07:37.152422202Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "spanId": "4ff1b33bb9ea60fa",
+    "timestamp": "2025-11-14T15:07:36.875009Z",
+    "trace": "projects/trailhead-mvp/traces/cfa808364f9e95c9a94a21109432cee0"
+  },
+  {
+    "insertId": "691745b8000210ecb77eb31a",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2025-11-14T15:07:36.156922009Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "[2025-11-14 15:07:36.136] \u001b[32mhttp\u001b[39m: GET /admin (3 ms) 200",
+    "timestamp": "2025-11-14T15:07:36.135404Z"
+  },
+  {
+    "httpRequest": {
+      "latency": "0.007194116s",
+      "protocol": "HTTP/1.1",
+      "remoteIp": "81.108.185.209",
+      "requestMethod": "GET",
+      "requestSize": "1659",
+      "requestUrl": "https://cms-service-623946599151.europe-west2.run.app/admin",
+      "responseSize": "1926",
+      "serverIp": "34.143.72.2",
+      "status": 200,
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+    },
+    "insertId": "691745b80002196417db165e",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Frequests",
+    "receiveTimestamp": "2025-11-14T15:07:36.154181206Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "spanId": "b5aa0162424eaf98",
+    "timestamp": "2025-11-14T15:07:36.128915Z",
+    "trace": "projects/trailhead-mvp/traces/71ecd1dcb70d3c15a94a21109432c607"
+  },
+  {
+    "insertId": "691745b500031356fc29615b",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2025-11-14T15:07:33.490508938Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "[2025-11-14 15:07:33.202] \u001b[32mhttp\u001b[39m: GET  (1 ms) 500",
+    "timestamp": "2025-11-14T15:07:33.201558Z"
+  },
+  {
+    "errorGroups": [
+      {
+        "id": "COWosrud_pDE1AE"
+      }
+    ],
+    "insertId": "691745b5000313539b398a16",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2025-11-14T15:07:33.490508938Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "ERROR",
+    "textPayload": "AssertionError [ERR_ASSERTION]: pathname required\n    at send (/app/node_modules/koa-send/index.js:52:3)\n    at serve (/app/node_modules/koa-static/index.js:44:24)\n    at /app/node_modules/@strapi/admin/dist/server/server/src/routes/serve-admin-panel.js:55:15\n    at dispatch (/app/node_modules/koa-compose/index.js:42:32)\n    at serveAdminMiddleware (/app/node_modules/@strapi/admin/dist/server/server/src/routes/serve-admin-panel.js:13:15)\n    at dispatch (/app/node_modules/koa-compose/index.js:42:32)\n    at returnBodyMiddleware (/app/node_modules/@strapi/core/dist/services/server/compose-endpoint.js:46:26)\n    at dispatch (/app/node_modules/koa-compose/index.js:42:32)\n    at policiesMiddleware (/app/node_modules/@strapi/core/dist/services/server/policy.js:21:15)\n    at dispatch (/app/node_modules/koa-compose/index.js:42:32)",
+    "timestamp": "2025-11-14T15:07:33.201555Z"
+  },
+  {
+    "insertId": "691745b50003123507884bcd",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2025-11-14T15:07:33.490508938Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "[2025-11-14 15:07:33.202] \u001b[31merror\u001b[39m: pathname required",
+    "timestamp": "2025-11-14T15:07:33.201269Z"
+  },
+  {
+    "httpRequest": {
+      "latency": "0.003809484s",
+      "protocol": "HTTP/1.1",
+      "remoteIp": "81.108.185.209",
+      "requestMethod": "GET",
+      "requestSize": "1336",
+      "requestUrl": "https://cms-service-623946599151.europe-west2.run.app/",
+      "responseSize": "942",
+      "serverIp": "34.143.72.2",
+      "status": 500,
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+    },
+    "insertId": "691745b50003162bbffacf4e",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Frequests",
+    "receiveTimestamp": "2025-11-14T15:07:33.490590288Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "ERROR",
+    "spanId": "64dc94d5a7c8b87e",
+    "timestamp": "2025-11-14T15:07:33.197130Z",
+    "trace": "projects/trailhead-mvp/traces/8a0202483aa923f2a94a21109432c806"
+  },
+  {
+    "insertId": "691745b400076b0bd332d278",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2025-11-14T15:07:32.821186914Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "[2025-11-14 15:07:32.487] \u001b[32mhttp\u001b[39m: GET  (3 ms) 500",
+    "timestamp": "2025-11-14T15:07:32.486155Z"
+  },
+  {
+    "errorGroups": [
+      {
+        "id": "COWosrud_pDE1AE"
+      }
+    ],
+    "insertId": "691745b400076b061261f512",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2025-11-14T15:07:32.821186914Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "ERROR",
+    "textPayload": "AssertionError [ERR_ASSERTION]: pathname required\n    at send (/app/node_modules/koa-send/index.js:52:3)\n    at serve (/app/node_modules/koa-static/index.js:44:24)\n    at /app/node_modules/@strapi/admin/dist/server/server/src/routes/serve-admin-panel.js:55:15\n    at dispatch (/app/node_modules/koa-compose/index.js:42:32)\n    at serveAdminMiddleware (/app/node_modules/@strapi/admin/dist/server/server/src/routes/serve-admin-panel.js:13:15)\n    at dispatch (/app/node_modules/koa-compose/index.js:42:32)\n    at returnBodyMiddleware (/app/node_modules/@strapi/core/dist/services/server/compose-endpoint.js:46:26)\n    at dispatch (/app/node_modules/koa-compose/index.js:42:32)\n    at policiesMiddleware (/app/node_modules/@strapi/core/dist/services/server/policy.js:21:15)\n    at dispatch (/app/node_modules/koa-compose/index.js:42:32)",
+    "timestamp": "2025-11-14T15:07:32.486150Z"
+  },
+  {
+    "insertId": "691745b400076923d3afed50",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2025-11-14T15:07:32.488551932Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "[2025-11-14 15:07:32.486] \u001b[31merror\u001b[39m: pathname required",
+    "timestamp": "2025-11-14T15:07:32.485667Z"
+  },
+  {
+    "httpRequest": {
+      "latency": "0.006197842s",
+      "protocol": "HTTP/1.1",
+      "remoteIp": "81.108.185.209",
+      "requestMethod": "GET",
+      "requestSize": "1136",
+      "requestUrl": "https://cms-service-623946599151.europe-west2.run.app/",
+      "responseSize": "942",
+      "serverIp": "34.143.72.2",
+      "status": 500,
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+    },
+    "insertId": "691745b400076e9863a946a3",
+    "labels": {
+      "instanceId": "00147782963fdd900e0867907e4be9805f4eb44efa1d8f38d21d06004a356ebf1d7b36552985ffa4c73dfcc081d4ee487af00cd7feaecfcf831caba1e8f952151525dbc9b01ee402df64075545"
+    },
+    "logName": "projects/trailhead-mvp/logs/run.googleapis.com%2Frequests",
+    "receiveTimestamp": "2025-11-14T15:07:32.489771615Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "cms-service",
+        "location": "europe-west2",
+        "project_id": "trailhead-mvp",
+        "revision_name": "cms-service-fresh1763113238",
+        "service_name": "cms-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "ERROR",
+    "spanId": "7dc5ba682d2c17d6",
+    "timestamp": "2025-11-14T15:07:32.474411Z",
+    "trace": "projects/trailhead-mvp/traces/ba6166dd34e8d235a94a21109432c25d",
+    "traceSampled": true
+  }
+]
