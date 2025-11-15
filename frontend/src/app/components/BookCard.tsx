@@ -1,5 +1,6 @@
 // src/app/components/BookCard.tsx
 import Image from 'next/image';
+import { resolveMediaUrl } from '../utils/media';
 
 interface BookCardProps {
   book: {
@@ -13,19 +14,13 @@ interface BookCardProps {
 }
 
 export default function BookCard({ book }: BookCardProps) {
-  // Use the same environment variable as hike images
-  const strapiUrl = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337';
-  
-  const coverImageUrl = book.cover_image?.url 
-    ? `${strapiUrl}${book.cover_image.url}` 
-    : null;
+  const coverImageUrl = resolveMediaUrl(book.cover_image);
 
   // Debug logging (remove in production)
   if (process.env.NODE_ENV === 'development') {
     console.log('BookCard Debug:', {
-      strapiUrl,
       originalUrl: book.cover_image?.url,
-      finalUrl: coverImageUrl
+      finalUrl: coverImageUrl,
     });
   }
 
@@ -44,6 +39,8 @@ export default function BookCard({ book }: BookCardProps) {
             alt={`Cover of ${book.title}`}
             fill
             sizes="64px"
+            quality={85}
+            unoptimized
             style={{ objectFit: 'cover' }}
             className="rounded"
           />

@@ -4,7 +4,7 @@
 import Link from 'next/link';
 import { CSSProperties } from 'react';
 
-type Variant = 'primary' | 'secondary';
+type Variant = 'primary' | 'secondary' | 'accent';
 
 interface CTAButtonProps {
   label: string;
@@ -45,6 +45,12 @@ const variants: Record<Variant, CSSProperties> = {
     border: '2px solid var(--ds-primary-foreground)',
     backdropFilter: 'blur(10px)'
   },
+  accent: {
+    background: 'var(--ds-primary)',
+    color: '#fff',
+    border: '2px solid transparent',
+    boxShadow: '0 15px 35px rgba(16, 185, 129, 0.3)'
+  },
 };
 
 export default function CTAButton({ label, href, onClick, variant = 'primary', className, style }: CTAButtonProps) {
@@ -64,4 +70,3 @@ export default function CTAButton({ label, href, onClick, variant = 'primary', c
     </button>
   );
 }
-

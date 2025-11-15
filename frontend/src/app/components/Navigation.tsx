@@ -51,9 +51,8 @@ const Navigation = ({ hikes = [] }: NavigationProps) => {
 
   const navItems = [
     { href: '/', label: 'Hikes' },
-    { href: '/quiz', label: 'Quiz', icon: Target, highlight: true },
-    { href: '/about', label: 'About' },
-    { href: '/contact', label: 'Contact' }
+    { href: '/guides/tmb-for-beginners', label: 'TMB Planning Hub', highlight: true, badge: 'NEW' },
+    { href: '/quiz', label: 'Find your perfect hike', icon: Target }
   ];
 
   const isActive = (href: string) => {
@@ -105,10 +104,10 @@ const Navigation = ({ hikes = [] }: NavigationProps) => {
               {/* Search Button */}
               <button
                 onClick={() => setIsSearchOpen(true)}
-                className="flex items-center gap-2 px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-md text-gray-600 text-sm transition-all hover:bg-white hover:border-gray-300"
+                className="flex items-center gap-2 px-5 py-2 bg-gray-50 border border-gray-200 rounded-md text-gray-600 text-sm transition-all hover:bg-white hover:border-gray-300"
               >
                 <Search className="w-4 h-4" />
-                <span className="text-sm">Search</span>
+                <span className="text-sm">Search trails</span>
               </button>
 
               {/* Navigation Links */}
@@ -130,6 +129,11 @@ const Navigation = ({ hikes = [] }: NavigationProps) => {
                   >
                     {Icon && <Icon className="h-4 w-4" />}
                     {item.label}
+                    {item.badge && (
+                      <span className="text-[10px] uppercase tracking-wide bg-green-100 text-green-700 px-1.5 py-0.5 rounded-full">
+                        {item.badge}
+                      </span>
+                    )}
                   </Link>
                 );
               })}
@@ -178,6 +182,11 @@ const Navigation = ({ hikes = [] }: NavigationProps) => {
                     >
                       {Icon && <Icon className="h-4 w-4" />}
                       {item.label}
+                      {item.badge && (
+                        <span className="text-[10px] uppercase tracking-wide bg-green-100 text-green-700 px-1.5 py-0.5 rounded-full">
+                          {item.badge}
+                        </span>
+                      )}
                     </Link>
                   );
                 })}

@@ -30,7 +30,9 @@ export default function ClientFilters({ hikes }: { hikes: HikeSummary[] }) {
     month: ''
   });
 
-  const [displayCount, setDisplayCount] = useState(15);
+  const INITIAL_DISPLAY = 12;
+  const LOAD_MORE_INCREMENT = 6;
+  const [displayCount, setDisplayCount] = useState(INITIAL_DISPLAY);
 
   // Extract unique values for filter options
   const filterOptions = useMemo(() => {
@@ -162,7 +164,7 @@ export default function ClientFilters({ hikes }: { hikes: HikeSummary[] }) {
       [filterType]: value
     }));
     // Reset display count when filters change
-    setDisplayCount(15);
+    setDisplayCount(INITIAL_DISPLAY);
   };
 
   const handleClearFilters = () => {
@@ -175,12 +177,12 @@ export default function ClientFilters({ hikes }: { hikes: HikeSummary[] }) {
       month: ''
     });
     // Reset display count when clearing filters
-    setDisplayCount(15);
+    setDisplayCount(INITIAL_DISPLAY);
   };
 
   // Load more function
   const handleLoadMore = () => {
-    setDisplayCount(prev => prev + 15);
+    setDisplayCount(prev => prev + LOAD_MORE_INCREMENT);
   };
 
   // Load More button styles

@@ -6,6 +6,7 @@ import { Search, X, MapPin, Clock, TrendingUp } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import type { HikeSummary } from '../../types';
+import { resolveMediaUrl } from '../utils/media';
 
 interface SearchModalProps {
   isOpen: boolean;
@@ -211,19 +212,29 @@ export default function SearchModal({ isOpen, onClose, hikes }: SearchModalProps
                 >
                   {/* Hike Image */}
                   <div className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0">
-                    {result.mainImage?.url ? (
-                      <Image
-                        src={`${process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337'}${result.mainImage.url}`}
-                        alt={result.title}
-                        width={48}
-                        height={48}
-                        className="w-full h-full object-cover"
-                      />
-                    ) : (
-                      <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-                        <MapPin className="w-6 h-6 text-gray-400" />
-                      </div>
-                    )}
+                    {(() => {
+                      const thumbnailUrl = resolveMediaUrl(result.mainImage, {
+                        preferFormats: ['thumbnail', 'small', 'medium'],
+                      });
+                      if (!thumbnailUrl) {
+                        return (
+                          <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                            <MapPin className="w-6 h-6 text-gray-400" />
+                          </div>
+                        );
+                      }
+
+                      return (
+                        <Image
+                          src={thumbnailUrl}
+                          alt={result.title}
+                          width={48}
+                          height={48}
+                          quality={60}
+                          className="w-full h-full object-cover"
+                        />
+                      );
+                    })()}
                   </div>
 
                   {/* Hike Info */}

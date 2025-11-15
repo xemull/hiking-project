@@ -1,5 +1,6 @@
 // src/app/page.tsx
 import { Suspense } from 'react';
+import Image from 'next/image';
 import type { HikeSummary } from '../types';
 import FeaturedHikeSummary from './components/FeaturedHikeSummary';
 import ClientFilters from './components/ClientFilters';
@@ -7,6 +8,9 @@ import UniversalHero from './components/UniversalHero';
 import Navigation from './components/Navigation';
 import { getHikes, getFeaturedHike } from './services/api';
 import Footer from './components/Footer';
+import { Map, ListChecks, Printer } from 'lucide-react';
+
+const TMB_FEATURE_IMAGE = '/uploads/itineraries/gentle-trekker/DJI_0213-HDR.jpg';
 
 // Loading components for better UX
 function FeaturedHikeLoading() {
@@ -152,11 +156,215 @@ export default async function HomePage() {
     }
   };
 
+  const tmbButtonBase = {
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: '0.5rem',
+    borderRadius: '999px',
+    fontWeight: 600,
+    fontSize: '0.95rem',
+    padding: '0.9rem 1.75rem',
+    textDecoration: 'none',
+    textAlign: 'center' as const,
+    flex: '1 1 240px',
+    transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+  };
+
+  const tmbPrimaryButton = {
+    ...tmbButtonBase,
+    background: 'var(--ds-primary)',
+    color: '#fff',
+    boxShadow: 'var(--shadow-float)',
+  };
+
+  const tmbSecondaryButton = {
+    ...tmbButtonBase,
+    background: '#fff',
+    color: 'var(--ds-foreground)',
+    border: '1px solid var(--ds-border)',
+  };
+
   return (
     <>
       <Navigation hikes={hikesForNav} />
       <main style={sectionStyles.main}>
-        <UniversalHero title="Path Unfolding." subtitle="The world's most rewarding trails. Memories that last a lifetime." backgroundSrc="/IMG_1682.webp" ctas={[{ label: "Explore the trails", href: "#featured-hikes", variant: "primary" }, { label: "Find my perfect hike", href: "/quiz", variant: "secondary" }]} overlay="gradient" height="standard" />
+        <UniversalHero
+          title="Path Unfolding."
+          subtitle="The world's most rewarding trails. Memories that last a lifetime."
+          backgroundSrc="/IMG_1682.jpg"
+          ctas={[
+            { label: "Explore the trails", href: "#featured-hikes", variant: "primary" },
+            { label: "Find my perfect hike", href: "/quiz", variant: "secondary" },
+            { label: "Plan my TMB", href: "/guides/tmb-for-beginners", variant: "accent" }
+          ]}
+          overlay="gradient"
+          height="standard"
+          imageQuality={90}
+        />
+
+        <section
+          style={{
+            width: '100%',
+            padding: 'clamp(3rem, 5vw, 5rem) 1.5rem',
+            background: 'white',
+            borderBottom: '1px solid var(--ds-border)',
+          }}
+        >
+          <div
+            className="container mx-auto"
+            style={{
+              maxWidth: '1200px',
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+              columnGap: '3.5rem',
+              rowGap: '3rem',
+              alignItems: 'stretch',
+            }}
+          >
+            <div
+              style={{
+                width: '100%',
+                position: 'relative',
+                minHeight: 'clamp(320px, 45vw, 520px)',
+                borderRadius: '16px',
+                overflow: 'hidden',
+                boxShadow: 'var(--shadow-card)',
+              }}
+            >
+              <Image
+                src={TMB_FEATURE_IMAGE}
+                alt="Tour du Mont Blanc scenery"
+                fill
+                sizes="(max-width: 768px) 100vw, 45vw"
+                quality={90}
+                style={{ objectFit: 'cover' }}
+              />
+            </div>
+
+            <div
+              style={{
+                padding: '0.5rem',
+                textAlign: 'left',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '1.25rem',
+              }}
+            >
+              <h2
+                className="section-title"
+                style={{ marginBottom: '0.25rem' }}
+              >
+                Plan your Tour du Mont Blanc adventure
+              </h2>
+              <p
+                className="section-subtitle"
+                style={{ marginBottom: '0.5rem', lineHeight: 1.85 }}
+              >
+                Tour du Mont Blanc stays with you forever: alpine views, shared stories in refuges, an unmistakable sense of adventure. Get inspired and start planning today.
+              </p>
+
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '0.5rem',
+                  marginBottom: '2.25rem',
+                }}
+              >
+                {[
+                  { icon: ListChecks, title: 'Four detailed itineraries' },
+                  { icon: Map, title: 'All accommodations on the map' },
+                  { icon: Printer, title: 'Printable itinerary builder' },
+                ].map(({ icon: Icon, title }) => (
+                  <div
+                    key={title}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.6rem',
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: '32px',
+                        height: '32px',
+                        borderRadius: '50%',
+                        background: 'var(--ds-primary)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        flexShrink: 0,
+                      }}
+                    >
+                      <Icon size={16} color="white" />
+                    </div>
+                    <span
+                      style={{
+                        fontWeight: 600,
+                        color: '#4a5568',
+                        fontSize: 'var(--text-base)',
+                      }}
+                    >
+                      {title}
+                    </span>
+                  </div>
+                ))}
+              </div>
+
+              <div
+                style={{
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  gap: '0.65rem',
+                }}
+              >
+                {[
+                  {
+                    href: '/guides/tmb-for-beginners',
+                    label: 'Step-by-step guide',
+                    style: tmbPrimaryButton,
+                    className: 'tmb-cta tmb-cta--primary',
+                  },
+                  {
+                    href: '/guides/tmb-for-beginners/accommodations',
+                    label: 'Plan accommodations',
+                    style: tmbSecondaryButton,
+                    className: 'tmb-cta',
+                  },
+                ].map(({ href, label, style, className }) => (
+                  <a
+                    key={href}
+                    href={href}
+                    style={style}
+                    className={className}
+                  >
+                    {label}
+                  </a>
+                ))}
+              </div>
+            </div>
+          </div>
+          <style
+            dangerouslySetInnerHTML={{
+              __html: `
+                .tmb-cta {
+                  text-decoration: none;
+                  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+                }
+                .tmb-cta.tmb-cta--primary:hover {
+                  transform: translateY(-2px);
+                  box-shadow: 0 18px 40px rgba(15, 118, 110, 0.35);
+                }
+                .tmb-cta:not(.tmb-cta--primary):hover {
+                  transform: translateY(-2px);
+                  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.12);
+                  background: #f9fafb;
+                }
+              `,
+            }}
+          />
+        </section>
         
         <section id="featured-hikes">
           {/* Featured section loads independently */}

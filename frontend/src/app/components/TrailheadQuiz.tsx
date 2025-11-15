@@ -5,6 +5,7 @@ import { ChevronRight, MapPin, Clock, TrendingUp, Download, Mail, Star, Mountain
 import { createSlug, getHikes } from '../services/api';
 import Image from 'next/image';
 import type { HikeSummary } from '../../types';
+import { resolveMediaUrl } from '../utils/media';
 
 // Quiz answer interface
 interface QuizAnswer {
@@ -452,8 +453,11 @@ useEffect(() => {
 
   // Function to get image URL from Strapi
   const getHikeImageUrl = (hike: HikeSummary | null): string => {
-    if (!hike?.mainImage?.url) return '/IMG_1633.jpg'; // fallback
-    return `${process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337'}${hike.mainImage.url}`;
+    return (
+      resolveMediaUrl(hike?.mainImage, {
+        preferFormats: ['medium', 'small', 'large', 'thumbnail'],
+      }) || '/IMG_1633.jpg'
+    );
   };
 
   // Function to get description preview from Strapi data

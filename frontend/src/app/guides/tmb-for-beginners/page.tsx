@@ -5,10 +5,11 @@ import { Suspense } from 'react';
 import Navigation from '../../components/Navigation';
 import UniversalHero from '../../components/UniversalHero';
 import Footer from '../../components/Footer';
-import { getHikes, getTrailNews } from '../../services/api';
+import { getHikes, getTrailNews, createSlug } from '../../services/api';
 import { ClientButton } from '../../components/ClientButton';
 import { ItineraryCard } from '../../components/ItineraryCard';
 import type { HikeSummary, TrailNews } from '../../../types';
+import { resolveMediaUrl } from '../../utils/media';
 import {
   Mountain,
   Calendar,
@@ -201,6 +202,57 @@ export default async function TMBGuidePage() {
     allHikes = [];
     trailNews = [];
   }
+
+  const fallbackExploreImage = '/IMG_1633.jpg';
+  const exploreAlternatives = [
+    {
+      title: "Alta Via 1",
+      slug: "alta-via-1",
+      location: "Dolomites, Italy",
+      duration: "7-10 days",
+      distance: "~120km",
+      comparison: ["More dramatic jagged peaks", "Better hut food", "Less crowded than TMB"],
+      matchTitle: "Alta Via 1",
+      fallbackImage: "/IMG_1696.jpg"
+    },
+    {
+      title: "Tour of Monte Rosa",
+      slug: "tour-of-monte-rosa",
+      location: "Swiss-Italian Alps",
+      duration: "9-11 days",
+      distance: "~160km",
+      comparison: ["Higher altitude passes", "More glaciers", "Similar to TMB but quieter"],
+      matchTitle: "Tour of Monte Rosa",
+      fallbackImage: "/IMG_1420.jpg"
+    },
+    {
+      title: "Fisherman's Trail",
+      slug: "fishermans-trail-rota-vicentina",
+      location: "Portugal Coast",
+      duration: "4-5 days",
+      distance: "~75km",
+      comparison: ["Coastal instead of alpine", "Much easier terrain", "Better for beginners"],
+      matchTitle: "Fisherman's Trail",
+      fallbackImage: "/IMG_1436.jpg"
+    },
+  ].map(config => {
+    const matchedHike =
+      allHikes.find(
+        hike =>
+          createSlug(hike.title) === config.slug ||
+          hike.title.toLowerCase().includes(config.matchTitle.toLowerCase())
+      ) || null;
+    const imageUrl =
+      resolveMediaUrl(matchedHike?.mainImage, {
+        useOriginalFirst: true,
+        preferFormats: ['large', 'medium', 'small'],
+      }) || config.fallbackImage || fallbackExploreImage;
+
+    return {
+      ...config,
+      imageUrl,
+    };
+  });
 
   return (
     <div style={{ 
@@ -1386,35 +1438,7 @@ export default async function TMBGuidePage() {
             gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
             gap: '1.5rem'
           }}>
-              {[
-                {
-                  title: "Alta Via 1",
-                  slug: "alta-via-1",
-                  location: "Dolomites, Italy",
-                  duration: "7-10 days",
-                  distance: "~120km",
-                  comparison: ["More dramatic jagged peaks", "Better hut food", "Less crowded than TMB"],
-                  image: "/IMG_1696.jpg"
-                },
-                {
-                  title: "Tour of Monte Rosa",
-                  slug: "tour-of-monte-rosa",
-                  location: "Swiss-Italian Alps",
-                  duration: "9-11 days",
-                  distance: "~160km",
-                  comparison: ["Higher altitude passes", "More glaciers", "Similar to TMB but quieter"],
-                  image: "/IMG_1420.jpg"
-                },
-                {
-                  title: "Fisherman's Trail",
-                  slug: "fishermans-trail-rota-vicentina",
-                  location: "Portugal Coast",
-                  duration: "4-5 days",
-                  distance: "~75km",
-                  comparison: ["Coastal instead of alpine", "Much easier terrain", "Better for beginners"],
-                  image: "/IMG_1436.jpg"
-                }
-              ].map((hike, index) => (
+              {exploreAlternatives.map((hike, index) => (
                   <Link
                     key={index}
                     href={`/hike/${hike.slug}`}
@@ -1437,10 +1461,11 @@ export default async function TMBGuidePage() {
                       background: 'var(--ds-muted)'
                     }}>
                       <Image
-                        src={hike.image}
+                        src={hike.imageUrl}
                         alt={hike.title}
                         fill
                         sizes="340px"
+                        quality={80}
                         style={{ objectFit: 'cover' }}
                       />
                     </div>

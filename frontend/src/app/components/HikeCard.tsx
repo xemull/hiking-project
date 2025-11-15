@@ -3,6 +3,7 @@ import type { HikeSummary } from '../../types';
 import Image from 'next/image';
 import Link from 'next/link';
 import { createSlug } from '../services/api';
+import { resolveMediaUrl } from '../utils/media';
 import { MapPin, Route, Calendar } from 'lucide-react';
 
 export default function HikeCard({ hike }: { hike: HikeSummary }) {
@@ -19,31 +20,10 @@ export default function HikeCard({ hike }: { hike: HikeSummary }) {
     : '';
     
   // Get image URL - use Strapi's optimized formats for faster loading
-  const imageUrl = mainImage ? (() => {
-    const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337';
-
-    // Helper function to handle both relative and absolute URLs
-    const getFullUrl = (url: string) => {
-      // If URL already starts with http:// or https://, it's absolute - return as-is
-      if (url.startsWith('http://') || url.startsWith('https://')) {
-        return url;
-      }
-      // Otherwise it's relative, prepend baseUrl
-      return `${baseUrl}${url}`;
-    };
-
-    // For cards, prefer large format (typically ~800px, ~1MB) for good balance of quality and performance
-    // Falls back to medium (~500px), then original as last resort
-    if (mainImage.formats?.large?.url) {
-      return getFullUrl(mainImage.formats.large.url);
-    } else if (mainImage.formats?.medium?.url) {
-      return getFullUrl(mainImage.formats.medium.url);
-    } else if (mainImage.url) {
-      // Fallback to original only if no resized formats exist
-      return getFullUrl(mainImage.url);
-    }
-    return null;
-  })() : null;
+  const imageUrl = resolveMediaUrl(mainImage, {
+    // Medium and small are enough for 280px tall cards, fall back to large/original if needed
+    preferFormats: ['medium', 'small', 'large', 'thumbnail'],
+  });
   
   const slug = createSlug(title);
 
@@ -219,6 +199,7 @@ export default function HikeCard({ hike }: { hike: HikeSummary }) {
               alt={`Image of ${title}`} 
               fill 
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              quality={65}
               className="hike-image"
               style={{ ...cardStyles.image, objectFit: 'cover' }}
             />

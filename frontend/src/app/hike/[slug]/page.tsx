@@ -17,6 +17,7 @@ import { MapPin, Route, TrendingUp, Mountain, AlertTriangle } from 'lucide-react
 import InlineBackButton from '../../components/InlineBackButton';
 import Footer from '../../components/Footer';
 import CacheClearButton from '../../components/CacheClearButton';
+import { resolveMediaUrl } from '../../utils/media';
 
 // Generate dynamic page metadata for SEO
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
@@ -87,32 +88,10 @@ export default async function HikeDetailPage({ params }: { params: Promise<{ slu
   } = content;
 
   // Get hero image URL - prefer optimized sized variants first for faster LCP
-  const heroImageUrl = mainImage ? (() => {
-    const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337';
-
-    // Helper function to handle both relative and absolute URLs
-    const getFullUrl = (url: string) => {
-      // If URL already starts with http:// or https://, it's absolute - return as-is
-      if (url.startsWith('http://') || url.startsWith('https://')) {
-        return url;
-      }
-      // Otherwise it's relative, prepend baseUrl
-      return `${baseUrl}${url}`;
-    };
-
-    // Prefer sized variants (large → medium) to reduce bytes and decode time
-    if (mainImage.formats?.large?.url) {
-      return getFullUrl(mainImage.formats.large.url);
-    }
-    if (mainImage.formats?.medium?.url) {
-      return getFullUrl(mainImage.formats.medium.url);
-    }
-    // Fallback to original
-    if (mainImage.url) {
-      return getFullUrl(mainImage.url);
-    }
-    return null;
-  })() : null;
+  const heroImageUrl = resolveMediaUrl(mainImage, {
+    useOriginalFirst: true,
+    preferFormats: ['large', 'medium', 'small'],
+  });
 
   // Get countries from relation - handle multiple countries
   const countryNames = countries?.map(country => country.name) || [];
@@ -168,8 +147,8 @@ export default async function HikeDetailPage({ params }: { params: Promise<{ slu
             src={heroImageUrl}
             alt={`${title} hero image`}
             fill
-            sizes="(max-width: 480px) 100vw, (max-width: 768px) 90vw, 750px"
-            quality={75}
+            sizes="(max-width: 480px) 100vw, (max-width: 1200px) 90vw, 1600px"
+            quality={95}
             style={{ objectFit: 'cover', zIndex: 0 }}
             priority={true}
             fetchPriority="high"

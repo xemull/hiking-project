@@ -104,11 +104,11 @@ export default function TMBAccommodationsPage() {
   }, [accommodations, filters]);
 
   // Filter options
-  const filterOptions = {
-    types: ['Refuge', 'Hotel', 'B&B', 'Campsite'],
-    locationTypes: ['On-trail', 'Near-trail', 'Off-trail'],
-    bookingDifficulty: ['Easy', 'Moderate', 'Hard', 'Very Hard']
-  };
+const filterOptions = {
+  types: ['Refuge', 'Hotel', 'B&B', 'Campsite'],
+  locationTypes: ['On-trail', 'Near-trail', 'Off-trail'],
+  bookingDifficulty: ['Easy', 'Moderate', 'Hard']
+};
 
   // Helper function to get display label for dropdowns
   const getDropdownLabel = (category: keyof Filters) => {
@@ -911,17 +911,8 @@ export default function TMBAccommodationsPage() {
                         transform: 'rotate(-45deg)',
                         border: '2px solid white',
                         boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center'
-                      }}>
-                        <span style={{
-                          transform: 'rotate(45deg)',
-                          fontSize: '10px',
-                          color: 'white',
-                          fontWeight: 700
-                        }}>1</span>
-                      </div>
+                        display: 'inline-block'
+                      }} />
                       <span style={{ fontSize: '0.75rem' }}>Refuge</span>
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
@@ -933,17 +924,8 @@ export default function TMBAccommodationsPage() {
                         transform: 'rotate(-45deg)',
                         border: '2px solid white',
                         boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center'
-                      }}>
-                        <span style={{
-                          transform: 'rotate(45deg)',
-                          fontSize: '10px',
-                          color: 'white',
-                          fontWeight: 700
-                        }}>1</span>
-                      </div>
+                        display: 'inline-block'
+                      }} />
                       <span style={{ fontSize: '0.75rem' }}>Hotel</span>
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
@@ -955,40 +937,9 @@ export default function TMBAccommodationsPage() {
                         transform: 'rotate(-45deg)',
                         border: '2px solid white',
                         boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center'
-                      }}>
-                        <span style={{
-                          transform: 'rotate(45deg)',
-                          fontSize: '10px',
-                          color: 'white',
-                          fontWeight: 700
-                        }}>1</span>
-                      </div>
-                      <span style={{ fontSize: '0.75rem' }}>Gite</span>
-                    </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                      <div style={{
-                        width: '20px',
-                        height: '20px',
-                        background: '#ea580c',
-                        borderRadius: '50% 50% 50% 0',
-                        transform: 'rotate(-45deg)',
-                        border: '2px solid white',
-                        boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center'
-                      }}>
-                        <span style={{
-                          transform: 'rotate(45deg)',
-                          fontSize: '10px',
-                          color: 'white',
-                          fontWeight: 700
-                        }}>1</span>
-                      </div>
-                      <span style={{ fontSize: '0.75rem' }}>Camping</span>
+                        display: 'inline-block'
+                      }} />
+                      <span style={{ fontSize: '0.75rem' }}>Campsite</span>
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                       <div style={{
@@ -999,47 +950,37 @@ export default function TMBAccommodationsPage() {
                         transform: 'rotate(-45deg)',
                         border: '2px solid white',
                         boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center'
-                      }}>
-                        <span style={{
-                          transform: 'rotate(45deg)',
-                          fontSize: '10px',
-                          color: 'white',
-                          fontWeight: 700
-                        }}>1</span>
-                      </div>
+                        display: 'inline-block'
+                      }} />
                       <span style={{ fontSize: '0.75rem' }}>B&B</span>
                     </div>
+                  </div>
+
+                  <div style={{
+                    marginTop: '0.5rem',
+                    fontSize: '0.7rem',
+                    color: 'var(--ds-muted-foreground)',
+                    fontStyle: 'italic'
+                  }}>
+                    Numbers show TMB stage (1-11)
                   </div>
                 </div>
 
                 <div style={{
-                  borderTop: '1px solid #f3f4f6',
-                  paddingTop: '0.75rem',
-                  marginTop: '0.75rem'
+                  marginTop: '0.75rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                  fontSize: '0.75rem',
+                  color: 'var(--ds-muted-foreground)'
                 }}>
                   <div style={{
-                    fontSize: '0.75rem',
-                    fontWeight: 600,
-                    color: 'var(--ds-muted-foreground)',
-                    marginBottom: '0.5rem'
-                  }}>Other:</div>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                      <div style={{
-                        width: '24px',
-                        height: '3px',
-                        background: '#ef4444',
-                        borderRadius: '1px'
-                      }}></div>
-                      <span style={{ fontSize: '0.75rem' }}>TMB Trail</span>
-                    </div>
-                    <div style={{ fontSize: '0.7rem', color: 'var(--ds-muted-foreground)', fontStyle: 'italic' }}>
-                      Numbers show TMB stage (1-11)
-                    </div>
-                  </div>
+                    width: '24px',
+                    height: '3px',
+                    background: '#ef4444',
+                    borderRadius: '1px'
+                  }}></div>
+                  <span>TMB Trail</span>
                 </div>
 
                 <div style={{

@@ -3,6 +3,7 @@
 
 import { useEffect, useState, useMemo } from 'react';
 import { TMBAccommodation, TMBTrailData } from '../services/api';
+import 'leaflet/dist/leaflet.css';
 
 interface TMBAccommodationsMapProps {
   trailData: TMBTrailData | null;
@@ -109,13 +110,13 @@ export default function TMBAccommodationsMap({
           const fontSize = isSelected ? 14 : 12;
 
           // Color based on accommodation type instead of stage
-          const typeColors: { [key: string]: string } = {
-            'Refuge': '#2563eb', // blue
-            'Hotel': '#dc2626', // red
-            'Gite': '#16a34a', // green
-            'Camping': '#ea580c', // orange
-            'B&B': '#9333ea' // purple
-          };
+        const typeColors: { [key: string]: string } = {
+          'Refuge': '#2563eb', // blue
+          'Hotel': '#dc2626', // red
+          'B&B': '#9333ea', // purple
+          'Campsite': '#ea580c', // orange
+          'Camping': '#ea580c', // legacy support
+        };
 
           const bgColor = typeColors[type] || '#6b7280'; // grey default
 

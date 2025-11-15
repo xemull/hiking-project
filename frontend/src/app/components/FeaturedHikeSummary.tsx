@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { createSlug } from '../services/api';
 import { MapPin, Route, TrendingUp, Calendar, Mountain } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import { resolveMediaUrl } from '../utils/media';
 
 export default function FeaturedHikeSummary({ hike }: { hike: HikeSummary }) {
   const { title, Length, Difficulty, countries, mainImage, Description, Best_time, sceneries, accommodations, routeType } = hike;
@@ -23,20 +24,10 @@ export default function FeaturedHikeSummary({ hike }: { hike: HikeSummary }) {
     return () => window.removeEventListener('resize', checkScreenSize);
   }, []);
 
-  // Helper function to handle both relative and absolute URLs
-  const getFullUrl = (url: string) => {
-    // If URL already starts with http:// or https://, it's absolute - return as-is
-    if (url.startsWith('http://') || url.startsWith('https://')) {
-      return url;
-    }
-    // Otherwise it's relative, prepend baseUrl
-    const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337';
-    return `${baseUrl}${url}`;
-  };
-
-  const imageUrl = mainImage?.url
-    ? getFullUrl(mainImage.url)
-    : '/placeholder-image.jpg';
+  const imageUrl =
+    resolveMediaUrl(mainImage, {
+      preferFormats: ['large', 'medium', 'small'],
+    }) || '/IMG_1633.jpg';
   
   const countryNames = countries?.map(country => country.name) || [];
   const countryDisplay = countryNames.length > 0 
@@ -230,6 +221,7 @@ export default function FeaturedHikeSummary({ hike }: { hike: HikeSummary }) {
             alt={`Image of ${title}`}
             fill
             sizes="(max-width: 768px) 100vw, 50vw"
+            quality={90}
             style={{ ...styles.image, objectFit: 'cover' }}
             priority={true}
           />

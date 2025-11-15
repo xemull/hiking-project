@@ -19,6 +19,7 @@ interface UniversalHeroProps {
   ctas?: CTA[];
   height?: HeroHeight;
   overlay?: Overlay;
+  imageQuality?: number;
 }
 
 const heightToVH: Record<HeroHeight, string> = {
@@ -41,6 +42,7 @@ export default function UniversalHero({
   ctas = [],
   height = 'standard',
   overlay = 'gradient',
+  imageQuality = 85,
 }: UniversalHeroProps) {
   return (
     <section
@@ -63,7 +65,7 @@ export default function UniversalHero({
         priority
         fetchPriority="high"
         sizes="(max-width: 480px) 100vw, (max-width: 768px) 90vw, 1200px"
-        quality={75}
+        quality={imageQuality}
         style={{ objectFit: 'cover', objectPosition: 'center' }}
       />
 
@@ -135,4 +137,3 @@ export default function UniversalHero({
     </section>
   );
 }
-

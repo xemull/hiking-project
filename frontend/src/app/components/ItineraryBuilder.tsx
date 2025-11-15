@@ -36,6 +36,7 @@ interface ItineraryDay {
   elevationGain?: number;
   elevationLoss?: number;
   estimatedTime?: string;
+  estimatedHours?: number;
 }
 
 interface StageGroup {
@@ -66,7 +67,7 @@ function estimateHikingTime(
   elevationLoss: number,
   startAccommodation?: TMBAccommodation,
   endAccommodation?: TMBAccommodation
-): string {
+): { formatted: string; hours: number } {
   // Base time for horizontal distance (5 km/hr on flat terrain)
   let totalHours = distance / 5;
 
@@ -99,13 +100,16 @@ function estimateHikingTime(
   const hours = Math.floor(totalHours);
   const minutes = Math.round((totalHours - hours) * 60);
 
+  let formatted: string;
   if (hours === 0) {
-    return `${minutes} min`;
+    formatted = `${minutes} min`;
   } else if (minutes === 0) {
-    return `${hours}h`;
+    formatted = `${hours}h`;
   } else {
-    return `${hours}h ${minutes}min`;
+    formatted = `${hours}h ${minutes}min`;
   }
+
+  return { formatted, hours: totalHours };
 }
 
 // Find the nearest point on the GPX track to a given location
@@ -235,7 +239,7 @@ const ItineraryBuilder = forwardRef<ItineraryBuilderRef, ItineraryBuilderProps>(
     return itinerary.map((day, index) => {
       if (index === 0) {
         // First day - no previous accommodation
-        return { ...day, distance: 0, elevationGain: 0, elevationLoss: 0, estimatedTime: 'Start' };
+        return { ...day, distance: 0, elevationGain: 0, elevationLoss: 0, estimatedTime: 'Start', estimatedHours: 0 };
       }
 
       const prevDay = itinerary[index - 1];
@@ -262,7 +266,7 @@ const ItineraryBuilder = forwardRef<ItineraryBuilderRef, ItineraryBuilderProps>(
             trailData.track.coordinates
           );
 
-          const estimatedTime = estimateHikingTime(
+          const { formatted: estimatedTime, hours: estimatedHours } = estimateHikingTime(
             stats.distance,
             stats.elevationGain,
             stats.elevationLoss,
@@ -275,7 +279,8 @@ const ItineraryBuilder = forwardRef<ItineraryBuilderRef, ItineraryBuilderProps>(
             distance: stats.distance,
             elevationGain: stats.elevationGain,
             elevationLoss: stats.elevationLoss,
-            estimatedTime
+            estimatedTime,
+            estimatedHours
           };
         } catch (error) {
           console.error('Error calculating GPX-based stats:', error);
@@ -294,7 +299,7 @@ const ItineraryBuilder = forwardRef<ItineraryBuilderRef, ItineraryBuilderProps>(
       const elevationDiff = (day.accommodation.altitude || 0) - (prevDay.accommodation.altitude || 0);
       const elevationGain = Math.max(0, elevationDiff);
       const elevationLoss = Math.max(0, -elevationDiff);
-      const estimatedTime = estimateHikingTime(
+      const { formatted: estimatedTime, hours: estimatedHours } = estimateHikingTime(
         distance,
         elevationGain,
         elevationLoss,
@@ -307,7 +312,8 @@ const ItineraryBuilder = forwardRef<ItineraryBuilderRef, ItineraryBuilderProps>(
         distance,
         elevationGain,
         elevationLoss,
-        estimatedTime
+        estimatedTime,
+        estimatedHours
       };
     });
   }, [itinerary, trailData]);
@@ -321,7 +327,7 @@ const ItineraryBuilder = forwardRef<ItineraryBuilderRef, ItineraryBuilderProps>(
     const totalElevationLoss = enrichedItinerary.reduce((sum, day) => sum + (day.elevationLoss || 0), 0);
 
     return {
-      days: enrichedItinerary.length,
+      days: Math.max(0, enrichedItinerary.length - 1),
       distance: totalDistance,
       elevationGain: totalElevationGain,
       elevationLoss: totalElevationLoss
@@ -736,6 +742,16 @@ const ItineraryBuilder = forwardRef<ItineraryBuilderRef, ItineraryBuilderProps>(
                         padding: '0.75rem 0',
                         position: 'relative'
                       }}>
+                        {(() => {
+                          const nextSegment = enrichedItinerary[index + 1];
+                          const ascent = Math.round(nextSegment.elevationGain || 0);
+                          const descent = Math.round(nextSegment.elevationLoss || 0);
+                          const roundedHours = nextSegment.estimatedHours != null
+                            ? Math.max(0, Math.round(nextSegment.estimatedHours))
+                            : null;
+
+                          return (
+                            <>
                         {/* Vertical line */}
                         <div style={{
                           width: '2px',
@@ -762,13 +778,13 @@ const ItineraryBuilder = forwardRef<ItineraryBuilderRef, ItineraryBuilderProps>(
                         }}>
                           <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
                             <MapPin style={{ width: '0.75rem', height: '0.75rem' }} />
-                            {enrichedItinerary[index + 1].distance!.toFixed(1)} km
+                            {nextSegment.distance!.toFixed(1)} km
                           </span>
-                          <span>↑ {enrichedItinerary[index + 1].elevationGain}m</span>
-                          <span>↓ {enrichedItinerary[index + 1].elevationLoss}m</span>
+                          <span>↑ {ascent}m</span>
+                          <span>↓ {descent}m</span>
                           <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
                             <Clock style={{ width: '0.75rem', height: '0.75rem' }} />
-                            ~{enrichedItinerary[index + 1].estimatedTime}
+                            {roundedHours !== null ? `~${roundedHours}h` : `~${nextSegment.estimatedTime}`}
                           </span>
                         </div>
 
@@ -779,6 +795,9 @@ const ItineraryBuilder = forwardRef<ItineraryBuilderRef, ItineraryBuilderProps>(
                           background: 'linear-gradient(to bottom, hsl(145, 60%, 75%), #e5e7eb)',
                           marginTop: '0.375rem'
                         }} />
+                            </>
+                          );
+                        })()}
                       </div>
                     )}
                   </div>
