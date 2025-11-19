@@ -99,6 +99,17 @@
         "Hard",
         "Very Hard"
       ]
+    },
+    "camping_available": {
+      "type": "boolean"
+    },
+    "room_type": {
+      "type": "enumeration",
+      "enum": [
+        "shared_only",
+        "private_only",
+        "both"
+      ]
     }
   }
 }

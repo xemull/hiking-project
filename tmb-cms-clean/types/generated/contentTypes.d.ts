@@ -667,6 +667,7 @@ export interface ApiTmbaccommodationTmbaccommodation
     booking_method: Schema.Attribute.Enumeration<
       ['Online Portal', 'Email', 'Phone', 'Multiple']
     >;
+    camping_available: Schema.Attribute.Boolean;
     capacity: Schema.Attribute.Integer;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -693,6 +694,9 @@ export interface ApiTmbaccommodationTmbaccommodation
     >;
     price_range: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
+    room_type: Schema.Attribute.Enumeration<
+      ['shared_only', 'private_only', 'both']
+    >;
     stage: Schema.Attribute.Relation<'manyToOne', 'api::tmb-stage.tmb-stage'>;
     type: Schema.Attribute.Enumeration<['Refuge', 'Hotel', 'B&B', 'Campsite']>;
     updatedAt: Schema.Attribute.DateTime;
