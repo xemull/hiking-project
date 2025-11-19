@@ -501,6 +501,15 @@ export interface TMBTrailData {
   };
 }
 
+export interface TMBTrailSegment {
+  id: string;
+  name: string;
+  track: {
+    type: string;
+    coordinates: Array<[number, number]>;
+  };
+}
+
 // Get all TMB accommodations from Strapi
 export async function getTMBAccommodations(): Promise<TMBAccommodation[] | null> {
   const cacheKey = 'tmb-accommodations';
@@ -643,6 +652,42 @@ export async function getTrailNews(trail?: string, limit: number = 5): Promise<T
     return newsItems;
   } catch (error) {
     console.error('❌ Error fetching trail news:', error);
+    return null;
+  }
+}
+
+export async function getTMBTrailVariants(): Promise<TMBTrailSegment[] | null> {
+  const cacheKey = 'tmb-trail-variants';
+
+  const cached = getCachedData<TMBTrailSegment[]>(cacheKey);
+  if (cached) {
+    console.log('Using cached TMB trail variants');
+    return cached;
+  }
+
+  const fullUrl = `${CUSTOM_BACKEND_URL}/api/tmb/trail/variants`;
+
+  try {
+    const response = await fetchWithTimeout(fullUrl, {
+      cache: 'force-cache',
+      timeout: 10000
+    });
+
+    console.log(`TMB trail variants API response status: ${response.status}`);
+
+    if (!response.ok) {
+      console.error('TMB trail variants API response not ok:', response.status, response.statusText);
+      return null;
+    }
+
+    const json = await response.json();
+    const trails: TMBTrailSegment[] = json?.trails || [];
+    console.log(`TMB trail variants received: ${trails.length} tracks`);
+
+    setCachedData(cacheKey, trails, 1800000);
+    return trails;
+  } catch (error) {
+    console.error('Error fetching TMB trail variants:', error);
     return null;
   }
 }

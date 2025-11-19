@@ -8,7 +8,7 @@ type Overlay = 'none' | 'light' | 'gradient';
 interface CTA {
   label: string;
   href?: string;
-  variant?: 'primary' | 'secondary';
+  variant?: 'primary' | 'secondary' | 'accent';
 }
 
 interface UniversalHeroProps {

@@ -7,7 +7,7 @@ import Footer from '../../../components/Footer';
 import UniversalHero from '../../../components/UniversalHero';
 import TMBAccommodationsMap from '../../../components/TMBAccommodationsMap';
 import ItineraryBuilder, { type ItineraryBuilderRef } from '../../../components/ItineraryBuilder';
-import { getTMBAccommodations, getTMBTrailData, type TMBAccommodation, type TMBTrailData } from '../../../services/api';
+import { getTMBAccommodations, getTMBTrailData, getTMBTrailVariants, type TMBAccommodation, type TMBTrailData, type TMBTrailSegment } from '../../../services/api';
 import { MapPin, Bed, Phone, Mail, Globe, Filter, X, ChevronDown } from 'lucide-react';
 
 // Filter types
@@ -23,9 +23,12 @@ const defaultFilters: Filters = {
   bookingDifficulty: []
 };
 
+type ColoredTrailSegment = TMBTrailSegment & { color: string };
+
 export default function TMBAccommodationsPage() {
   const [accommodations, setAccommodations] = useState<TMBAccommodation[]>([]);
   const [trailData, setTrailData] = useState<TMBTrailData | null>(null);
+  const [trailSegments, setTrailSegments] = useState<ColoredTrailSegment[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [filters, setFilters] = useState<Filters>(defaultFilters);
@@ -66,9 +69,9 @@ export default function TMBAccommodationsPage() {
     const loadData = async () => {
       setLoading(true);
       try {
-        const [accommodationsData, trailDataResult] = await Promise.all([
+        const [accommodationsData, trailVariantResult] = await Promise.all([
           getTMBAccommodations(),
-          getTMBTrailData()
+          getTMBTrailVariants()
         ]);
 
         if (accommodationsData) {
@@ -77,8 +80,23 @@ export default function TMBAccommodationsPage() {
           setError('Failed to load accommodations data');
         }
 
-        if (trailDataResult) {
-          setTrailData(trailDataResult);
+        if (trailVariantResult && trailVariantResult.length > 0) {
+          const colorMap: Record<string, string> = {
+            tmb_classic: '#ef4444',
+            tmb_variants: '#0ea5e9'
+          };
+          const coloredSegments = trailVariantResult.map(trail => ({
+            ...trail,
+            color: colorMap[trail.id] || '#ef4444'
+          }));
+          setTrailSegments(coloredSegments);
+          setTrailData(null);
+        } else {
+          setTrailSegments([]);
+          const fallbackTrail = await getTMBTrailData();
+          if (fallbackTrail) {
+            setTrailData(fallbackTrail);
+          }
         }
 
       } catch (err) {
@@ -104,11 +122,19 @@ export default function TMBAccommodationsPage() {
   }, [accommodations, filters]);
 
   // Filter options
-const filterOptions = {
-  types: ['Refuge', 'Hotel', 'B&B', 'Campsite'],
-  locationTypes: ['On-trail', 'Near-trail', 'Off-trail'],
-  bookingDifficulty: ['Easy', 'Moderate', 'Hard']
-};
+  const filterOptions = {
+    types: ['Refuge', 'Hotel', 'B&B', 'Campsite'],
+    locationTypes: ['On-trail', 'Near-trail', 'Off-trail'],
+    bookingDifficulty: ['Easy', 'Moderate', 'Hard']
+  };
+
+  const trailLegendItems = trailSegments.length > 0
+    ? trailSegments.map(trail => ({
+      id: trail.id,
+      name: trail.name,
+      color: trail.color
+    }))
+    : [{ id: 'tmb-default', name: 'TMB Trail', color: '#ef4444' }];
 
   // Helper function to get display label for dropdowns
   const getDropdownLabel = (category: keyof Filters) => {
@@ -862,6 +888,7 @@ const filterOptions = {
               }}>
                 <TMBAccommodationsMap
                   trailData={trailData}
+                  trailSegments={trailSegments}
                   accommodations={filteredAccommodations}
                   selectedAccommodation={selectedAccommodation}
                   onAccommodationSelect={setSelectedAccommodation}
@@ -969,18 +996,36 @@ const filterOptions = {
                 <div style={{
                   marginTop: '0.75rem',
                   display: 'flex',
-                  alignItems: 'center',
-                  gap: '0.5rem',
-                  fontSize: '0.75rem',
-                  color: 'var(--ds-muted-foreground)'
+                  flexDirection: 'column',
+                  gap: '0.35rem'
                 }}>
                   <div style={{
-                    width: '24px',
-                    height: '3px',
-                    background: '#ef4444',
-                    borderRadius: '1px'
-                  }}></div>
-                  <span>TMB Trail</span>
+                    fontSize: '0.75rem',
+                    fontWeight: 600,
+                    color: 'var(--ds-muted-foreground)'
+                  }}>
+                    TMB Routes:
+                  </div>
+                  {trailLegendItems.map(item => (
+                    <div
+                      key={item.id}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.5rem',
+                        fontSize: '0.75rem',
+                        color: 'var(--ds-muted-foreground)'
+                      }}
+                    >
+                      <div style={{
+                        width: '24px',
+                        height: '3px',
+                        background: item.color,
+                        borderRadius: '1px'
+                      }}></div>
+                      <span>{item.name}</span>
+                    </div>
+                  ))}
                 </div>
 
                 <div style={{

@@ -83,7 +83,7 @@ const Navigation = ({ hikes = [] }: NavigationProps) => {
             {/* Logo */}
             <Link
               href="/"
-              className="hover:opacity-80 transition-opacity"
+              className="hover:opacity-80 transition-opacity ml-1 sm:ml-2 flex items-center"
             >
               <Image
                 src="/trailhead-logo.png"
@@ -93,7 +93,7 @@ const Navigation = ({ hikes = [] }: NavigationProps) => {
                 priority
                 style={{
                   height: 'auto',
-                  maxHeight: '24px',
+                  maxHeight: '32px',
                   width: 'auto'
                 }}
               />

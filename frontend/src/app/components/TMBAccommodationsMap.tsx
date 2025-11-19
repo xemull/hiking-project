@@ -2,11 +2,12 @@
 'use client';
 
 import { useEffect, useState, useMemo } from 'react';
-import { TMBAccommodation, TMBTrailData } from '../services/api';
+import { TMBAccommodation, TMBTrailData, TMBTrailSegment } from '../services/api';
 import 'leaflet/dist/leaflet.css';
 
 interface TMBAccommodationsMapProps {
   trailData: TMBTrailData | null;
+  trailSegments?: Array<TMBTrailSegment & { color?: string }>;
   accommodations: TMBAccommodation[];
   selectedAccommodation?: TMBAccommodation | null;
   onAccommodationSelect?: (accommodation: TMBAccommodation | null) => void;
@@ -18,8 +19,28 @@ interface TMBAccommodationsMapProps {
   height?: string;
 }
 
+type TrailPolyline = {
+  id: string;
+  name: string;
+  positions: [number, number][];
+  color?: string;
+};
+
+interface ProcessedTrailResult {
+  polylines: TrailPolyline[];
+  allPositions: [number, number][];
+  center: [number, number];
+  bounds: {
+    minLat: number;
+    maxLat: number;
+    minLng: number;
+    maxLng: number;
+  };
+}
+
 export default function TMBAccommodationsMap({
   trailData,
+  trailSegments = [],
   accommodations,
   selectedAccommodation,
   onAccommodationSelect,
@@ -35,9 +56,30 @@ export default function TMBAccommodationsMap({
   const [mapInstance, setMapInstance] = useState<any>(null);
 
   // Process trail data for map
-  const processedTrail = useMemo(() => {
-    if (!trailData?.track?.coordinates || trailData.track.coordinates.length === 0) {
-      // If no trail data, calculate center from accommodations
+  const processedTrail = useMemo<ProcessedTrailResult | null>(() => {
+    const polylines: TrailPolyline[] = [];
+
+    const addTrail = (id: string, name: string, coordinates: Array<[number, number]>, color?: string) => {
+      if (!coordinates || coordinates.length === 0) return;
+      const positions = coordinates.map(coord => [coord[1], coord[0]] as [number, number]);
+      polylines.push({ id, name, positions, color });
+    };
+
+    if (trailSegments.length > 0) {
+      trailSegments.forEach(segment => {
+        if (segment.track?.coordinates) {
+          addTrail(segment.id || segment.name, segment.name, segment.track.coordinates, segment.color);
+        }
+      });
+    } else if (trailData?.track?.coordinates && trailData.track.coordinates.length > 0) {
+      addTrail(
+        trailData.id ? trailData.id.toString() : trailData.name,
+        trailData.name,
+        trailData.track.coordinates
+      );
+    }
+
+    if (polylines.length === 0) {
       if (accommodations.length > 0) {
         const lats = accommodations.map(acc => acc.latitude);
         const lngs = accommodations.map(acc => acc.longitude);
@@ -47,7 +89,8 @@ export default function TMBAccommodationsMap({
         const maxLng = Math.max(...lngs);
 
         return {
-          positions: null,
+          polylines,
+          allPositions: [],
           center: [(minLat + maxLat) / 2, (minLng + maxLng) / 2] as [number, number],
           bounds: {
             minLat: minLat - 0.1,
@@ -60,23 +103,20 @@ export default function TMBAccommodationsMap({
       return null;
     }
 
-    // Convert GeoJSON [lon, lat] to Leaflet [lat, lon] format
-    const positions = trailData.track.coordinates.map(coord => [coord[1], coord[0]] as [number, number]);
-
-    // Calculate bounds
-    const lats = positions.map(pos => pos[0]);
-    const lngs = positions.map(pos => pos[1]);
+    const allPositions = polylines.flatMap(trail => trail.positions);
+    const lats = allPositions.map(pos => pos[0]);
+    const lngs = allPositions.map(pos => pos[1]);
     const minLat = Math.min(...lats);
     const maxLat = Math.max(...lats);
     const minLng = Math.min(...lngs);
     const maxLng = Math.max(...lngs);
 
-    // Add padding to bounds
-    const latPadding = (maxLat - minLat) * 0.1;
-    const lngPadding = (maxLng - minLng) * 0.1;
+    const latPadding = (maxLat - minLat) * 0.1 || 0.05;
+    const lngPadding = (maxLng - minLng) * 0.1 || 0.05;
 
     return {
-      positions,
+      polylines,
+      allPositions,
       center: [(minLat + maxLat) / 2, (minLng + maxLng) / 2] as [number, number],
       bounds: {
         minLat: minLat - latPadding,
@@ -85,7 +125,7 @@ export default function TMBAccommodationsMap({
         maxLng: maxLng + lngPadding
       }
     };
-  }, [trailData, accommodations]);
+  }, [trailData, trailSegments, accommodations]);
 
   // Dynamically import react-leaflet and leaflet
   useEffect(() => {
@@ -114,8 +154,8 @@ export default function TMBAccommodationsMap({
           'Refuge': '#2563eb', // blue
           'Hotel': '#dc2626', // red
           'B&B': '#9333ea', // purple
-          'Campsite': '#ea580c', // orange
-          'Camping': '#ea580c', // legacy support
+          'Campsite': '#16a34a', // green to match legend
+          'Camping': '#16a34a', // legacy support
         };
 
           const bgColor = typeColors[type] || '#6b7280'; // grey default
@@ -181,12 +221,21 @@ export default function TMBAccommodationsMap({
     if (!mapInstance || !processedTrail || !leaflet) return;
 
     setTimeout(() => {
-      const bounds = leaflet.latLngBounds(processedTrail.positions);
+      const fitPoints: [number, number][] = [];
 
-      // Include accommodation markers in bounds
+      if (processedTrail.allPositions.length > 0) {
+        fitPoints.push(...processedTrail.allPositions);
+      }
+
       accommodations.forEach(acc => {
-        bounds.extend([acc.latitude, acc.longitude]);
+        fitPoints.push([acc.latitude, acc.longitude]);
       });
+
+      if (fitPoints.length === 0) {
+        return;
+      }
+
+      const bounds = leaflet.latLngBounds(fitPoints);
 
       mapInstance.fitBounds(bounds, {
         padding: [20, 20],
@@ -257,17 +306,18 @@ export default function TMBAccommodationsMap({
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
         
-        {/* Trail polyline - only show if trail data exists */}
-        {processedTrail.positions && (
+        {/* Trail polylines */}
+        {processedTrail.polylines.map(polyline => (
           <Polyline
-            positions={processedTrail.positions}
-            color="#ef4444"
-            weight={3}
-            opacity={0.8}
+            key={polyline.id}
+            positions={polyline.positions}
+            color={polyline.color || '#ef4444'}
+            weight={5}
+            opacity={0.65}
             lineCap="round"
             lineJoin="round"
           />
-        )}
+        ))}
         
         {/* Accommodation markers */}
         {accommodations.map(accommodation => {

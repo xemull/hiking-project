@@ -5,6 +5,9 @@ const cors = require('cors');
 const compression = require('compression');
 const { Pool } = require('pg');
 const fetch = require('node-fetch');
+const fs = require('fs');
+const path = require('path');
+const { parseStringPromise } = require('xml2js');
 
 const STRAPI_URL = process.env.STRAPI_URL || 'http://localhost:1337';
 
@@ -89,6 +92,88 @@ function setCachedData(key, data, ttl) {
     timestamp: Date.now(),
     ttl
   });
+}
+
+const TMB_VARIANT_TRAIL_FILES = [
+  {
+    id: 'tmb_classic',
+    name: 'TMB Classic Route',
+    relativePath: '../admin-scripts/data/tmb_classic_upd.gpx'
+  },
+  {
+    id: 'tmb_variants',
+    name: 'TMB Variants & Alternate Sections',
+    relativePath: '../admin-scripts/data/tmb_variants.gpx'
+  }
+];
+
+async function buildTrailVariantsCacheKey() {
+  const fileDescriptors = await Promise.all(
+    TMB_VARIANT_TRAIL_FILES.map(async config => {
+      const filePath = path.resolve(__dirname, config.relativePath);
+      try {
+        const stats = await fs.promises.stat(filePath);
+        return `${config.id}:${stats.mtimeMs}:${stats.size}`;
+      } catch (error) {
+        console.warn(`Could not stat GPX file for ${config.id}:`, error.message);
+        return `${config.id}:missing`;
+      }
+    })
+  );
+
+  return `tmb-trail-variants-${fileDescriptors.join('|')}`;
+}
+
+function extractCoordinatesFromGpx(gpxData) {
+  if (!gpxData || !gpxData.gpx) {
+    return [];
+  }
+
+  const trackSegments = Array.isArray(gpxData.gpx.trk) ? gpxData.gpx.trk : [];
+  let points = [];
+
+  if (trackSegments.length > 0) {
+    points = trackSegments
+      .flatMap(track => track.trkseg || [])
+      .flatMap(segment => (segment.trkpt || []).map(pt => ({
+        lat: pt?.$?.lat ? parseFloat(pt.$.lat) : NaN,
+        lon: pt?.$?.lon ? parseFloat(pt.$.lon) : NaN
+      })));
+  } else if (Array.isArray(gpxData.gpx.rte) && gpxData.gpx.rte.length > 0) {
+    points = gpxData.gpx.rte.flatMap(route => (route.rtept || []).map(pt => ({
+      lat: pt?.$?.lat ? parseFloat(pt.$.lat) : NaN,
+      lon: pt?.$?.lon ? parseFloat(pt.$.lon) : NaN
+    })));
+  }
+
+  return points
+    .filter(point => Number.isFinite(point.lat) && Number.isFinite(point.lon))
+    .map(point => [point.lon, point.lat]);
+}
+
+async function loadTrailFromGpx(config) {
+  const filePath = path.resolve(__dirname, config.relativePath);
+
+  if (!fs.existsSync(filePath)) {
+    throw new Error(`GPX file not found: ${filePath}`);
+  }
+
+  const xmlData = await fs.promises.readFile(filePath, 'utf8');
+  const parsedGpx = await parseStringPromise(xmlData);
+  const coordinates = extractCoordinatesFromGpx(parsedGpx);
+
+  if (!coordinates.length) {
+    throw new Error(`No coordinates found in GPX file: ${filePath}`);
+  }
+
+  return {
+    id: config.id,
+    name: config.name,
+    track: {
+      type: 'LineString',
+      coordinates
+    }
+  };
 }
 
 // Performance monitoring for slow queries
@@ -999,6 +1084,42 @@ app.get('/api/tmb/accommodations', async (req, res) => {
   } catch (error) {
     console.error('❌ Error fetching real TMB accommodations:', error);
     res.status(500).json({ error: 'Error fetching accommodations' });
+  }
+});
+
+// TMB Trail variants endpoint - serves local GPX files for the accommodations page
+app.get('/api/tmb/trail/variants', async (req, res) => {
+  try {
+    const cacheKey = await buildTrailVariantsCacheKey();
+    const cached = getCachedData(cacheKey);
+
+    if (cached) {
+      console.log('Serving cached TMB trail variants');
+      return res.json(cached.data);
+    }
+
+    const trails = [];
+
+    for (const config of TMB_VARIANT_TRAIL_FILES) {
+      try {
+        const trail = await loadTrailFromGpx(config);
+        trails.push(trail);
+      } catch (error) {
+        console.error(`Failed to load ${config.id} GPX file:`, error.message);
+      }
+    }
+
+    if (!trails.length) {
+      console.error('No TMB variant GPX tracks could be loaded');
+      return res.status(404).json({ error: 'No TMB variant tracks available' });
+    }
+
+    const payload = { trails };
+    setCachedData(cacheKey, { data: payload, timestamp: Date.now() }, 1800000);
+    res.json(payload);
+  } catch (error) {
+    console.error('Error fetching TMB trail variants:', error);
+    res.status(500).json({ error: 'Error fetching TMB trail variants' });
   }
 });
 
