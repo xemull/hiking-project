@@ -1,11 +1,15 @@
 // eslint.config.mjs
 
 import nextPlugin from "@next/eslint-plugin-next";
+import reactPlugin from "eslint-plugin-react";
+import tsPlugin from "@typescript-eslint/eslint-plugin";
 
 const eslintConfig = [
   {
     plugins: {
       "@next/next": nextPlugin,
+      react: reactPlugin,
+      "@typescript-eslint": tsPlugin,
     },
     rules: {
       ...nextPlugin.configs.recommended.rules,

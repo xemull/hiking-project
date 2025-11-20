@@ -20,12 +20,18 @@ interface Filters {
   types: string[];
   locationTypes: string[];
   bookingDifficulty: string[];
+  camping: boolean;
+  privateRooms: boolean;
+  hardToBook: boolean;
 }
 
 const defaultFilters: Filters = {
   types: [],
   locationTypes: [],
-  bookingDifficulty: []
+  bookingDifficulty: [],
+  camping: false,
+  privateRooms: false,
+  hardToBook: false
 };
 
 export default function AccommodationDirectoryPage() {
@@ -90,9 +96,15 @@ export default function AccommodationDirectoryPage() {
     return accommodations.filter(acc => {
       const typeMatch = filters.types.length === 0 || filters.types.includes(acc.type);
       const locationMatch = filters.locationTypes.length === 0 || filters.locationTypes.includes(acc.location_type);
-      const difficultyMatch = filters.bookingDifficulty.length === 0 || filters.bookingDifficulty.includes(acc.booking_difficulty);
+      const difficultyMatch =
+        filters.bookingDifficulty.length === 0 ||
+        (acc.booking_difficulty ? filters.bookingDifficulty.includes(acc.booking_difficulty) : false);
 
-      return typeMatch && locationMatch && difficultyMatch;
+      const campingMatch = !filters.camping || acc.camping_available === true;
+      const privateMatch = !filters.privateRooms || acc.room_type === 'private_only' || acc.room_type === 'both';
+      const hardMatch = !filters.hardToBook || acc.booking_difficulty === 'Hard';
+
+      return typeMatch && locationMatch && difficultyMatch && campingMatch && privateMatch && hardMatch;
     });
   }, [accommodations, filters]);
 
@@ -133,7 +145,7 @@ export default function AccommodationDirectoryPage() {
   };
 
   // Helper function to get display label for dropdowns
-  const getDropdownLabel = (category: keyof Filters) => {
+  const getDropdownLabel = (category: 'types' | 'locationTypes' | 'bookingDifficulty') => {
     const count = filters[category].length;
     if (count === 0) {
       if (category === 'types') return 'Accommodation type';
@@ -143,7 +155,7 @@ export default function AccommodationDirectoryPage() {
     return `${count} selected`;
   };
 
-  const toggleFilter = (category: keyof Filters, value: string) => {
+  const toggleFilter = (category: 'types' | 'locationTypes' | 'bookingDifficulty', value: string) => {
     setFilters(prev => ({
       ...prev,
       [category]: prev[category].includes(value)
@@ -156,7 +168,13 @@ export default function AccommodationDirectoryPage() {
     setFilters(defaultFilters);
   };
 
-  const hasActiveFilters = Object.values(filters).some(arr => arr.length > 0);
+  const hasActiveFilters =
+    filters.types.length > 0 ||
+    filters.locationTypes.length > 0 ||
+    filters.bookingDifficulty.length > 0 ||
+    filters.camping ||
+    filters.privateRooms ||
+    filters.hardToBook;
 
   // Helper function to handle both relative and absolute URLs
   const getFullUrl = (url: string) => {
@@ -312,7 +330,7 @@ export default function AccommodationDirectoryPage() {
 
         {/* Itinerary Builder Link Card */}
         <div style={{ background: 'var(--ds-off-white)', padding: '3rem 1rem', borderBottom: '1px solid var(--ds-border)' }}>
-          <div className="container mx-auto px-4" style={{ maxWidth: '1200px' }}>
+        <div className="container mx-auto px-4" style={{ maxWidth: '1400px' }}>
             <div style={{
               background: 'linear-gradient(135deg, hsl(145, 60%, 95%) 0%, hsl(145, 50%, 92%) 100%)',
               border: '2px solid hsl(145, 60%, 85%)',
@@ -643,6 +661,37 @@ export default function AccommodationDirectoryPage() {
 
                 </div>
 
+                {/* Quick Toggles */}
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem' }}>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', fontSize: '0.9rem', color: 'var(--ds-foreground)' }}>
+                    <input
+                      type="checkbox"
+                      checked={filters.camping}
+                      onChange={() => setFilters(prev => ({ ...prev, camping: !prev.camping }))}
+                      style={{ width: '1rem', height: '1rem', cursor: 'pointer' }}
+                    />
+                    Camping available
+                  </label>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', fontSize: '0.9rem', color: 'var(--ds-foreground)' }}>
+                    <input
+                      type="checkbox"
+                      checked={filters.privateRooms}
+                      onChange={() => setFilters(prev => ({ ...prev, privateRooms: !prev.privateRooms }))}
+                      style={{ width: '1rem', height: '1rem', cursor: 'pointer' }}
+                    />
+                    Private rooms available
+                  </label>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', fontSize: '0.9rem', color: 'var(--ds-foreground)' }}>
+                    <input
+                      type="checkbox"
+                      checked={filters.hardToBook}
+                      onChange={() => setFilters(prev => ({ ...prev, hardToBook: !prev.hardToBook }))}
+                      style={{ width: '1rem', height: '1rem', cursor: 'pointer' }}
+                    />
+                    Most difficult to book
+                  </label>
+                </div>
+
                 {/* Results Count */}
                 {hasActiveFilters && (
                   <div style={{ fontSize: '0.875rem', color: 'var(--ds-muted-foreground)' }}>
@@ -763,193 +812,264 @@ export default function AccommodationDirectoryPage() {
                     }}>
                       <div style={{
                         display: 'grid',
-                        gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
+                        gridTemplateColumns: 'repeat(auto-fill, minmax(360px, 1fr))',
                         gap: '1.25rem'
                       }}>
-                        {stage.accommodations.map(accommodation => (
-                          <div
-                            key={accommodation.id}
-                            style={{
-                              background: 'white',
-                              border: '1px solid #f3f4f6',
-                              borderRadius: '8px',
-                              overflow: 'hidden',
-                              transition: 'all 0.2s ease',
-                              boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)'
-                            }}
-                            onMouseEnter={(e) => {
-                              e.currentTarget.style.transform = 'translateY(-4px)';
-                              e.currentTarget.style.boxShadow = '0 8px 20px rgba(0, 0, 0, 0.1)';
-                            }}
-                            onMouseLeave={(e) => {
-                              e.currentTarget.style.transform = 'translateY(0)';
-                              e.currentTarget.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.04)';
-                            }}
-                          >
-                            {/* Image */}
-                            {accommodation.photos && accommodation.photos.length > 0 && (
-                              <div style={{
-                                width: '100%',
-                                height: '200px',
-                                position: 'relative',
-                                overflow: 'hidden',
-                                background: '#e5e7eb'
-                              }}>
-                                <img
-                                  src={getFullUrl(accommodation.photos[0].url)}
-                                  alt={accommodation.photos[0].alternativeText || accommodation.name}
-                                  style={{
+                        {stage.accommodations
+                          .slice()
+                          .sort((a, b) => {
+                            const prefActive = filters.camping || filters.privateRooms || filters.hardToBook;
+                            if (!prefActive) return a.name.localeCompare(b.name);
+                            const aMatch =
+                              (!filters.camping || a.camping_available) &&
+                              (!filters.privateRooms || a.room_type === 'private_only' || a.room_type === 'both') &&
+                              (!filters.hardToBook || a.booking_difficulty === 'Hard');
+                            const bMatch =
+                              (!filters.camping || b.camping_available) &&
+                              (!filters.privateRooms || b.room_type === 'private_only' || b.room_type === 'both') &&
+                              (!filters.hardToBook || b.booking_difficulty === 'Hard');
+                            if (aMatch === bMatch) return a.name.localeCompare(b.name);
+                            return aMatch ? -1 : 1;
+                          })
+                          .map(accommodation => {
+                            const prefActive = filters.camping || filters.privateRooms || filters.hardToBook;
+                            const matchesPref =
+                              (!filters.camping || accommodation.camping_available) &&
+                              (!filters.privateRooms || accommodation.room_type === 'private_only' || accommodation.room_type === 'both') &&
+                              (!filters.hardToBook || accommodation.booking_difficulty === 'Hard');
+                            const faded = prefActive && !matchesPref;
+                            return (
+                              <div
+                                key={accommodation.id}
+                                style={{
+                                  background: 'white',
+                                  border: '1px solid #f3f4f6',
+                                  borderRadius: '8px',
+                                  overflow: 'hidden',
+                                  transition: 'all 0.2s ease',
+                                  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
+                                  opacity: faded ? 0.55 : 1
+                                }}
+                                onMouseEnter={(e) => {
+                                  e.currentTarget.style.transform = 'translateY(-4px)';
+                                  e.currentTarget.style.boxShadow = '0 8px 20px rgba(0, 0, 0, 0.1)';
+                                }}
+                                onMouseLeave={(e) => {
+                                  e.currentTarget.style.transform = 'translateY(0)';
+                                  e.currentTarget.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.04)';
+                                }}
+                              >
+                                {/* Image */}
+                                {accommodation.photos && accommodation.photos.length > 0 && (
+                                  <div style={{
                                     width: '100%',
-                                    height: '100%',
-                                    objectFit: 'cover'
-                                  }}
-                                />
-                              </div>
-                            )}
-
-                            {/* Content */}
-                            <div style={{ padding: '1.25rem' }}>
-                              {/* Name and Type */}
-                              <div style={{ marginBottom: '0.75rem' }}>
-                                <h3 style={{
-                                  fontFamily: 'Inter, system-ui, sans-serif',
-                                  fontSize: '1.125rem',
-                                  fontWeight: 600,
-                                  color: 'var(--ds-foreground)',
-                                  marginBottom: '0.5rem',
-                                  lineHeight: 1.2
-                                }}>
-                                  {accommodation.name}
-                                </h3>
-                                <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-                                  <span style={{
-                                    display: 'inline-flex',
-                                    alignItems: 'center',
-                                    padding: '0.25rem 0.625rem',
-                                    borderRadius: '4px',
-                                    fontSize: '0.75rem',
-                                    fontWeight: 600,
-                                    background: 'hsl(208, 70%, 95%)',
-                                    color: 'hsl(208, 70%, 35%)'
+                                    height: '200px',
+                                    position: 'relative',
+                                    overflow: 'hidden',
+                                    background: '#e5e7eb'
                                   }}>
-                                    {accommodation.type}
-                                  </span>
-                                  {accommodation.location_type && (
-                                    <span style={{
-                                      display: 'inline-flex',
-                                      alignItems: 'center',
-                                      padding: '0.25rem 0.625rem',
-                                      borderRadius: '4px',
-                                      fontSize: '0.75rem',
+                                    <img
+                                      src={getFullUrl(accommodation.photos[0].url)}
+                                      alt={accommodation.photos[0].alternativeText || accommodation.name}
+                                      style={{
+                                        width: '100%',
+                                        height: '100%',
+                                        objectFit: 'cover'
+                                      }}
+                                    />
+                                  </div>
+                                )}
+
+                                {/* Content */}
+                                <div style={{ padding: '1.25rem' }}>
+                                  {/* Name and Type */}
+                                  <div style={{ marginBottom: '0.75rem' }}>
+                                    <h3 style={{
+                                      fontFamily: 'Inter, system-ui, sans-serif',
+                                      fontSize: '1.125rem',
                                       fontWeight: 600,
-                                      background: 'hsl(145, 60%, 95%)',
-                                      color: 'hsl(145, 60%, 35%)'
+                                      color: 'var(--ds-foreground)',
+                                      marginBottom: '0.5rem',
+                                      lineHeight: 1.2
                                     }}>
-                                      {accommodation.location_type}
-                                    </span>
-                                  )}
+                                      {accommodation.name}
+                                    </h3>
+                                    <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                                      <span style={{
+                                        display: 'inline-flex',
+                                        alignItems: 'center',
+                                        padding: '0.25rem 0.625rem',
+                                        borderRadius: '4px',
+                                        fontSize: '0.75rem',
+                                        fontWeight: 600,
+                                        background: 'hsl(208, 70%, 95%)',
+                                        color: 'hsl(208, 70%, 35%)'
+                                      }}>
+                                        {accommodation.type}
+                                      </span>
+                                      {accommodation.location_type && (
+                                        <span style={{
+                                          display: 'inline-flex',
+                                          alignItems: 'center',
+                                          padding: '0.25rem 0.625rem',
+                                          borderRadius: '4px',
+                                          fontSize: '0.75rem',
+                                          fontWeight: 600,
+                                          background: 'hsl(145, 60%, 95%)',
+                                          color: 'hsl(145, 60%, 35%)'
+                                        }}>
+                                          {accommodation.location_type}
+                                        </span>
+                                      )}
+                                      {accommodation.camping_available && (
+                                        <span style={{
+                                          display: 'inline-flex',
+                                          alignItems: 'center',
+                                          padding: '0.25rem 0.625rem',
+                                          borderRadius: '4px',
+                                          fontSize: '0.75rem',
+                                          fontWeight: 700,
+                                          background: 'hsl(145, 60%, 90%)',
+                                          color: 'hsl(145, 60%, 25%)'
+                                        }}>
+                                          Camping
+                                        </span>
+                                      )}
+                                      {accommodation.room_type && (
+                                        <span style={{
+                                          display: 'inline-flex',
+                                          alignItems: 'center',
+                                          padding: '0.25rem 0.625rem',
+                                          borderRadius: '4px',
+                                          fontSize: '0.75rem',
+                                          fontWeight: 700,
+                                          background: 'hsl(210, 60%, 92%)',
+                                          color: 'hsl(210, 60%, 30%)'
+                                        }}>
+                                          {accommodation.room_type === 'both'
+                                            ? 'Private & Shared'
+                                            : accommodation.room_type === 'private_only'
+                                              ? 'Private rooms'
+                                              : 'Shared only'}
+                                        </span>
+                                      )}
+                                      {accommodation.booking_difficulty === 'Hard' && (
+                                        <span style={{
+                                          display: 'inline-flex',
+                                          alignItems: 'center',
+                                          padding: '0.25rem 0.625rem',
+                                          borderRadius: '4px',
+                                          fontSize: '0.75rem',
+                                          fontWeight: 700,
+                                          background: 'hsl(25, 90%, 92%)',
+                                          color: 'hsl(20, 80%, 35%)'
+                                        }}>
+                                          Most difficult to book
+                                        </span>
+                                      )}
+                                    </div>
+                                  </div>
+
+                                  {/* Key Info */}
+                                  <div style={{
+                                    fontSize: '0.875rem',
+                                    color: 'var(--ds-muted-foreground)',
+                                    marginBottom: '1rem',
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    gap: '0.375rem'
+                                  }}>
+                                    {accommodation.altitude && (
+                                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
+                                        <Mountain style={{ width: '0.875rem', height: '0.875rem' }} />
+                                        <span>{accommodation.altitude}m altitude</span>
+                                      </div>
+                                    )}
+                                    {accommodation.capacity && (
+                                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
+                                        <Bed style={{ width: '0.875rem', height: '0.875rem' }} />
+                                        <span>{accommodation.capacity} beds</span>
+                                      </div>
+                                    )}
+                                    {accommodation.price_range && (
+                                      <div style={{ fontWeight: 600, color: 'hsl(145, 60%, 35%)' }}>
+                                        {accommodation.price_range}
+                                      </div>
+                                    )}
+                                  </div>
+
+                                  {/* Contact Links */}
+                                  <div style={{
+                                    borderTop: '1px solid var(--ds-border)',
+                                    paddingTop: '0.875rem',
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    gap: '0.5rem'
+                                  }}>
+                                    {accommodation.website && (
+                                      <a
+                                        href={accommodation.website}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        style={{
+                                          display: 'flex',
+                                          alignItems: 'center',
+                                          gap: '0.5rem',
+                                          fontSize: '0.875rem',
+                                          color: 'hsl(208, 70%, 45%)',
+                                          textDecoration: 'none',
+                                          transition: 'color 0.2s ease'
+                                        }}
+                                        onMouseEnter={(e) => e.currentTarget.style.color = 'hsl(208, 70%, 35%)'}
+                                        onMouseLeave={(e) => e.currentTarget.style.color = 'hsl(208, 70%, 45%)'}
+                                      >
+                                        <Globe style={{ width: '0.875rem', height: '0.875rem' }} />
+                                        Visit Website
+                                      </a>
+                                    )}
+                                    {accommodation.phone && (
+                                      <a
+                                        href={`tel:${accommodation.phone}`}
+                                        style={{
+                                          display: 'flex',
+                                          alignItems: 'center',
+                                          gap: '0.5rem',
+                                          fontSize: '0.875rem',
+                                          color: 'hsl(208, 70%, 45%)',
+                                          textDecoration: 'none',
+                                          transition: 'color 0.2s ease'
+                                        }}
+                                        onMouseEnter={(e) => e.currentTarget.style.color = 'hsl(208, 70%, 35%)'}
+                                        onMouseLeave={(e) => e.currentTarget.style.color = 'hsl(208, 70%, 45%)'}
+                                      >
+                                        <Phone style={{ width: '0.875rem', height: '0.875rem' }} />
+                                        {accommodation.phone}
+                                      </a>
+                                    )}
+                                    {accommodation.email && (
+                                      <a
+                                        href={`mailto:${accommodation.email}`}
+                                        style={{
+                                          display: 'flex',
+                                          alignItems: 'center',
+                                          gap: '0.5rem',
+                                          fontSize: '0.875rem',
+                                          color: 'hsl(208, 70%, 45%)',
+                                          textDecoration: 'none',
+                                          transition: 'color 0.2s ease'
+                                        }}
+                                        onMouseEnter={(e) => e.currentTarget.style.color = 'hsl(208, 70%, 35%)'}
+                                        onMouseLeave={(e) => e.currentTarget.style.color = 'hsl(208, 70%, 45%)'}
+                                      >
+                                        <Mail style={{ width: '0.875rem', height: '0.875rem' }} />
+                                        {accommodation.email}
+                                      </a>
+                                    )}
+                                  </div>
                                 </div>
                               </div>
-
-                              {/* Key Info */}
-                              <div style={{
-                                fontSize: '0.875rem',
-                                color: 'var(--ds-muted-foreground)',
-                                marginBottom: '1rem',
-                                display: 'flex',
-                                flexDirection: 'column',
-                                gap: '0.375rem'
-                              }}>
-                                {accommodation.altitude && (
-                                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
-                                    <Mountain style={{ width: '0.875rem', height: '0.875rem' }} />
-                                    <span>{accommodation.altitude}m altitude</span>
-                                  </div>
-                                )}
-                                {accommodation.capacity && (
-                                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
-                                    <Bed style={{ width: '0.875rem', height: '0.875rem' }} />
-                                    <span>{accommodation.capacity} beds</span>
-                                  </div>
-                                )}
-                                {accommodation.price_range && (
-                                  <div style={{ fontWeight: 600, color: 'hsl(145, 60%, 35%)' }}>
-                                    {accommodation.price_range}
-                                  </div>
-                                )}
-                              </div>
-
-                              {/* Contact Links */}
-                              <div style={{
-                                borderTop: '1px solid var(--ds-border)',
-                                paddingTop: '0.875rem',
-                                display: 'flex',
-                                flexDirection: 'column',
-                                gap: '0.5rem'
-                              }}>
-                                {accommodation.website && (
-                                  <a
-                                    href={accommodation.website}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    style={{
-                                      display: 'flex',
-                                      alignItems: 'center',
-                                      gap: '0.5rem',
-                                      fontSize: '0.875rem',
-                                      color: 'hsl(208, 70%, 45%)',
-                                      textDecoration: 'none',
-                                      transition: 'color 0.2s ease'
-                                    }}
-                                    onMouseEnter={(e) => e.currentTarget.style.color = 'hsl(208, 70%, 35%)'}
-                                    onMouseLeave={(e) => e.currentTarget.style.color = 'hsl(208, 70%, 45%)'}
-                                  >
-                                    <Globe style={{ width: '0.875rem', height: '0.875rem' }} />
-                                    Visit Website
-                                  </a>
-                                )}
-                                {accommodation.phone && (
-                                  <a
-                                    href={`tel:${accommodation.phone}`}
-                                    style={{
-                                      display: 'flex',
-                                      alignItems: 'center',
-                                      gap: '0.5rem',
-                                      fontSize: '0.875rem',
-                                      color: 'hsl(208, 70%, 45%)',
-                                      textDecoration: 'none',
-                                      transition: 'color 0.2s ease'
-                                    }}
-                                    onMouseEnter={(e) => e.currentTarget.style.color = 'hsl(208, 70%, 35%)'}
-                                    onMouseLeave={(e) => e.currentTarget.style.color = 'hsl(208, 70%, 45%)'}
-                                  >
-                                    <Phone style={{ width: '0.875rem', height: '0.875rem' }} />
-                                    {accommodation.phone}
-                                  </a>
-                                )}
-                                {accommodation.email && (
-                                  <a
-                                    href={`mailto:${accommodation.email}`}
-                                    style={{
-                                      display: 'flex',
-                                      alignItems: 'center',
-                                      gap: '0.5rem',
-                                      fontSize: '0.875rem',
-                                      color: 'hsl(208, 70%, 45%)',
-                                      textDecoration: 'none',
-                                      transition: 'color 0.2s ease'
-                                    }}
-                                    onMouseEnter={(e) => e.currentTarget.style.color = 'hsl(208, 70%, 35%)'}
-                                    onMouseLeave={(e) => e.currentTarget.style.color = 'hsl(208, 70%, 45%)'}
-                                  >
-                                    <Mail style={{ width: '0.875rem', height: '0.875rem' }} />
-                                    {accommodation.email}
-                                  </a>
-                                )}
-                              </div>
-                            </div>
-                          </div>
-                        ))}
+                            );
+                          })}
                       </div>
                     </div>
                   )}

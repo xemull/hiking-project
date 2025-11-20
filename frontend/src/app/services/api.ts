@@ -459,10 +459,12 @@ export interface TMBAccommodation {
   name: string;
   type: 'Refuge' | 'Hotel' | 'B&B' | 'Campsite';
   location_type: 'On-trail' | 'Near-trail' | 'Off-trail';
-  booking_difficulty: 'Easy' | 'Moderate' | 'Hard' | 'Very Hard';
+  booking_difficulty?: 'Easy' | 'Moderate' | 'Hard';
   booking_method?: 'Online Portal' | 'Email Only' | 'Phone Only' | 'Multiple';
   latitude: number;
   longitude: number;
+  camping_available?: boolean;
+  room_type?: 'shared_only' | 'private_only' | 'both';
   altitude?: number;
   website?: string;
   phone?: string;

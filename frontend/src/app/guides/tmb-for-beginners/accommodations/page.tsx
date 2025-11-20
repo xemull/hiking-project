@@ -8,19 +8,25 @@ import UniversalHero from '../../../components/UniversalHero';
 import TMBAccommodationsMap from '../../../components/TMBAccommodationsMap';
 import ItineraryBuilder, { type ItineraryBuilderRef } from '../../../components/ItineraryBuilder';
 import { getTMBAccommodations, getTMBTrailData, getTMBTrailVariants, type TMBAccommodation, type TMBTrailData, type TMBTrailSegment } from '../../../services/api';
-import { MapPin, Bed, Phone, Mail, Globe, Filter, X, ChevronDown } from 'lucide-react';
+import { MapPin, Bed, Phone, Mail, Globe, Filter, X, ChevronDown, CalendarClock, CreditCard, Info } from 'lucide-react';
 
 // Filter types
 interface Filters {
   types: string[];
   locationTypes: string[];
   bookingDifficulty: string[];
+  camping: boolean;
+  privateRooms: boolean;
+  hardToBook: boolean;
 }
 
 const defaultFilters: Filters = {
   types: [],
   locationTypes: [],
-  bookingDifficulty: []
+  bookingDifficulty: [],
+  camping: false,
+  privateRooms: false,
+  hardToBook: false
 };
 
 type ColoredTrailSegment = TMBTrailSegment & { color: string };
@@ -115,9 +121,14 @@ export default function TMBAccommodationsPage() {
     return accommodations.filter(acc => {
       const typeMatch = filters.types.length === 0 || filters.types.includes(acc.type);
       const locationMatch = filters.locationTypes.length === 0 || filters.locationTypes.includes(acc.location_type);
-      const difficultyMatch = filters.bookingDifficulty.length === 0 || filters.bookingDifficulty.includes(acc.booking_difficulty);
+      const difficultyMatch =
+        filters.bookingDifficulty.length === 0 ||
+        (acc.booking_difficulty ? filters.bookingDifficulty.includes(acc.booking_difficulty) : false);
+      const campingMatch = !filters.camping || acc.camping_available === true;
+      const privateMatch = !filters.privateRooms || acc.room_type === 'private_only' || acc.room_type === 'both';
+      const hardMatch = !filters.hardToBook || acc.booking_difficulty === 'Hard';
       
-      return typeMatch && locationMatch && difficultyMatch;
+      return typeMatch && locationMatch && difficultyMatch && campingMatch && privateMatch && hardMatch;
     });
   }, [accommodations, filters]);
 
@@ -137,7 +148,7 @@ export default function TMBAccommodationsPage() {
     : [{ id: 'tmb-default', name: 'TMB Trail', color: '#ef4444' }];
 
   // Helper function to get display label for dropdowns
-  const getDropdownLabel = (category: keyof Filters) => {
+  const getDropdownLabel = (category: 'types' | 'locationTypes' | 'bookingDifficulty') => {
     const count = filters[category].length;
     if (count === 0) {
       if (category === 'types') return 'Accommodation type';
@@ -147,7 +158,7 @@ export default function TMBAccommodationsPage() {
     return `${count} selected`;
   };
 
-  const toggleFilter = (category: keyof Filters, value: string) => {
+  const toggleFilter = (category: 'types' | 'locationTypes' | 'bookingDifficulty', value: string) => {
     setFilters(prev => ({
       ...prev,
       [category]: prev[category].includes(value)
@@ -160,7 +171,13 @@ export default function TMBAccommodationsPage() {
     setFilters(defaultFilters);
   };
 
-  const hasActiveFilters = Object.values(filters).some(arr => arr.length > 0);
+  const hasActiveFilters =
+    filters.types.length > 0 ||
+    filters.locationTypes.length > 0 ||
+    filters.bookingDifficulty.length > 0 ||
+    filters.camping ||
+    filters.privateRooms ||
+    filters.hardToBook;
 
   if (loading) {
     return (
@@ -250,7 +267,7 @@ export default function TMBAccommodationsPage() {
       <UniversalHero title="Tour du Mont Blanc Accommodations" subtitle="Plan your perfect multi-day hiking adventure around the Mont Blanc massif" backgroundSrc="/IMG_1633.jpg" ctas={[{ label: "Start Planning", href: "#content-start", variant: "primary" }]} overlay="gradient" height="standard" />
 
       {/* Intro Section */}
-      <div id="intro-section" style={{ background: 'white', borderBottom: '1px solid var(--ds-border)', padding: '4rem 1rem' }}>
+      <div id="intro-section" style={{ background: 'white', borderBottom: '1px solid var(--ds-border)', padding: '4rem clamp(0.75rem, 3vw, 1.25rem)' }}>
         <div className="container mx-auto px-4" style={{ maxWidth: '1200px', textAlign: 'center' }}>
           <p style={{
             fontFamily: 'Inter, system-ui, sans-serif',
@@ -279,8 +296,8 @@ export default function TMBAccommodationsPage() {
       </div>
 
       {/* Accommodation Type Cards */}
-      <div id="accommodation-types" style={{ background: 'var(--ds-off-white)', padding: '4rem 1rem', borderBottom: '1px solid var(--ds-border)' }}>
-        <div className="container mx-auto px-4">
+      <div id="accommodation-types" style={{ background: 'var(--ds-off-white)', padding: '4rem clamp(0.75rem, 3vw, 1.25rem)', borderBottom: '1px solid var(--ds-border)' }}>
+        <div className="container mx-auto px-4" style={{ maxWidth: '1200px' }}>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
             <div style={{
               background: 'white',
@@ -432,97 +449,73 @@ export default function TMBAccommodationsPage() {
           </div>
 
           {/* Info Boxes */}
-          <div style={{ background: 'hsl(208, 60%, 92%)', border: '1px solid hsl(208, 70%, 85%)', borderRadius: '8px', padding: '2rem' }}>
-            <div style={{ marginBottom: '1.5rem' }}>
-              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
-                <span style={{ fontSize: '1.5rem' }}>📅</span>
-                <div>
+          <div style={{ background: 'hsl(208, 60%, 92%)', border: '1px solid hsl(208, 70%, 85%)', borderRadius: '10px', padding: '2.25rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1rem' }}>
+              {[
+                {
+                  title: 'Seasonality & Booking',
+                  body: 'Peak season (July-August) requires booking 3-6 months in advance, especially for refuges. June and September offer more availability but check if high-altitude refuges are open.',
+                  icon: <CalendarClock style={{ width: '1.5rem', height: '1.5rem', color: 'hsl(208, 70%, 30%)' }} />
+                },
+                {
+                  title: 'Payment & Practicalities',
+                  body: 'Many refuges prefer cash (euros or Swiss francs). Hotels and B&Bs typically accept cards. Meals are often included at refuges (half-board), while hotels may be room-only.',
+                  icon: <CreditCard style={{ width: '1.5rem', height: '1.5rem', color: 'hsl(208, 70%, 30%)' }} />
+                },
+                {
+                  title: 'What to Expect',
+                  body: 'Refuges typically offer dormitory beds (bring earplugs!) with shared bathrooms. Private rooms are available at some refuges and all hotels/B&Bs. Laundry facilities are limited.',
+                  icon: <Info style={{ width: '1.5rem', height: '1.5rem', color: 'hsl(208, 70%, 30%)' }} />
+                }
+              ].map((item) => (
+                <div key={item.title} style={{ textAlign: 'center', padding: '0.75rem 0.5rem' }}>
+                  <div style={{
+                    width: '42px',
+                    height: '42px',
+                    borderRadius: '12px',
+                    background: 'white',
+                    border: '1px solid hsl(208, 70%, 85%)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    margin: '0 auto 0.6rem'
+                  }}>
+                    {item.icon}
+                  </div>
                   <h4 style={{
                     fontFamily: 'Inter, system-ui, sans-serif',
-                    fontSize: '1.125rem',
-                    fontWeight: 600,
-                    color: 'hsl(208, 70%, 25%)',
-                    marginBottom: '0.5rem',
-                    lineHeight: 1.2
+                    fontSize: '1.05rem',
+                    fontWeight: 700,
+                    color: 'hsl(208, 70%, 22%)',
+                    marginBottom: '0.35rem',
+                    lineHeight: 1.3
                   }}>
-                    Seasonality & Booking
+                    {item.title}
                   </h4>
                   <p style={{
                     fontFamily: 'Inter, system-ui, sans-serif',
-                    fontSize: '1rem',
-                    color: 'hsl(208, 70%, 35%)',
-                    lineHeight: 1.6
+                    fontSize: '0.97rem',
+                    color: 'hsl(208, 70%, 32%)',
+                    lineHeight: 1.55,
+                    margin: 0
                   }}>
-                    Peak season (July-August) requires booking 3-6 months in advance, especially for refuges. June and September offer more availability but check if high-altitude refuges are open.
+                    {item.body}
                   </p>
                 </div>
-              </div>
-            </div>
-
-            <div style={{ marginBottom: '1.5rem' }}>
-              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
-                <span style={{ fontSize: '1.5rem' }}>💳</span>
-                <div>
-                  <h4 style={{
-                    fontFamily: 'Inter, system-ui, sans-serif',
-                    fontSize: '1.125rem',
-                    fontWeight: 600,
-                    color: 'hsl(208, 70%, 25%)',
-                    marginBottom: '0.5rem',
-                    lineHeight: 1.2
-                  }}>
-                    Payment & Practicalities
-                  </h4>
-                  <p style={{
-                    fontFamily: 'Inter, system-ui, sans-serif',
-                    fontSize: '1rem',
-                    color: 'hsl(208, 70%, 35%)',
-                    lineHeight: 1.6
-                  }}>
-                    Many refuges prefer cash (euros or Swiss francs). Hotels and B&Bs typically accept cards. Meals are often included at refuges (half-board), while hotels may be room-only.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
-                <span style={{ fontSize: '1.5rem' }}>ℹ️</span>
-                <div>
-                  <h4 style={{
-                    fontFamily: 'Inter, system-ui, sans-serif',
-                    fontSize: '1.125rem',
-                    fontWeight: 600,
-                    color: 'hsl(208, 70%, 25%)',
-                    marginBottom: '0.5rem',
-                    lineHeight: 1.2
-                  }}>
-                    What to Expect
-                  </h4>
-                  <p style={{
-                    fontFamily: 'Inter, system-ui, sans-serif',
-                    fontSize: '1rem',
-                    color: 'hsl(208, 70%, 35%)',
-                    lineHeight: 1.6
-                  }}>
-                    Refuges typically offer dormitory beds (bring earplugs!) with shared bathrooms. Private rooms are available at some refuges and all hotels/B&Bs. Laundry facilities are limited.
-                  </p>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
-
           {/* Full Directory Link Card */}
           <div style={{
             background: 'linear-gradient(135deg, hsl(208, 70%, 95%) 0%, hsl(208, 60%, 92%) 100%)',
             border: '2px solid hsl(208, 70%, 85%)',
             borderRadius: '12px',
-            padding: '2rem',
+            padding: '1.5rem 1.25rem',
             marginTop: '2rem',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            gap: '1.5rem',
+            gap: '1.25rem',
             flexWrap: 'wrap'
           }}>
             <div style={{ flex: 1, minWidth: '250px' }}>
@@ -581,8 +574,8 @@ export default function TMBAccommodationsPage() {
       </div>
 
       {/* Map Section */}
-      <div id="map-section" style={{ background: 'white', padding: '4rem 1rem', scrollSnapAlign: 'start', minHeight: '100vh' }}>
-        <div className="container mx-auto px-4">
+      <div id="map-section" style={{ background: 'white', padding: '4rem clamp(0.75rem, 3vw, 1.25rem)', scrollSnapAlign: 'start', minHeight: '100vh' }}>
+        <div className="container mx-auto px-4" style={{ maxWidth: '1200px' }}>
           <h2 style={{
             fontFamily: 'Inter, system-ui, sans-serif',
             fontSize: 'clamp(1.875rem, 4vw, 2.25rem)',
@@ -605,11 +598,11 @@ export default function TMBAccommodationsPage() {
 
           {/* Filter Bar with Dropdowns */}
           <div style={{ marginBottom: '2rem' }}>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-              {/* Filter Header */}
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1rem' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <Filter style={{ width: '1.125rem', height: '1.125rem', color: 'var(--ds-muted-foreground)' }} />
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                {/* Filter Header */}
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1rem' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <Filter style={{ width: '1.125rem', height: '1.125rem', color: 'var(--ds-muted-foreground)' }} />
                   <span style={{
                     fontFamily: 'Inter, system-ui, sans-serif',
                     fontSize: '1rem',
@@ -637,7 +630,7 @@ export default function TMBAccommodationsPage() {
               </div>
 
               {/* Filter Dropdowns Grid */}
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '0.75rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '0.75rem' }}>
 
                 {/* Accommodation Type Dropdown */}
                 <div style={{ position: 'relative' }} ref={typeRef}>
@@ -861,19 +854,50 @@ export default function TMBAccommodationsPage() {
                   )}
                 </div>
 
-              </div>
+            </div>
 
-              {/* Results Count */}
-              {hasActiveFilters && (
-                <div style={{ fontSize: '0.875rem', color: 'var(--ds-muted-foreground)' }}>
-                  Showing {filteredAccommodations.length} of {accommodations.length} accommodations
+            {/* Quick Toggles */}
+            <div className="quick-toggle-row" style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem' }}>
+              <label className="quick-toggle" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', fontSize: '0.9rem', color: 'var(--ds-foreground)' }}>
+                <input
+                  type="checkbox"
+                  checked={filters.camping}
+                  onChange={() => setFilters(prev => ({ ...prev, camping: !prev.camping }))}
+                  style={{ width: '1rem', height: '1rem', cursor: 'pointer' }}
+                />
+                Camping available
+              </label>
+              <label className="quick-toggle" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', fontSize: '0.9rem', color: 'var(--ds-foreground)' }}>
+                <input
+                  type="checkbox"
+                  checked={filters.privateRooms}
+                  onChange={() => setFilters(prev => ({ ...prev, privateRooms: !prev.privateRooms }))}
+                  style={{ width: '1rem', height: '1rem', cursor: 'pointer' }}
+                />
+                Private rooms available
+              </label>
+              <label className="quick-toggle" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', fontSize: '0.9rem', color: 'var(--ds-foreground)' }}>
+                <input
+                  type="checkbox"
+                  checked={filters.hardToBook}
+                  onChange={() => setFilters(prev => ({ ...prev, hardToBook: !prev.hardToBook }))}
+                  style={{ width: '1rem', height: '1rem', cursor: 'pointer' }}
+                />
+                Most difficult to book
+              </label>
+            </div>
+
+            {/* Results Count */}
+            {hasActiveFilters && (
+              <div style={{ fontSize: '0.875rem', color: 'var(--ds-muted-foreground)' }}>
+                Showing {filteredAccommodations.length} of {accommodations.length} accommodations
                 </div>
               )}
             </div>
           </div>
 
           {/* Map and Info Grid */}
-          <div className="tmb-map-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem', marginBottom: '3rem' }}>
+          <div className="tmb-map-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem', marginBottom: '3rem' }}>
 
             {/* Map Column */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
@@ -1297,6 +1321,22 @@ export default function TMBAccommodationsPage() {
       </div>
         </div>
       </main>
+      <style dangerouslySetInnerHTML={{
+        __html: `
+          .quick-toggle-row .quick-toggle {
+            min-width: 180px;
+          }
+          @media (max-width: 640px) {
+            .quick-toggle-row {
+              flex-direction: column;
+              align-items: flex-start;
+            }
+            .quick-toggle-row .quick-toggle {
+              width: 100%;
+            }
+          }
+        `
+      }} />
       <Footer />
     </>
   );

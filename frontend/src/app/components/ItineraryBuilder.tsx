@@ -902,7 +902,7 @@ const ItineraryBuilder = forwardRef<ItineraryBuilderRef, ItineraryBuilderProps>(
 
       {/* Add Accommodation Section - Organized by Stage */}
       {isExpanded && (
-        <div style={{
+        <div className="stage-accordion-wrapper" style={{
           borderTop: '1px solid var(--ds-border)',
           padding: '2rem',
           background: '#fafafa'
@@ -917,7 +917,7 @@ const ItineraryBuilder = forwardRef<ItineraryBuilderRef, ItineraryBuilderProps>(
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
             {accommodationsByStage.map(stage => (
-              <div key={stage.stageNumber} style={{
+              <div key={stage.stageNumber} className="stage-accordion-card" style={{
                 background: 'white',
                 border: '1px solid var(--ds-border)',
                 borderRadius: '8px',
@@ -1066,6 +1066,22 @@ const ItineraryBuilder = forwardRef<ItineraryBuilderRef, ItineraryBuilderProps>(
           </div>
         </div>
       )}
+
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
+            @media (max-width: 640px) {
+              .stage-accordion-wrapper {
+                padding-left: 0.5rem !important;
+                padding-right: 0.5rem !important;
+              }
+              .stage-accordion-card {
+                width: 100%;
+              }
+            }
+          `
+        }}
+      />
     </div>
   );
 });

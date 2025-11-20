@@ -98,12 +98,12 @@ const TMB_VARIANT_TRAIL_FILES = [
   {
     id: 'tmb_classic',
     name: 'TMB Classic Route',
-    relativePath: '../admin-scripts/data/tmb_classic_upd.gpx'
+    relativePath: path.join('data', 'tmb_classic_upd.gpx')
   },
   {
     id: 'tmb_variants',
     name: 'TMB Variants & Alternate Sections',
-    relativePath: '../admin-scripts/data/tmb_variants.gpx'
+    relativePath: path.join('data', 'tmb_variants.gpx')
   }
 ];
 
