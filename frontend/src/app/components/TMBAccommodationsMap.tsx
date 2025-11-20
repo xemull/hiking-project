@@ -38,6 +38,11 @@ interface ProcessedTrailResult {
   };
 }
 
+type AccommodationMarker = {
+  accommodation: TMBAccommodation;
+  position: [number, number];
+};
+
 export default function TMBAccommodationsMap({
   trailData,
   trailSegments = [],
@@ -126,6 +131,41 @@ export default function TMBAccommodationsMap({
       }
     };
   }, [trailData, trailSegments, accommodations]);
+
+  // Spread overlapping markers so multiple accommodations at identical coords are visible
+  const accommodationMarkers = useMemo<AccommodationMarker[]>(() => {
+    const groups = new Map<string, TMBAccommodation[]>();
+
+    accommodations.forEach(acc => {
+      if (typeof acc.latitude === 'number' && typeof acc.longitude === 'number') {
+        const key = `${acc.latitude},${acc.longitude}`;
+        if (!groups.has(key)) {
+          groups.set(key, []);
+        }
+        groups.get(key)!.push(acc);
+      }
+    });
+
+    const result: AccommodationMarker[] = [];
+    groups.forEach(accs => {
+      if (accs.length === 1) {
+        result.push({ accommodation: accs[0], position: [accs[0].latitude, accs[0].longitude] });
+      } else {
+        const radius = 0.0005; // ~50m offset; tightest spread while keeping stacked markers distinct
+        accs.forEach((acc, idx) => {
+          const angle = (2 * Math.PI * idx) / accs.length;
+          const latOffset = radius * Math.cos(angle);
+          const lngOffset = radius * Math.sin(angle) / Math.cos((acc.latitude * Math.PI) / 180);
+          result.push({
+            accommodation: acc,
+            position: [acc.latitude + latOffset, acc.longitude + lngOffset],
+          });
+        });
+      }
+    });
+
+    return result;
+  }, [accommodations]);
 
   // Dynamically import react-leaflet and leaflet
   useEffect(() => {
@@ -227,8 +267,8 @@ export default function TMBAccommodationsMap({
         fitPoints.push(...processedTrail.allPositions);
       }
 
-      accommodations.forEach(acc => {
-        fitPoints.push([acc.latitude, acc.longitude]);
+      accommodationMarkers.forEach(({ position }) => {
+        fitPoints.push(position);
       });
 
       if (fitPoints.length === 0) {
@@ -242,7 +282,7 @@ export default function TMBAccommodationsMap({
         maxZoom: 12
       });
     }, 100);
-  }, [mapInstance, processedTrail, accommodations, leaflet]);
+  }, [mapInstance, processedTrail, accommodationMarkers, leaflet]);
 
   // Re-center map when accommodation is selected
   useEffect(() => {
@@ -320,7 +360,7 @@ export default function TMBAccommodationsMap({
         ))}
         
         {/* Accommodation markers */}
-        {accommodations.map(accommodation => {
+        {accommodationMarkers.map(({ accommodation, position }) => {
           const isSelected = selectedAccommodation?.id === accommodation.id;
           const isSelectedForDistance = selectedForDistance.some(acc => acc.id === accommodation.id);
           const distanceSelectionNumber = selectedForDistance.findIndex(acc => acc.id === accommodation.id) + 1;
@@ -328,7 +368,7 @@ export default function TMBAccommodationsMap({
           return (
             <Marker
               key={accommodation.id}
-              position={[accommodation.latitude, accommodation.longitude]}
+              position={position}
               icon={createAccommodationIcon(
                 accommodation.type,
                 accommodation.stage?.stage_number,

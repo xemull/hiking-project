@@ -32,10 +32,12 @@
       ]
     },
     "latitude": {
-      "type": "float"
+      "type": "decimal",
+      "columnType": "numeric(10,7)"
     },
     "longitude": {
-      "type": "float"
+      "type": "decimal",
+      "columnType": "numeric(10,7)"
     },
     "website": {
       "type": "string"

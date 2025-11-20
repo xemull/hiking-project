@@ -1,19 +1,19 @@
 # Use the official Node.js runtime as the base image
-FROM node:18-alpine
+FROM node:18-bullseye-slim
 
 # Set the working directory inside the container
 WORKDIR /app
 
-# Copy package.json and package-lock.json (if available)
-COPY package*.json ./
+# Copy package.json and package-lock.json from the canonical Strapi app
+COPY tmb-cms-clean/package*.json ./
 
 # Install dependencies
 RUN npm ci --only=production
 
-# Copy the rest of the application code
-COPY . .
+# Copy the Strapi application code (tmb-cms-clean)
+COPY tmb-cms-clean .
 
-# Create the .tmp directory for SQLite database
+# Create the .tmp directory for SQLite database (Strapi expects this path)
 RUN mkdir -p .tmp
 
 # Build the Strapi application
